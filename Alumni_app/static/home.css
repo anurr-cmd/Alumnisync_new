@@ -1,0 +1,50 @@
+.carousel-bg {
+    height: 520px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.carousel-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.carousel-caption h2 {
+    font-size: 38px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.carousel-caption p {
+    font-size: 18px;
+    color: #f1f1f1;
+}
+
+.home-section {
+    background-color: #ffffff;
+}
+
+.home-section h3 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.home-section p {
+    font-size: 17px;
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.6;
+    color: #555;
+}
+

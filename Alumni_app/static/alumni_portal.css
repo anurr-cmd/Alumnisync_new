@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.container {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: black;
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.profile-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-box img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-box p {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.sidebar a:hover {
+    color: #00c6ff;
+}
+
+.menu-title {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* RIGHT SIDE */
+.main {
+    flex: 1;
+}
+
+/* NAVBAR */
+.navbar {
+    background: rgba(0,0,0,0.55);
+    border-radius: 1%;
+    padding: 15px 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.navbar h2 {
+    margin: 0;
+}
+
+/* CONTENT */
+.content {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 6px;
+}
+.submenu {
+    display: none;
+    margin-left: 15px;
+}
+
+.submenu a {
+    font-style:italic ;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.menu-title {
+    cursor: pointer;
+}
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alumni Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'alumni_portal.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <!-- PROFILE -->
+        <div class="profile-box">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s" alt="">
+            <p>{{ request.user.username }}</p>
+        </div>
+
+        <a href="{% url 'alumni_portal' %}" style="font-weight: bold;">Dashboard</a>
+
+        <!-- EVENTS -->
+        <div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('events-menu')">
+        Events ▾
+    </div>
+    <div class="submenu" id="events-menu">
+        <a href="{% url 'create_event' %}">Add Event</a>
+        <a href="{% url 'view_events_alumni' %}">View Events</a>
+        <a href="{% url 'manage_events' %}">Manage Events</a>
+    </div>
+</div>
+
+<!-- JOBS -->
+<div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('jobs-menu')">
+        Jobs ▾
+    </div>
+    <div class="submenu" id="jobs-menu">
+        {% comment %} <a href="#">Add Job</a> {% endcomment %}
+        <a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+        <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+    </div>
+</div>
+
+<!-- ANNOUNCEMENTS -->
+<div class="menu-group">
+    <div class="menu-title">
+        <a href="{% url 'alumni_announcements' %}" style="color:white;">Announcements</a>
+    </div>
+</div>
+
+        <a href="{% url 'logout' %}">Logout</a>
+
+    </aside>
+
+    <!-- RIGHT SIDE -->
+    <div class="main">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <h2>Alumni Sync</h2>
+        </nav>
+
+        <!-- CONTENT -->
+        <main class="content">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b" alt="Events">
+                <h3><a href="{% url 'create_event' %}">Events</a></h3>
+                <p>Stay connected with alumni events.</p>
+                {% if event_count > 0 %}
+                    <strong> {{ event_count }} Events Available</strong>
+                {% else %}
+                    <strong>No events available</strong>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" alt="Jobs">
+                <h3><a href="{% url 'add_job_alumni' %}">Jobs</a></h3>
+                <p>Explore job opportunities shared by alumni.</p>
+                {% if job_count > 0 %}
+                    <strong> {{ job_count }} Jobs Available</strong>
+                {% else %}
+                    <strong>No jobs available</strong>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe" alt="Announcements">
+                <h3><a href="{% url 'alumni_announcements' %}">Announcements</a></h3>
+                <p>Latest updates and notices.</p>
+                {% if announcement_count > 0 %}
+                    <strong> {{ announcement_count }} Announcements Available</strong>
+                {% else %}
+                    <strong>No announcements available</strong>
+                {% endif %}
+            </div>
+
+        </main>
+    </div>
+
+</div>
+<script>
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+</script>
+
+</body>
+</html>

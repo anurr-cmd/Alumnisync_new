@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #eef1f6;
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: linear-gradient(180deg, #0f172a, #1e293b);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: #cbd5e1;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.sidebar a:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile img {
+    width: 70px;
+    border-radius: 50%;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+th {
+    background: linear-gradient(90deg, #4f46e5, #4338ca);
+    color: white;
+    padding: 14px;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+/* BUTTONS */
+button {
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-btn {
+    background: #10b981;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.edit-btn {
+    background: #f59e0b;
+    color: white;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal form {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 320px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+}

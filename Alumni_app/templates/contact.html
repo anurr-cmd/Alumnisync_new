@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact | Alumni Sync</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'contact.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="/">Alumni Sync</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{% url 'contact' %}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTACT HEADER -->
+<section class="contact-header">
+    <div class="container text-center">
+        <h1>Contact Us</h1>
+        <p>We’d love to hear from you</p>
+    </div>
+</section>
+
+<!-- CONTACT CONTENT -->
+<section class="contact-content">
+    <div class="container">
+        <div class="row">
+
+            <!-- CONTACT INFO -->
+            <div class="col-md-6">
+                <h3>Get in Touch</h3>
+                <p>If you have any questions or suggestions, feel free to contact us.</p>
+
+                <div class="contact-box">
+                    <p><strong>Name:</strong> Anuvarshini</p>
+                    <p><strong>Email:</strong> anu.alumni@gmail.com</p>
+                    <p><strong>Phone:</strong> +91 98765 43210</p>
+                    <p><strong>Role:</strong> Project Coordinator</p>
+                </div>
+            </div>
+
+            <!-- CONTACT FORM (UI only for now) -->
+            <div class="col-md-6">
+                <h3>Send a Message</h3>
+                <form>
+                    <input type="text" class="form-control mb-3" placeholder="Your Name">
+                    <input type="email" class="form-control mb-3" placeholder="Your Email">
+                    <textarea class="form-control mb-3" rows="4" placeholder="Your Message"></textarea>
+                    <button class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

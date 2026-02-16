@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Jobs</title>
+    <link rel="stylesheet" href="{% static 'manage_jobs.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="profile">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+            <p>Alumni</p>
+        </div>
+
+        <a href="{% url 'alumni_portal' %}">Dashboard</a>
+        <a href="{% url 'view_events_alumni'%}">View Events</a>
+        <a href="{% url 'alumni_announcements' %}"> Announcements</a>
+        <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+
+        <h2>Job Management</h2>
+
+        <button class="add-btn" onclick="openAddModal()">Add Job</button>
+
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>{{ job.company }}</td>
+                <td>
+                    <button class="edit-btn"
+                    onclick="openEditModal('{{ job.id }}','{{ job.title }}','{{ job.company }}','{{ job.description }}')">
+                        Edit
+                    </button>
+
+                    {% comment %} <form action="{% url 'delete_job' job.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="delete-btn">Delete</button>
+                    </form> {% endcomment %}
+                    <button class="delete-btn" onclick="openDeleteModal('{{ job.id }}')">
+                     Delete
+                    </button>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="modal">
+    <form id="deleteForm" method="POST">
+        {% csrf_token %}
+        <h3>Confirm Delete</h3>
+        <p>Are you sure you want to delete this job?</p>
+
+        <button type="submit" class="delete-btn">Yes, Delete</button>
+    </form>
+</div>
+
+<!-- ADD MODAL -->
+<div id="addModal" class="modal">
+    <form method="POST" action="{% url 'add_job_alumni' %}">
+        {% csrf_token %}
+        <h3>Add Job</h3>
+        <input name="title" placeholder="Title" required>
+        <input name="company" placeholder="Company" required>
+        <textarea name="description" placeholder="Description"></textarea>
+        <button type="submit" class="add-btn">Save</button>
+    </form>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal">
+    <form id="editForm" method="POST">
+        {% csrf_token %}
+        <h3>Edit Job</h3>
+        <input id="editTitle" name="title">
+        <input id="editCompany" name="company">
+        <textarea id="editDescription" name="description"></textarea>
+        <button type="submit" class="edit-btn">Update</button>
+    </form>
+</div>
+
+<script>
+function openAddModal() {
+    document.getElementById("addModal").style.display = "flex";
+}
+
+function openEditModal(id, title, company, description) {
+    document.getElementById("editModal").style.display = "flex";
+
+    editTitle.value = title;
+    editCompany.value = company;
+    editDescription.value = description;
+
+    document.getElementById("editForm").action = "/jobs/edit/" + id + "/";
+}
+
+function openDeleteModal(id) {
+    document.getElementById("deleteModal").style.display = "flex";
+    document.getElementById("deleteForm").action = "/jobs/delete/" + id + "/";
+}
+
+window.onclick = function(event) {
+    document.querySelectorAll(".modal").forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>

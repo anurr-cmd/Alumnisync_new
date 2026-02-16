@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Alumni Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'admin_events.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="profile-section">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+            <h3>Admin</h3>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'admin_portal' %}">Dashboard</a></li>
+
+            <li><a href="{% url 'admin_events' %}" class="active">Approval Events</a></li>
+
+            <li><a href="{% url 'admin_view_alumni' %}">View Alumni</a></li>
+            <li><a href="{% url 'manage_jobs_admin' %}">Job</a></li>
+            <li><a href="{% url 'admin_announcements' %}">Manage Announcements</a></li>
+
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content">
+        <h2>Manage Alumni Events</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Created By</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>
+                        {% if event.created_by %}
+                            {{ event.created_by.username }}
+                        {% else %}
+                            Admin
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if event.is_approved %}
+                            ✅ Approved
+                        {% elif event.is_rejected %}
+                            ❌ Rejected
+                        {% else %}
+                            ⏳ Pending
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <!-- APPROVE -->
+                        <form method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="event_id" value="{{ event.id }}">
+                            <input type="hidden" name="action" value="approve">
+                            <button class="approve-btn">Approve</button>
+                        </form>
+
+                        <!-- REJECT -->
+                        <form method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="event_id" value="{{ event.id }}">
+                            <input type="hidden" name="action" value="reject">
+                            <button class="reject-btn">Reject</button>
+                        </form>
+
+                        <!-- EDIT -->
+                        <button class="edit-btn"
+                                onclick="openEdit(
+                                '{{ event.id }}',
+                                '{{ event.title|escapejs }}',
+                                '{{ event.description|escapejs }}',
+                                '{{ event.date }}')">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Event</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="event_id" id="event_id">
+            <input type="hidden" name="action" value="approve">
+
+            <label>Title</label>
+            <input type="text" name="title" id="title" required>
+
+            <label>Description</label>
+            <textarea name="description" id="description" required></textarea>
+
+            <label>Date</label>
+            <input type="date" name="date" id="date" required>
+
+            <div class="modal-buttons">
+                <button type="submit" class="approve-btn">Save & Approve</button>
+                <button type="button" onclick="closeEdit()" class="reject-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openEdit(id, title, description, date) {
+    document.getElementById("editModal").style.display = "flex";
+    document.getElementById("event_id").value = id;
+    document.getElementById("title").value = title;
+    document.getElementById("description").value = description;
+    document.getElementById("date").value = date;
+}
+
+function closeEdit() {
+    document.getElementById("editModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>

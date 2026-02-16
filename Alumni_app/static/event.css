@@ -1,0 +1,89 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BACKGROUND IMAGE */
+body {
+    height: 100vh;
+    background: url("https://png.pngtree.com/thumb_back/fh260/background/20241018/pngtree-alumni-reunion-invitation-image_16224992.jpg") no-repeat center center/cover;
+    font-family: Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* EVENT FORM CARD */
+.event-container {
+    width: 380px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.event-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.event-container input,
+.event-container textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.event-container button {
+    width: 100%;
+    padding: 10px;
+    background: #1f3b6e;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.event-container button:hover {
+    background: #162b52;
+}

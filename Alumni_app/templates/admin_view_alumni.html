@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registered Alumni</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="profile-section">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+            <h3>Admin</h3>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'view_events_admin' %}">Events</a></li>
+            <li><a class="active" href="{% url 'admin_view_alumni' %}">Alumni</a></li>
+            <li><a href="{% url 'admin_announcements' %}">Announcements</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+        <h2>Registered Alumni</h2>
+
+        <table>
+            <tr>
+                <th>Profile</th>
+                <th>Username</th>
+                <th>Roll No</th>
+                <th>Department</th>
+                <th>Passout Year</th>
+                <th>Company</th>
+                <th>Location</th>
+            </tr>
+
+            {% for alumni in alumni_list %}
+            <tr>
+                <td>
+                    {% if alumni.profile_image %}
+                        <img src="{{ alumni.profile_image.url }}" class="avatar">
+                    {% else %}
+                        <span style="color:#999;">No Image</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ alumni.user.username }}</td>
+                <td>{{ alumni.roll_no }}</td>
+                <td>{{ alumni.department }}</td>
+                <td>{{ alumni.passout_year }}</td>
+                <td>{{ alumni.company }}</td>
+                <td>{{ alumni.location }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

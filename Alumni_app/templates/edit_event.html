@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+<h2>Edit Event</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Event</button>
+</form>
+
+</body>
+</html>

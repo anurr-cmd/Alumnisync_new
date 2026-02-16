@@ -1,0 +1,107 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard | Alumni Sync</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+    <div class="profile-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+        <p>Admin</p>
+    </div>
+
+    <a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a>
+
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+            <a href="{% url 'view_events_admin' %}">View Events</a>
+        </div>
+    </div>
+
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('job-menu')">
+            Jobs ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+            <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+        </div>
+    </div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
+</aside>
+
+    <!-- MAIN -->
+    <div class="main">
+        <nav class="navbar">
+            <h2>Admin Dashboard</h2>
+        </nav>
+
+        <main class="content">
+
+            <div class="card">
+               <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" class="card-img"><br/>
+                <a href="{% url 'admin_view_alumni' %}"><b>Alumni<b/></a><br/>
+                <p>Total Registered Alumni</p>
+                <strong>{{ alumni_count }}</strong>
+            </div>
+
+            <div class="card">
+                 <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" class="card-img"><br/>
+                <a href="{% url 'admin_events' %}"><b>Events Pending<b/></a><br/>
+                <p>Awaiting Approval</p>
+                <strong>{{ pending_events }}</strong>
+            </div>
+
+            <div class="card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1827/1827370.png" class="card-img"><br/>
+                <a href="{% url 'admin_announcements' %}"><b>Announcements<b/></a><br/>
+                <p>Total Announcements</p>
+                <strong>{{ announcement_count }}</strong>
+            </div>
+
+        </main>
+    </div>
+
+</div>
+<script>
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+</script>
+
+</body>
+</html>

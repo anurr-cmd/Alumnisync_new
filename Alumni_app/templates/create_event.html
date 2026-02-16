@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'event.css' %}">
+</head>
+<body>
+
+<!-- 🔹 NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Alumni Sync</div>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</nav>
+
+<!-- 🔹 EVENT FORM -->
+<div class="event-container">
+    <h2>Create Event</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Event Title" required>
+        <textarea name="description" placeholder="Event Description" required></textarea>
+        <input type="date" name="date" required>
+        <button type="submit">Create Event</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+

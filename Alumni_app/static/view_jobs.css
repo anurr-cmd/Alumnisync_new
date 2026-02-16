@@ -1,0 +1,129 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f1f4f8;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: linear-gradient(180deg, #0f172a, #020617);
+    color: #fff;
+    padding: 25px 15px;
+}
+
+/* PROFILE */
+.profile {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile img {
+    width: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile h3 {
+    font-size: 18px;
+}
+
+/* NAV */
+.sidebar nav a {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: #cbd5f5;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background: #1e293b;
+    color: #fff;
+}
+
+.logout {
+    margin-top: 20px;
+    background: #7f1d1d;
+    color: #fff !important;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* TITLE */
+.content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 28px;
+}
+
+/* JOB GRID */
+.job-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* JOB CARD */
+.job-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.25s;
+}
+
+.job-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* IMAGE */
+.job-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+/* TEXT */
+.job-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.company {
+    color: #2563eb;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.date {
+    font-size: 12px;
+    color: #888;
+}
