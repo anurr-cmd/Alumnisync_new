@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Profile,Event,Job,Announcement
-from .forms import EventForm
+# from .forms import EventForm
+from .models import Feedback
 
 def index(request):
     return render(request, 'index.html')
@@ -476,4 +477,23 @@ def manage_admin_events(request):
 
     return render(request, "admin_events.html", {"events": events})
 
+@login_required
+def alumni_feedback(request):
+    if request.method == "POST":
+        message = request.POST.get("message")
+
+        Feedback.objects.create(
+            user=request.user,
+            message=message
+        )
+
+        return redirect("alumni_feedback")
+
+    return render(request, "alumni_feedback.html")
+
+
+@login_required
+def admin_feedback(request):
+    feedbacks = Feedback.objects.all().order_by('-created_at')
+    return render(request, "admin_feedback.html", {"feedbacks": feedbacks})
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Profile, Event, Job, Announcement
-
+from .models import Feedback
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -60,3 +60,5 @@ class AnnouncementAdmin(admin.ModelAdmin):
         "posted_on",
     )
     search_fields = ("title", "message")
+
+admin.site.register(Feedback)
