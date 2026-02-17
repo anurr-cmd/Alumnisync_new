@@ -38,9 +38,9 @@ def login_view(request):
                 return redirect(next_url)
 
             if profile.role == "admin":
-                return redirect("admin_portal")
+                return redirect("admin_dashboard")
             elif profile.role == "alumni":
-                return redirect("alumni_portal")
+                return redirect("alumni_dashboard")
             else:
                 return redirect("login")
 
