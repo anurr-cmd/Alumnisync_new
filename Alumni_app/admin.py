@@ -61,4 +61,10 @@ class AnnouncementAdmin(admin.ModelAdmin):
     )
     search_fields = ("title", "message")
 
-admin.site.register(Feedback)
+# admin.site.register(Feedback)
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ("user", "message", "created_at")
+    search_fields = ("user__username", "message")
+    list_filter = ("created_at",)
