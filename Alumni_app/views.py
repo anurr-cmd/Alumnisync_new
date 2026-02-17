@@ -489,7 +489,7 @@ def alumni_feedback(request):
 
         return redirect("alumni_feedback")
 
-    return render(request, "alumni_feedback.html")
+    return render(request, "alumni_feedback.html", {})
 
 
 @login_required

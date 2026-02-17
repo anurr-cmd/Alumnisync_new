@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Feedback View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'admin_feedback.css' %}">
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="{% url 'admin_dashboard' %}">
+        <button class="back-btn">← Back</button>
+    </a>
+</div>
+
+<div class="parent-container">
+    <h2>Alumni Feedback</h2>
+
+    {% for fb in feedbacks %}
+        <div class="feedback-card">
+            <div class="username">{{ fb.user.username }}</div>
+            <div class="message">{{ fb.message }}</div>
+            <div class="date">{{ fb.created_at }}</div>
+        </div>
+    {% empty %}
+        <p style="text-align:center;">No feedback available</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

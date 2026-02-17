@@ -42,7 +42,7 @@ urlpatterns = [
     path("alumni/jobs/add/", views.add_job_alumni, name="add_job_alumni"),
     path("alumni/jobs/edit/<int:id>/", views.edit_job_alumni, name="edit_job_alumni"),
     path("alumni/jobs/delete/<int:id>/", views.delete_job_alumni, name="delete_job_alumni"),
-    # ===== ADMIN JOBS =====
+    # ===== ADMIN JOBS =====path
     path("admin/jobs/manage/", views.manage_jobs_admin, name="manage_jobs_admin"),
     path("admin/jobs/", views.view_jobs_admin, name="view_jobs_admin"),
     # ===== ADMIN JOB ACTIONS =====
