@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Profile,Event,Job,Announcement
-# from .forms import EventForm
+# from .forms import FeedbackForm
 from .models import Feedback
 
 def index(request):

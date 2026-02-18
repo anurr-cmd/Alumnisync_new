@@ -5,7 +5,6 @@
     <title>Manage Jobs</title>
     <link rel="stylesheet" href="{% static 'manage_jobs.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 
 <body>
@@ -20,8 +19,8 @@
         </div>
 
         <a href="{% url 'alumni_portal' %}">Dashboard</a>
-        <a href="{% url 'view_events_alumni'%}">View Events</a>
-        <a href="{% url 'alumni_announcements' %}"> Announcements</a>
+        <a href="{% url 'view_events_alumni' %}">View Events</a>
+        <a href="{% url 'alumni_announcements' %}">Announcements</a>
         <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
         <a href="{% url 'logout' %}">Logout</a>
     </div>
@@ -45,19 +44,21 @@
                 <td>{{ job.title }}</td>
                 <td>{{ job.company }}</td>
                 <td>
+                    <!-- EDIT BUTTON (FIXED) -->
                     <button class="edit-btn"
-                    onclick="openEditModal('{{ job.id }}','{{ job.title }}','{{ job.company }}','{{ job.description }}')">
+                        onclick="openEditModal(
+                            '{{ job.id }}',
+                            '{{ job.title|escapejs }}',
+                            '{{ job.company|escapejs }}',
+                            '{{ job.description|escapejs }}'
+                        )">
                         Edit
                     </button>
 
-                    {% comment %} <form action="{% url 'delete_job' job.id %}" method="POST" style="display:inline;">
-                        {% csrf_token %}
-                        <button class="delete-btn">Delete</button>
-                    </form> {% endcomment %}
+                    <!-- DELETE BUTTON -->
                     <button class="delete-btn" onclick="openDeleteModal('{{ job.id }}')">
-                     Delete
+                        Delete
                     </button>
-
                 </td>
             </tr>
             {% endfor %}
@@ -72,7 +73,6 @@
         {% csrf_token %}
         <h3>Confirm Delete</h3>
         <p>Are you sure you want to delete this job?</p>
-
         <button type="submit" class="delete-btn">Yes, Delete</button>
     </form>
 </div>
@@ -94,13 +94,14 @@
     <form id="editForm" method="POST">
         {% csrf_token %}
         <h3>Edit Job</h3>
-        <input id="editTitle" name="title">
-        <input id="editCompany" name="company">
+        <input id="editTitle" name="title" required>
+        <input id="editCompany" name="company" required>
         <textarea id="editDescription" name="description"></textarea>
         <button type="submit" class="edit-btn">Update</button>
     </form>
 </div>
 
+<!-- JAVASCRIPT -->
 <script>
 function openAddModal() {
     document.getElementById("addModal").style.display = "flex";
@@ -109,16 +110,21 @@ function openAddModal() {
 function openEditModal(id, title, company, description) {
     document.getElementById("editModal").style.display = "flex";
 
-    editTitle.value = title;
-    editCompany.value = company;
-    editDescription.value = description;
+    document.getElementById("editTitle").value = title;
+    document.getElementById("editCompany").value = company;
+    document.getElementById("editDescription").value = description;
 
-    document.getElementById("editForm").action = "/jobs/edit/" + id + "/";
+    // ✅ CORRECT URL (matches urls.py)
+    document.getElementById("editForm").action =
+        "/Alumni_app/alumni/jobs/edit/" + id + "/";
 }
 
 function openDeleteModal(id) {
     document.getElementById("deleteModal").style.display = "flex";
-    document.getElementById("deleteForm").action = "/jobs/delete/" + id + "/";
+
+    // ✅ CORRECT DELETE URL
+    document.getElementById("deleteForm").action =
+        "/Alumni_app/alumni/jobs/delete/" + id + "/";
 }
 
 window.onclick = function(event) {
@@ -128,8 +134,8 @@ window.onclick = function(event) {
         }
     });
 }
-
 </script>
+
 
 </body>
 </html>
