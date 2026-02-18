@@ -1,4 +1,4 @@
-{% load static %}
+ {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'alumni_portal.css' %}">
 </head>
-<body>
+<body> 
 
-<div class="container">
+<div class="container"> 
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+<aside class="sidebar"> 
 
         <!-- PROFILE -->
         <div class="profile-box">
@@ -19,7 +19,7 @@
             <p>{{ request.user.username }}</p>
         </div>
 
-        <a href="{% url 'alumni_portal' %}" style="font-weight: bold;">Dashboard</a>
+        <a href="{% url 'alumni_portal' %}" style="font-weight: bold;">Dashboard</a> 
 
         <!-- EVENTS -->
         <div class="menu-group">
@@ -31,22 +31,22 @@
         <a href="{% url 'view_events_alumni' %}">View Events</a>
         <a href="{% url 'manage_events' %}">Manage Events</a>
     </div>
-</div>
+</div> 
 
 <!-- JOBS -->
-<div class="menu-group">
+ <div class="menu-group">
     <div class="menu-title" onclick="toggleMenu('jobs-menu')">
         Jobs ▾
     </div>
     <div class="submenu" id="jobs-menu">
-        {% comment %} <a href="#">Add Job</a> {% endcomment %}
-        <a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+         {% comment %} <a href="#">Add Job</a>  {% endcomment %}
+         <a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
         <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
     </div>
-</div>
+</div>  
 
 <!-- ANNOUNCEMENTS -->
-<div class="menu-group">
+ <div class="menu-group">
     <div class="menu-title">
         <a href="{% url 'alumni_announcements' %}" style="color:white;">Announcements</a>
     </div>
@@ -54,15 +54,15 @@
 
         <a href="{% url 'logout' %}">Logout</a>
 
-    </aside>
+    </aside> 
 
     <!-- RIGHT SIDE -->
-    <div class="main">
+    <div class="main"> 
 
         <!-- NAVBAR -->
-        <nav class="navbar">
+       <nav class="navbar">
             <h2>Alumni Sync</h2>
-        </nav>
+        </nav> 
 
         <!-- CONTENT -->
         <main class="content">
@@ -98,7 +98,7 @@
                 {% else %}
                     <strong>No announcements available</strong>
                 {% endif %}
-            </div>
+            </div> 
 
         </main>
     </div>

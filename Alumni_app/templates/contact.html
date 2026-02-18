@@ -16,19 +16,37 @@
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/">Alumni Sync</a>
-        <div class="collapse navbar-collapse">
+
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#contactNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible menu -->
+        <div class="collapse navbar-collapse" id="contactNavbar">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{% url 'contact' %}">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'contact' %}">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
 
 <!-- CONTACT HEADER -->
 <section class="contact-header">
@@ -50,8 +68,8 @@
 
                 <div class="contact-box">
                     <p><strong>Name:</strong> Anuvarshini</p>
-                    <p><strong>Email:</strong> anu.alumni@gmail.com</p>
-                    <p><strong>Phone:</strong> +91 98765 43210</p>
+                    <p><strong>Email:</strong> anurr06@gmail.com</p>
+                    <p><strong>Phone:</strong> +91 9485756300</p>
                     <p><strong>Role:</strong> Project Coordinator</p>
                 </div>
             </div>
