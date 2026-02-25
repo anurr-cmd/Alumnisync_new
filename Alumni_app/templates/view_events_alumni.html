@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="{% static 'view_events.css' %}">
 </head>
 <body>
@@ -13,12 +12,14 @@
 <div class="dashboard">
 
     <!-- 🔹 SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="profile-section">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
             <h3>Alumni</h3>
         </div>
+
         <h2 class="logo">Alumni Sync</h2>
+
         <ul>
             <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
             <li class="active"><a href="{% url 'view_events_alumni' %}">Events</a></li>
@@ -30,7 +31,12 @@
 
     <!-- 🔹 MAIN CONTENT -->
     <main class="content">
-        <h1>All Events</h1>
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h1>All Events</h1>
+        </div>
 
         <div class="events-grid">
             {% for event in events %}
@@ -44,9 +50,16 @@
             </div>
             {% endfor %}
         </div>
+
     </main>
 
 </div>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>

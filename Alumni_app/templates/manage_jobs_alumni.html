@@ -12,7 +12,7 @@
 <div class="layout">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="profile">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
             <p>Alumni</p>
@@ -28,41 +28,46 @@
     <!-- MAIN CONTENT -->
     <div class="content">
 
-        <h2>Job Management</h2>
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h2>Job Management</h2>
+        </div>
 
         <button class="add-btn" onclick="openAddModal()">Add Job</button>
 
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Company</th>
-                <th>Actions</th>
-            </tr>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Actions</th>
+                </tr>
 
-            {% for job in jobs %}
-            <tr>
-                <td>{{ job.title }}</td>
-                <td>{{ job.company }}</td>
-                <td>
-                    <!-- EDIT BUTTON (FIXED) -->
-                    <button class="edit-btn"
-                        onclick="openEditModal(
-                            '{{ job.id }}',
-                            '{{ job.title|escapejs }}',
-                            '{{ job.company|escapejs }}',
-                            '{{ job.description|escapejs }}'
-                        )">
-                        Edit
-                    </button>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.company }}</td>
+                    <td class="actions">
+                        <button class="edit-btn"
+                            onclick="openEditModal(
+                                '{{ job.id }}',
+                                '{{ job.title|escapejs }}',
+                                '{{ job.company|escapejs }}',
+                                '{{ job.description|escapejs }}'
+                            )">
+                            Edit
+                        </button>
 
-                    <!-- DELETE BUTTON -->
-                    <button class="delete-btn" onclick="openDeleteModal('{{ job.id }}')">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                        <button class="delete-btn"
+                            onclick="openDeleteModal('{{ job.id }}')">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
     </div>
 </div>
@@ -101,28 +106,27 @@
     </form>
 </div>
 
-<!-- JAVASCRIPT -->
 <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
 function openAddModal() {
     document.getElementById("addModal").style.display = "flex";
 }
 
 function openEditModal(id, title, company, description) {
     document.getElementById("editModal").style.display = "flex";
-
     document.getElementById("editTitle").value = title;
     document.getElementById("editCompany").value = company;
     document.getElementById("editDescription").value = description;
 
-    // ✅ CORRECT URL (matches urls.py)
     document.getElementById("editForm").action =
         "/Alumni_app/alumni/jobs/edit/" + id + "/";
 }
 
 function openDeleteModal(id) {
     document.getElementById("deleteModal").style.display = "flex";
-
-    // ✅ CORRECT DELETE URL
     document.getElementById("deleteForm").action =
         "/Alumni_app/alumni/jobs/delete/" + id + "/";
 }
@@ -135,7 +139,6 @@ window.onclick = function(event) {
     });
 }
 </script>
-
 
 </body>
 </html>
