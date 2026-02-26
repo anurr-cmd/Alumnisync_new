@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile,Event,Job,Announcement
 # from .forms import FeedbackForm
@@ -24,16 +24,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)   # creates session
-
-            # 🔑 role-based redirect
+            login(request, user)
             try:
                 profile = Profile.objects.get(user=user)
             except Profile.DoesNotExist:
                 messages.error(request, "Profile not found. Contact admin.")
                 return redirect("login")
 
-            # Respect ?next= first (for protected pages)
             next_url = request.GET.get("next")
             if next_url:
                 return redirect(next_url)
@@ -44,10 +41,8 @@ def login_view(request):
                 return redirect("alumni_dashboard")
             else:
                 return redirect("login")
-
         else:
             messages.error(request, "Invalid username or password")
-
     return render(request, "login.html")
 
 def forgot_password(request):
@@ -103,7 +98,7 @@ def register(request):
             phone=request.POST.get("phone"),
         )
 
-        login(request, user)  # 🔑 auto login after register
+        login(request, user)
 
         if role == "admin":
             return redirect("admin_portal")
