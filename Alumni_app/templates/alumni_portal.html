@@ -15,7 +15,9 @@
 
         <div class="profile-box">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s" alt="">
-            <p>{{ request.user.username }}</p>
+            <p onclick="openProfileView()" class="profile-name">
+    {{ request.user.username }}
+</p>
         </div>
 
         <a href="{% url 'alumni_dashboard' %}" class="active">Dashboard</a>
@@ -93,7 +95,94 @@
 
         </main>
     </div>
+    <!-- PROFILE VIEW MODAL -->
+<!-- PROFILE VIEW MODAL -->
+<!-- PROFILE VIEW MODAL -->
+<div id="profileViewModal" class="modal">
+    <div class="modal-card">
 
+        <span class="close-btn" onclick="closeProfileView()">&times;</span>
+
+        <h2>My Profile</h2>
+
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" class="profile-img">
+        {% else %}
+            <img src="https://via.placeholder.com/150" class="profile-img">
+        {% endif %}
+
+        <div class="details-grid">
+
+            <div><label>Roll No</label><p>{{ profile.roll_no|default:" " }}</p></div>
+            <div><label>Email</label><p>{{ profile.email|default:" " }}</p></div>
+            <div><label>Department</label><p>{{ profile.department|default:" " }}</p></div>
+            <div><label>Join Year</label><p>{{ profile.join_year|default:" " }}</p></div>
+            <div><label>Passout Year</label><p>{{ profile.passout_year|default:" " }}</p></div>
+            <div><label>Designation</label><p>{{ profile.designation|default:" " }}</p></div>
+            <div><label>Appointment Order</label><p>{{ profile.appointment_order|default:" " }}</p></div>
+            <div><label>Remarks</label><p>{{ profile.remarks|default:" " }}</p></div>
+            <div><label>Address</label><p>{{ profile.address|default:" " }}</p></div>
+            <div><label>Current Job</label><p>{{ profile.current_job|default:" " }}</p></div>
+            <div><label>Company</label><p>{{ profile.company|default:" " }}</p></div>
+            <div><label>Location</label><p>{{ profile.location|default:" " }}</p></div>
+            <div><label>Phone</label><p>{{ profile.phone|default:" " }}</p></div>
+            <div><label>Alternate Phone</label><p>{{ profile.alternate_phone|default:" " }}</p></div>
+
+            <div>
+                <label>Proof ID</label>
+                {% if profile.proof_id %}
+                    <p><a href="{{ profile.proof_id.url }}" target="_blank">View Proof</a></p>
+                {% else %}
+                    <p> </p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <button class="primary-btn" onclick="openEditProfile()">Edit Profile</button>
+
+    </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="editProfileModal" class="modal top-layer">
+    <div class="modal-card">
+
+        <span class="close-btn" onclick="closeEditProfile()">&times;</span>
+
+        <h2>Edit Profile</h2>
+
+        <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="text" name="roll_no" placeholder="Roll No" value="{{ profile.roll_no|default:'' }}">
+            <input type="email" name="email" placeholder="Email" value="{{ profile.email|default:'' }}">
+            <input type="text" name="department" placeholder="Department" value="{{ profile.department|default:'' }}">
+            <input type="number" name="join_year" placeholder="Join Year" value="{{ profile.join_year|default:'' }}">
+            <input type="number" name="passout_year" placeholder="Passout Year" value="{{ profile.passout_year|default:'' }}">
+            <input type="text" name="designation" placeholder="Designation" value="{{ profile.designation|default:'' }}">
+            <input type="text" name="appointment_order" placeholder="Appointment Order" value="{{ profile.appointment_order|default:'' }}">
+            <textarea name="remarks" placeholder="Remarks">{{ profile.remarks|default:'' }}</textarea>
+            <textarea name="address" placeholder="Address">{{ profile.address|default:'' }}</textarea>
+            <input type="text" name="current_job" placeholder="Current Job" value="{{ profile.current_job|default:'' }}">
+            <input type="text" name="company" placeholder="Company" value="{{ profile.company|default:'' }}">
+            <input type="text" name="location" placeholder="Location" value="{{ profile.location|default:'' }}">
+            <input type="text" name="phone" placeholder="Phone" value="{{ profile.phone|default:'' }}">
+            <input type="text" name="alternate_phone" placeholder="Alternate Phone" value="{{ profile.alternate_phone|default:'' }}">
+
+            <!-- PROFILE IMAGE -->
+            <label>Profile Image</label>
+            <input type="file" name="profile_image">
+
+            <!-- PROOF FILE -->
+            <label>Proof ID</label>
+            <input type="file" name="proof_id">
+
+            <button type="submit" class="primary-btn">Save Changes</button>
+        </form>
+
+    </div>
+</div>
 </div>
 
 <script>
@@ -105,6 +194,23 @@ function toggleMenu(id) {
 function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("active");
 }
+
+function openProfileView() {
+    document.getElementById("profileViewModal").style.display = "flex";
+}
+
+function closeProfileView() {
+    document.getElementById("profileViewModal").style.display = "none";
+}
+
+function openEditProfile() {
+    document.getElementById("editProfileModal").style.display = "flex";
+}
+
+function closeEditProfile() {
+    document.getElementById("editProfileModal").style.display = "none";
+}
+
 </script>
 
 </body>

@@ -26,7 +26,7 @@
         <button type="submit">Login</button>
     </form>
 
-    <span class="forgot-link" id="forgotBtn">Forgot Password?</span>
+    {% comment %} <span class="forgot-link" id="forgotBtn">Forgot Password?</span> {% endcomment %}
 
     <p class="switch">
         New user? <a href="{% url 'register' %}">Create account</a>
@@ -34,7 +34,7 @@
 </div>
 
 <!-- Forgot Password Popup -->
-<div class="popup-overlay" id="popup">
+{% comment %} <div class="popup-overlay" id="popup">
     <div class="popup-content">
         <span class="close-btn" id="closeBtn">&times;</span>
         <h3>Reset Password</h3>
@@ -51,7 +51,7 @@
             <input type="password" name="confirm_password" placeholder="Confirm new password" required>
             <button type="submit">Reset Password</button>
         </form>
-    </div>
+    </div> {% endcomment %}
 </div>
 
 <script>

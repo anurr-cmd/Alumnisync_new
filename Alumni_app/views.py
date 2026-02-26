@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile,Event,Job,Announcement
-# from .forms import FeedbackForm
+# from django.db import IntegrityError
 from .models import Feedback
 
 def index(request):
@@ -45,24 +45,24 @@ def login_view(request):
             messages.error(request, "Invalid username or password")
     return render(request, "login.html")
 
-def forgot_password(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        new_password = request.POST.get("new_password")
-        confirm_password = request.POST.get("confirm_password")
+# def forgot_password(request):
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         new_password = request.POST.get("new_password")
+#         confirm_password = request.POST.get("confirm_password")
 
-        if new_password != confirm_password:
-            return render(request, "login.html", {"error": "Passwords do not match."})
+#         if new_password != confirm_password:
+#             return render(request, "login.html", {"error": "Passwords do not match."})
 
-        try:
-            user = User.objects.get(username=username)
-            user.set_password(new_password)  # securely update password
-            user.save()
-            return render(request, "login.html", {"message": "Password reset successful! You can now login."})
-        except User.DoesNotExist:
-            return render(request, "login.html", {"error": "Username not found."})
+#         try:
+#             user = User.objects.get(username=username)
+#             user.set_password(new_password)  # securely update password
+#             user.save()
+#             return render(request, "login.html", {"message": "Password reset successful! You can now login."})
+#         except User.DoesNotExist:
+#             return render(request, "login.html", {"error": "Username not found."})
 
-    return redirect("login_view")
+#     return redirect("login_view")
 
 
 
@@ -74,46 +74,86 @@ def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        role = request.POST.get("role") or "alumni"
 
-        if User.objects.filter(username=username).exists():
+        try:
+            user = User.objects.create_user(
+                username=username,
+                password=password
+            )
+
+            Profile.objects.create(
+                user=user,
+                role="alumni"
+            )
+
+            login(request, user)
+
+            # 👇 Directly to dashboard
+            return redirect("alumni_dashboard")
+
+        except:
             messages.error(request, "Username already exists.")
             return redirect("register")
 
-        user = User.objects.create_user(username=username, password=password)
-
-        passout_year = request.POST.get("passout_year")
-        passout_year = int(passout_year) if passout_year else None
-        profile_image = request.FILES.get("profile_image")
-        Profile.objects.create(
-            user=user,
-            role=role,
-            profile_image=profile_image, 
-            roll_no=request.POST.get("roll_no"),
-            department=request.POST.get("department"),
-            passout_year=passout_year,
-            current_status=request.POST.get("current_status"),
-            company=request.POST.get("company"),
-            location=request.POST.get("location"),
-            phone=request.POST.get("phone"),
-        )
-
-        login(request, user)
-
-        if role == "admin":
-            return redirect("admin_portal")
-        return redirect("alumni_portal")
-
     return render(request, "register.html")
 
+@login_required
+def alumni_dashboard(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    context = {
+        'profile': profile,
+        # keep your other counts here
+    }
+    return render(request, 'alumni_portal.html', context)
+
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile  # assuming OneToOneField
+
+    if request.method == "POST":
+        # Text fields
+        profile.roll_no = request.POST.get("roll_no")
+        profile.email = request.POST.get("email")
+        profile.designation = request.POST.get("designation")
+        profile.appointment_order = request.POST.get("appointment_order")
+        profile.remarks = request.POST.get("remarks")
+        profile.department = request.POST.get("department")
+        profile.address = request.POST.get("address")
+        profile.current_job = request.POST.get("current_job")
+        profile.company = request.POST.get("company")
+        profile.location = request.POST.get("location")
+        profile.phone = request.POST.get("phone")
+        profile.alternate_phone = request.POST.get("alternate_phone")
+
+        # Integer fields
+        join_year = request.POST.get("join_year")
+        profile.join_year = int(join_year) if join_year else None
+
+        passout_year = request.POST.get("passout_year")
+        profile.passout_year = int(passout_year) if passout_year else None
+
+        # File fields
+        if request.FILES.get("profile_image"):
+            profile.profile_image = request.FILES.get("profile_image")
+
+        if request.FILES.get("proof_id"):
+            profile.proof_id = request.FILES.get("proof_id")
+
+        profile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect("alumni_dashboard")
+
+    return redirect("alumni_dashboard")
 
 @login_required
 def admin_dashboard(request):
     return render(request, "admin_dashboard.html")
 
-@login_required
-def alumni_dashboard(request):
-    return render(request, "alumni_dashboard.html")
+# @login_required
+# def alumni_dashboard(request):
+#     return render(request, "alumni_dashboard.html")
 
 
 @login_required
@@ -320,7 +360,7 @@ def add_job_alumni(request):
     profile = Profile.objects.get(user=request.user)
 
     if profile.role.lower() != "alumni":
-        return redirect("manage_jobs_admin")
+        return redirect("manage_jobs_alumni")
 
     if request.method == "POST":
         Job.objects.create(
