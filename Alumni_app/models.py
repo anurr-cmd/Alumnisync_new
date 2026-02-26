@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # from urllib.parse import quote_plus
 # from django.utils.text import slugify
 from django.conf import settings
+
 class Profile(models.Model):
     ROLE_CHOICES = (
         ('admin', 'Admin'),
