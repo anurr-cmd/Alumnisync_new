@@ -11,7 +11,7 @@
 <div class="layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="profile">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
             <h3>Alumni</h3>
@@ -25,17 +25,20 @@
             <a href="{% url 'logout' %}" class="logout">Logout</a>
         </nav>
     </aside>
-    {% comment %} <button class="menu-btn" onclick="toggleSidebar()">☰</button> {% endcomment %}
 
     <!-- MAIN CONTENT -->
     <main class="content">
-        <h2>Job Opportunities</h2>
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h2>Job Opportunities</h2>
+        </div>
 
         <div class="job-container">
             {% for job in jobs %}
             <div class="job-card">
                 <img src="{{ job.get_image_url }}" class="job-img">
-
                 <h3>{{ job.title }}</h3>
                 <p class="company">{{ job.company }}</p>
                 <p class="description">{{ job.description }}</p>
@@ -43,14 +46,16 @@
             </div>
             {% endfor %}
         </div>
+
     </main>
 
 </div>
-{% comment %} <script>
+
+<script>
 function toggleSidebar() {
-    document.querySelector(".sidebar").classList.toggle("open");
+    document.getElementById("sidebar").classList.toggle("active");
 }
-</script> {% endcomment %}
+</script>
 
 </body>
 </html>

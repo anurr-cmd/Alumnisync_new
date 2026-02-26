@@ -3,38 +3,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Event</title>
+    <title>Create Event | Alumni Sync</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'event.css' %}">
 </head>
 <body>
 
-<!-- 🔹 NAVBAR -->
-<nav class="navbar">
-    <div class="logo">Alumni Sync</div>
-    <ul>
-        <li><a href="{% url 'index' %}">Home</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
-        <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
-        <li><a href="{% url 'logout' %}">Logout</a></li>
-    </ul>
-</nav>
+<div class="layout">
 
-<!-- 🔹 EVENT FORM -->
-<div class="event-container">
-    <h2>Create Event</h2>
+    <!-- 🔹 SIDEBAR -->
+    <aside class="sidebar">
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Event Title" required>
-        <textarea name="description" placeholder="Event Description" required></textarea>
-        <input type="date" name="date" required>
-        <button type="submit">Create Event</button>
-    </form>
+    {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
+
+    <!-- 🔹 PROFILE SECTION -->
+    <div class="profile-section">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+        <p>{{ request.user.username }}</p>
+    </div>
+
+    <nav>
+        <a href="{% url 'alumni_portal' %}">Dashboard</a>
+        <a href="#" class="active">Create Event</a>
+        <a href="{% url 'view_events_alumni' %}">View Events</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+</aside>
+
+    <!-- 🔹 MAIN CONTENT -->
+    <div class="main">
+
+        <div class="top-bar">
+    <h2 class="brand">Alumni Sync</h2>
+    
+</div>
+<span class="page-title">Create New Event</span>
+        <div class="form-card">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label>Event Title</label>
+                    <input type="text" name="title" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea name="description" required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" name="date" required>
+                </div>
+
+                <button type="submit">Create Event</button>
+            </form>
+        </div>
+
+    </div>
+
 </div>
 
 </body>
 </html>
-
-
