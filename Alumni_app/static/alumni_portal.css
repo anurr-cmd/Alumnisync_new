@@ -160,9 +160,12 @@ body {
     border-radius: 20px;
     width: 90%;
     max-width: 600px;
+
+    max-height: 90vh;        /* IMPORTANT */
+    overflow-y: auto;        /* IMPORTANT */
+
     animation: fadeIn 0.3s ease-in-out;
 }
-
 .profile-img {
     width: 120px;
     height: 120px;
@@ -176,7 +179,10 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
-
+.details-grid label{
+    font-style: oblique;
+    color: #764ba2;
+}
 .primary-btn {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
