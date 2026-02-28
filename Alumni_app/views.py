@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile,Event,Job,Announcement
+from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.db import IntegrityError
 from .models import Feedback
 
@@ -25,6 +26,12 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            # ✅ FIRST CHECK SUPERUSER
+            if user.is_superuser:
+                return redirect("admin_dashboard")
+
+            # ✅ Then check profile for normal users
             try:
                 profile = Profile.objects.get(user=user)
             except Profile.DoesNotExist:
@@ -41,8 +48,10 @@ def login_view(request):
                 return redirect("alumni_dashboard")
             else:
                 return redirect("login")
+
         else:
             messages.error(request, "Invalid username or password")
+
     return render(request, "login.html")
 
 # def forgot_password(request):
@@ -147,7 +156,11 @@ def edit_profile(request):
 
     return redirect("alumni_dashboard")
 
+def superuser_required(user):
+    return user.is_superuser
+
 @login_required
+@user_passes_test(superuser_required)
 def admin_dashboard(request):
     return render(request, "admin_dashboard.html")
 
