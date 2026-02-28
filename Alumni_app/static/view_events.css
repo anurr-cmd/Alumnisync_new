@@ -10,17 +10,6 @@
     display: flex;
     min-height: 100vh;
 }
-.profile-section {
-    text-align: center;
-    padding: 20px;
-}
-
-.profile-img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    /* object-fit: cover; */
-}
 
 /* SIDEBAR */
 .sidebar {
@@ -28,8 +17,18 @@
     background: #1f2937;
     color: white;
     padding: 20px;
-    position: fixed;
-    height: 100vh;
+    transition: 0.3s ease;
+}
+
+.profile-section {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.profile-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
 }
 
 .sidebar .logo {
@@ -62,14 +61,25 @@
 
 /* MAIN CONTENT */
 .content {
-    margin-left: 240px;
+    flex: 1;
     padding: 30px;
-    width: calc(100% - 240px);
     background: #f9fafb;
 }
 
-.content h1 {
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 25px;
+}
+
+.menu-btn {
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none;
 }
 
 /* EVENTS GRID */
@@ -117,19 +127,29 @@
     color: #888;
 }
 
-.profile-box {
-    text-align: center;
-    margin-bottom: 20px;
-}
+/* -------------------- */
+/* MOBILE RESPONSIVE */
+/* -------------------- */
 
-.profile-box img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+@media (max-width: 768px) {
 
-.profile-box p {
-    margin-top: 10px;
-    font-weight: bold;
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        height: 100%;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .content {
+        padding: 20px;
+    }
 }

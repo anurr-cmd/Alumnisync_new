@@ -1,98 +1,140 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Alumni Sync</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Alumni Sync</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <link rel="stylesheet" href="{% static 'navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'home.css' %}">
-</head>
-<body>
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="{% static 'base.css' %}" />
+		<link rel="stylesheet" href="{% static 'navbar.css' %}" />
+		<link rel="stylesheet" href="{% static 'home.css' %}" />
+	</head>
+	<body>
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container">
+				<a class="navbar-brand" href="#">Alumni Sync</a>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="#">Alumni Sync</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+				<!-- Toggle Button -->
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+					aria-controls="navbarNav"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-<!-- CAROUSEL -->
-<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+				<!-- Collapsible Menu -->
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'about' %}">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'contact' %}">Contact</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'login' %}">Login</a>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+		</nav>
 
-    <div class="carousel-inner">
+		<!-- CAROUSEL -->
+		<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				<!-- Slide 1 -->
+				<div class="carousel-item active">
+					<div
+						class="carousel-bg"
+						style="
+							background-image: url(&quot;https://images.unsplash.com/photo-1523050854058-8df90110c9f1&quot;);
+						"
+					>
+						<div class="carousel-caption">
+							<h2>Welcome to Alumni Sync</h2>
+							<p>Connecting Alumni with the Institution</p>
+						</div>
+					</div>
+				</div>
 
-        <!-- Slide 1 -->
-        <div class="carousel-item active">
-            <div class="carousel-bg"
-                 style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1');">
-                <div class="carousel-caption">
-                    <h2>Welcome to Alumni Sync</h2>
-                    <p>Connecting Alumni with the Institution</p>
-                </div>
-            </div>
-        </div>
+				<!-- Slide 2 -->
+				<div class="carousel-item">
+					<div
+						class="carousel-bg"
+						style="
+							background-image: url(&quot;https://images.unsplash.com/photo-1524178232363-1fb2b075b655&quot;);
+						"
+					>
+						<div class="carousel-caption">
+							<h2>Alumni Events</h2>
+							<p>Stay updated with reunions and programs</p>
+						</div>
+					</div>
+				</div>
 
-        <!-- Slide 2 -->
-        <div class="carousel-item">
-            <div class="carousel-bg"
-                 style="background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655');">
-                <div class="carousel-caption">
-                    <h2>Alumni Events</h2>
-                    <p>Stay updated with reunions and programs</p>
-                </div>
-            </div>
-        </div>
+				<!-- Slide 3 -->
+				<div class="carousel-item">
+					<div
+						class="carousel-bg"
+						style="
+							background-image: url(&quot;https://images.unsplash.com/photo-1503676260728-1c00da094a0b&quot;);
+						"
+					>
+						<div class="carousel-caption">
+							<h2>Strong Network</h2>
+							<p>Grow professionally with alumni connections</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        <!-- Slide 3 -->
-        <div class="carousel-item">
-            <div class="carousel-bg"
-                 style="background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b');">
-                <div class="carousel-caption">
-                    <h2>Strong Network</h2>
-                    <p>Grow professionally with alumni connections</p>
-                </div>
-            </div>
-        </div>
+			<!-- Controls -->
+			<button
+				class="carousel-control-prev"
+				type="button"
+				data-bs-target="#heroCarousel"
+				data-bs-slide="prev"
+			>
+				<span class="carousel-control-prev-icon"></span>
+			</button>
 
-    </div>
+			<button
+				class="carousel-control-next"
+				type="button"
+				data-bs-target="#heroCarousel"
+				data-bs-slide="next"
+			>
+				<span class="carousel-control-next-icon"></span>
+			</button>
+		</div>
 
-    <!-- Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </button>
+		<!-- ABOUT SECTION -->
+		<section class="home-section">
+			<div class="container text-center">
+				<h3>About Alumni Sync</h3>
+				<p>
+					Alumni Sync is a role-based alumni management system designed to manage alumni
+					data and institutional events efficiently.
+				</p>
+			</div>
+		</section>
 
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </button>
-</div>
-
-<!-- ABOUT SECTION -->
-<section class="home-section">
-    <div class="container text-center">
-        <h3>About Alumni Sync</h3>
-        <p>
-            Alumni Sync is a role-based alumni management system
-            designed to manage alumni data and institutional events efficiently.
-        </p>
-    </div>
-</section>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
 </html>

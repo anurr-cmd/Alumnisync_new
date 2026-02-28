@@ -12,9 +12,9 @@
 <div class="container">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="profile-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s" alt="user">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
             <h3>Alumni Panel</h3>
         </div>
 
@@ -27,8 +27,10 @@
     <!-- MAIN -->
     <div class="main">
 
+        <!-- TOP BAR -->
         <div class="navbar">
-            Announcements
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <span>Announcements</span>
         </div>
 
         <div class="content">
@@ -56,6 +58,12 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>

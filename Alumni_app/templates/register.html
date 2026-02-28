@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Create Account | Alumni Sync</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="{% static 'register.css' %}">
 </head>
 
@@ -13,71 +12,27 @@
 
 <div class="auth-container">
     <h2>Create Account</h2>
+
     {% if messages %}
-    {% for message in messages %}
-        <p style="color:red;">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-    <form method="POST" enctype="multipart/form-data">
+        {% for message in messages %}
+            <p class="error-msg">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
         {% csrf_token %}
 
-        <!-- Basic fields -->
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
 
-        <!-- Role selection -->
-        <div class="role-section">
-    <label>
-        <input type="radio" name="role" value="admin"onclick="toggleFields()" required>
-        Admin
-    </label>
-
-    <label>
-        <input type="radio" name="role" value="alumni" onclick="toggleFields()" required>
-        Alumni
-    </label>
-</div>
-
-
-        <!-- Alumni extra fields -->
-        <div id="alumni-fields" class="alumni-grid">
-
-            <!-- LEFT SIDE (4 fields) -->
-            <div class="grid-col">
-                <input type="file" name="profile_image">
-                <input type="text" name="roll_no" placeholder="Roll Number">
-                <input type="text" name="department" placeholder="Department">
-                <input type="number" name="passout_year" placeholder="Passout Year">
-            </div>
-
-            <!-- RIGHT SIDE (4 fields) -->
-            <div class="grid-col">
-                <input type="text" name="current_status" placeholder="Current Status">
-                <input type="text" name="company" placeholder="Company Name">
-                <input type="text" name="location" placeholder="Location">
-                <input type="text" name="phone" placeholder="Phone Number">
-            </div>
-
-        </div>
-
-        <button type="submit">Create Account</button>
+        <button type="submit">Register</button>
     </form>
 
+    <p class="login-link">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+    </p>
+
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const alumniFields = document.getElementById("alumni-fields");
-    const roles = document.querySelectorAll('input[name="role"]');
-
-    alumniFields.style.display = "none";
-
-    roles.forEach(role => {
-        role.addEventListener("change", () => {
-            alumniFields.style.display = role.value === "alumni" ? "grid" : "none";
-        });
-    });
-});
-</script>
 </body>
 </html>

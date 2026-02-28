@@ -1,37 +1,23 @@
 body {
     margin: 0;
     background: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f") center/cover no-repeat;
-        
 }
 
-/* Navbar */
+/* Navbar styling ONLY (no layout changes) */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background-color: #0d1b2a;
+    background: #0a1a2f !important;
 }
 
-.navbar .logo {
-    color: white;
-    font-size: 22px;
+.navbar .navbar-brand {
+    color: white !important;
     font-weight: bold;
 }
 
-.navbar ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
+.navbar .nav-link {
+    color: white !important;
 }
 
-.navbar ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 15px;
-}
-
-.navbar ul li a:hover {
+.navbar .nav-link:hover {
     text-decoration: underline;
 }
 

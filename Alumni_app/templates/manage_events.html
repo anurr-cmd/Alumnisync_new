@@ -3,21 +3,22 @@
 <html>
 <head>
     <title>Manage Events</title>
-    <link rel="stylesheet" href="{% static 'events.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="{% static 'events.css' %}">
 </head>
 <body>
 
 <div class="dashboard">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="profile-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s" alt="">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
             <p>{{ request.user.username }}</p>
         </div>
+
         <h2 class="logo">Alumni Sync</h2>
+
         <ul>
             <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
             <li class="active"><a href="{% url 'manage_events' %}">Manage Events</a></li>
@@ -28,36 +29,49 @@
 
     <!-- CONTENT -->
     <main class="content">
-    <h1>Manage Events</h1>
 
-    <div class="table-wrapper">
-        <table class="event-table">
-            <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h1>Manage Events</h1>
+        </div>
 
-            {% for event in events %}
-            <tr>
-                <td>{{ event.title }}</td>
-                <td>{{ event.date }}</td>
-                <td>
-                    <button class="btn edit" onclick="openEditModal('{{ event.id }}',
-                           '{{ event.title }}',
-                           '{{ event.date|date:"Y-m-d" }}',
-                           '{% url "edit_event" event.id %}')"> Edit
-                    </button>
+        <div class="table-wrapper">
+            <table class="event-table">
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
 
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>
+                        <button class="btn edit"
+                            onclick="openEditModal('{{ event.id }}',
+                            '{{ event.title }}',
+                            '{{ event.date|date:"Y-m-d" }}',
+                            '{% url "edit_event" event.id %}')">
+                            Edit
+                        </button>
 
-                    <a href="{% url 'delete_event' event.id %}" class="btn delete"
-                       onclick="return confirm('Delete this event?')">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-    <!-- EDIT MODAL -->
+                        <a href="{% url 'delete_event' event.id %}"
+                           class="btn delete"
+                           onclick="return confirm('Delete this event?')">
+                           Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </main>
+</div>
+
+<!-- EDIT MODAL -->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <h2>Edit Event</h2>
@@ -79,15 +93,15 @@
     </div>
 </div>
 
-</main>
-
-</div>
 <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
 function openEditModal(id, title, date, url) {
     document.getElementById("editModal").style.display = "flex";
     document.getElementById("editTitle").value = title;
     document.getElementById("editDate").value = date;
-
     document.getElementById("editForm").action = url;
 }
 
