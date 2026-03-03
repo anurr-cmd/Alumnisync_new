@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Profile, Event, Job, Announcement
 from .models import Feedback
+from django.contrib.auth.models import Group
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -68,3 +69,5 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("user", "message", "created_at")
     search_fields = ("user__username", "message")
     list_filter = ("created_at",)
+
+admin.site.unregister(Group)
