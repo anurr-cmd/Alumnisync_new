@@ -4,51 +4,64 @@
 <head>
     <title>Jobs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f6f9;
-            margin: 0;
-            padding: 30px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .job-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .job-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-
-        .job-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .company {
-            color: #0077ff;
-            font-weight: bold;
-        }
-
-        .date {
-            color: gray;
-            font-size: 12px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
 </head>
 <body>
+<div class="dashboard">
 
+    <!-- 🔹 SIDEBAR -->
+    <aside class="sidebar">
+        <div class="profile-section">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+            <h3>Admin</h3>
+        </div>
+        {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
+        <a href="{% url 'admin_portal' %}">Dashboard</a>
+
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+            <a href="{% url 'view_events_admin' %}">View Events</a>
+        </div>
+    </div>
+
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+    <div class="menu-title, active" onclick="toggleMenu('job-menu')">
+        Jobs ▾
+    </div>
+
+    <div class="submenu" id="job-menu">
+        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+    </div>
+</div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
+    </aside>
+     <main class="content">
 <h2>Job Opportunities</h2>
 
 <div class="job-container">
@@ -61,6 +74,12 @@
     </div>
 {% endfor %}
 </div>
-
+</main>
 </body>
+<script>
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+</script>
 </html>

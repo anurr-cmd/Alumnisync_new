@@ -4,7 +4,7 @@
 <head>
     <title>Admin Announcements</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
 </head>
 <body>
 
@@ -17,12 +17,50 @@
             <h3>Admin Panel</h3>
         </div>
 
-        <a href="{% url 'admin_portal' %}">Dashboard</a>
-        <a href="{% url 'view_events_admin' %}">Events</a>
-        <a href="{% url 'admin_view_alumni' %}">Alumni</a>
-        <a href="{% url 'manage_jobs_admin' %}">Job</a>
-        <a class="active" href="{% url 'admin_announcements' %}">Announcements</a>
-        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+            <a href="{% url 'view_events_admin' %}">View Events</a>
+        </div>
+    </div>
+
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('job-menu')">
+        Jobs ▾
+    </div>
+
+    <div class="submenu" id="job-menu">
+        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+    </div>
+</div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title , active" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
     </aside>
 
     <!-- MAIN -->
@@ -159,6 +197,11 @@ function openModal(id) {
 
 function closeModal(id) {
     document.getElementById(id).style.display = "none";
+}
+
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
 }
 </script>
 

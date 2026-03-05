@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Manage Alumni Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_events.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
 </head>
 <body>
 
@@ -18,17 +18,50 @@
             <h3>Admin</h3>
         </div>
 
-        <ul class="menu">
-            <li><a href="{% url 'admin_portal' %}">Dashboard</a></li>
+       <a href="{% url 'admin_portal' %}" >Dashboard</a>
 
-            <li><a href="{% url 'admin_events' %}" class="active">Approval Events</a></li>
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title , active" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+            <a href="{% url 'view_events_admin' %}">View Events</a>
+        </div>
+    </div>
 
-            <li><a href="{% url 'admin_view_alumni' %}">View Alumni</a></li>
-            <li><a href="{% url 'manage_jobs_admin' %}">Job</a></li>
-            <li><a href="{% url 'admin_announcements' %}">Manage Announcements</a></li>
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
 
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
+    <div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('job-menu')">
+        Jobs ▾
+    </div>
+
+    <div class="submenu" id="job-menu">
+        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+    </div>
+</div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
     </aside>
 
     <!-- CONTENT -->
@@ -142,6 +175,10 @@ function openEdit(id, title, description, date) {
 
 function closeEdit() {
     document.getElementById("editModal").style.display = "none";
+}
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
 }
 </script>
 
