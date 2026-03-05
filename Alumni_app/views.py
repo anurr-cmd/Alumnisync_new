@@ -114,7 +114,7 @@ def alumni_dashboard(request):
         'profile': profile,
         # keep your other counts here
     }
-    return render(request, 'alumni_portal.html', context)
+    return render(request, 'alumni_dashboard.html', context)
 
 
 @login_required

@@ -1,168 +1,250 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ================= GLOBAL ================= */
+
+*{
+box-sizing:border-box;
 }
 
-/* BODY */
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f6fb;
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#eef2f7,#f7f9fc);
 }
 
-/* LAYOUT */
-.layout {
-    display: flex;
-    min-height: 100vh;
+.container{
+display:flex;
+min-height:100vh;
 }
 
-/* SIDEBAR */
-.sidebar {
-    width: 220px;
-    background: linear-gradient(135deg, #1f3b6e, #162b52);
-    color: white;
-    padding: 30px 20px;
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+width:210px;
+background:linear-gradient(180deg,#0f172a,#020617);
+color:white;
+min-height:100vh;
+padding:20px 15px;
+transition:0.3s ease;
 }
 
-.logo {
-    margin-bottom: 40px;
-    font-size: 22px;
+.profile-box{
+text-align:center;
+margin-bottom:25px;
 }
 
-/* PROFILE SECTION */
-.profile-section {
-    text-align: center;
-    margin-bottom: 35px;
+.profile-box img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid #667eea;
+object-fit:cover;
 }
 
-.profile-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: white;
-    padding: 8px;
-    margin-bottom: 10px;
+.profile-box p{
+margin-top:10px;
+font-weight:600;
+cursor:pointer;
 }
 
-.profile-section p {
-    font-size: 14px;
-    font-weight: 500;
-}
-.sidebar nav a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin-bottom: 18px;
-    padding: 8px 10px;
-    border-radius: 6px;
-    transition: 0.3s;
+.sidebar a{
+display:block;
+padding:8px 6px;
+color:#e2e8f0;
+text-decoration:none;
+margin:6px 0;
+font-size:14px;
+border-radius:6px;
+transition:0.25s;
 }
 
-.sidebar nav a:hover,
-.sidebar nav a.active {
-    background: rgba(255,255,255,0.15);
+.sidebar a:hover{
+background:#1e293b;
+color:white;
 }
 
-/* MAIN */
-.main {
-    flex: 1;
-    padding: 40px;
+.active{
+background:#667eea;
+color:white !important;
 }
 
+/* ================= MENU ================= */
 
-/* TOP BAR */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+.menu-title{
+margin-top:18px;
+font-weight:600;
+cursor:pointer;
+color:#cbd5f5;
 }
 
-.brand {
-    font-size: 22px;
-    font-weight: 600;
-    color: #1f3b6e;
+.submenu{
+display:none;
+margin-left:12px;
 }
 
-.page-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #555;
+.submenu a{
+font-size:13px;
+color:#94a3b8;
 }
 
-/* FORM CARD */
-.form-card {
-    background: white;
-    max-width: 500px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+/* ================= MAIN ================= */
+
+.main{
+flex:1;
 }
 
-/* INPUT GROUP */
-.input-group {
-    margin-bottom: 20px;
+/* ================= NAVBAR ================= */
+
+.navbar{
+background:white;
+padding:15px 25px;
+display:flex;
+align-items:center;
+gap:15px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
-    font-weight: 500;
+.navbar h2{
+font-weight:600;
+}
+
+.menu-btn{
+font-size:22px;
+background:none;
+border:none;
+cursor:pointer;
+display:none;
+}
+
+/* ================= CONTENT ================= */
+
+.content{
+padding:30px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-height:80vh;
+}
+
+.page-title{
+font-size:20px;
+font-weight:600;
+color:#111827;
+margin-bottom:20px;
+text-align:center;
+}
+
+/* ================= FORM CARD ================= */
+
+.form-card{
+background:white;
+border-radius:16px;
+padding:25px;
+width:100%;
+max-width:650px;   /* increased from 520px */
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ================= INPUT GROUP ================= */
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:6px;
+font-size:14px;
+font-weight:600;
+color:#374151;
 }
 
 .input-group input,
-.input-group textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    transition: 0.3s;
+.input-group textarea{
+width:100%;
+padding:11px 12px;
+border-radius:8px;
+border:1px solid #d1d5db;
+font-size:14px;
+background:#f9fafb;
+transition:0.2s;
 }
+
+.input-group textarea{
+resize:none;
+height:90px;
+}
+
+/* INPUT FOCUS */
 
 .input-group input:focus,
-.input-group textarea:focus {
-    border-color: #1f3b6e;
-    outline: none;
+.input-group textarea:focus{
+outline:none;
+border-color:#667eea;
+background:white;
+box-shadow:0 0 0 3px rgba(102,126,234,0.15);
 }
 
-/* BUTTON */
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1f3b6e;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.3s;
+/* ================= BUTTON ================= */
+
+button{
+width:100%;
+padding:12px;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+border:none;
+border-radius:8px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+transition:0.25s;
 }
 
-button:hover {
-    background: #162b52;
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 18px rgba(102,126,234,0.35);
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
+/* ================= MOBILE ================= */
 
-    .layout {
-        flex-direction: column;
-    }
+@media (max-width:768px){
 
-    .sidebar {
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-    }
+.sidebar{
+position:fixed;
+left:-220px;
+top:0;
+height:100%;
+z-index:1000;
+}
 
-    .sidebar nav a {
-        margin-bottom: 0;
-    }
+.sidebar.active{
+left:0;
+}
 
-    .main {
-        padding: 20px;
-    }
+.menu-btn{
+display:block;
+}
+
+.content{
+padding:20px;
+}
+
+.form-card{
+width:100%;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width:480px){
+
+.navbar h2{
+font-size:18px;
+}
+
+.profile-box img{
+width:70px;
+height:70px;
+}
+
 }

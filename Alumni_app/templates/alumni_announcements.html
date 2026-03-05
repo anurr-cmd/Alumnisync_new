@@ -2,67 +2,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alumni Announcements</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin.css' %}">
+<title>Alumni Announcements</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'admin.css' %}">
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="profile-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
-            <h3>Alumni Panel</h3>
-        </div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-        <a href="{% url 'alumni_portal' %}">Dashboard</a>
-        <a href="{% url 'view_events_alumni' %}">Events</a>
-        <a class="active" href="{% url 'alumni_announcements' %}">Announcements</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main">
-
-        <!-- TOP BAR -->
-        <div class="navbar">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <span>Announcements</span>
-        </div>
-
-        <div class="content">
-
-            {% for ann in announcements %}
-            <div class="announcement-card">
-
-                <img src="{{ ann.image_url }}" class="announcement-img">
-
-                <div class="announcement-body">
-                    <h3>{{ ann.title }}</h3>
-
-                    <p class="date">
-                        Posted on {{ ann.posted_on }}
-                    </p>
-
-                    <p>{{ ann.message }}</p>
-                </div>
-
-            </div>
-            {% empty %}
-                <p>No announcements available.</p>
-            {% endfor %}
-
-        </div>
-    </div>
+<div class="profile-box">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
+<p>{{ request.user.username }}</p>
 </div>
 
+<a href="{% url 'alumni_portal' %}">Dashboard</a>
+
+<!-- EVENTS -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('events-menu')">
+Events ▾
+</div>
+
+<div class="submenu" id="events-menu">
+<a href="{% url 'create_event' %}">Add Event</a>
+<a href="{% url 'view_events_alumni' %}">View Events</a>
+<a href="{% url 'manage_events' %}">Manage Events</a>
+</div>
+</div>
+
+<!-- JOBS -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('jobs-menu')">
+Jobs ▾
+</div>
+
+<div class="submenu" id="jobs-menu">
+<a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+<a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+</div>
+</div>
+
+<a class="active" href="{% url 'alumni_announcements' %}">Announcements</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+</aside>
+
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- NAVBAR -->
+<div class="navbar">
+<button class="menu-btn" onclick="toggleSidebar()">☰</button>
+<span>Announcements</span>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+{% for ann in announcements %}
+<div class="announcement-card">
+
+    <img src="{{ ann.image_url }}" class="announcement-img">
+
+    <div class="announcement-body">
+        <h3>{{ ann.title }}</h3>
+
+        <p>{{ ann.message }}</p>
+
+        <p class="date">Posted on {{ ann.posted_on }}</p>
+    </div>
+
+</div>
+
+{% empty %}
+<p>No announcements available.</p>
+{% endfor %}
+</div>
+</div>
+
+
 <script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("active");
 }
+
+function toggleMenu(id){
+const menu=document.getElementById(id);
+menu.style.display=menu.style.display==="block"?"none":"block";
+}
+
 </script>
 
 </body>

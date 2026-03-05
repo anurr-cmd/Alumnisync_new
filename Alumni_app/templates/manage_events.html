@@ -2,112 +2,173 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Events</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'events.css' %}">
+<title>Manage Events | Alumni Sync</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'events.css' %}">
 </head>
+
 <body>
 
-<div class="dashboard">
+<div class="container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="profile-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
-            <p>{{ request.user.username }}</p>
-        </div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-        <h2 class="logo">Alumni Sync</h2>
-
-        <ul>
-            <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
-            <li class="active"><a href="{% url 'manage_events' %}">Manage Events</a></li>
-            <li><a href="{% url 'view_events_alumni' %}">View Events</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </aside>
-
-    <!-- CONTENT -->
-    <main class="content">
-
-        <!-- TOP BAR -->
-        <div class="top-bar">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <h1>Manage Events</h1>
-        </div>
-
-        <div class="table-wrapper">
-            <table class="event-table">
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-
-                {% for event in events %}
-                <tr>
-                    <td>{{ event.title }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>
-                        <button class="btn edit"
-                            onclick="openEditModal('{{ event.id }}',
-                            '{{ event.title }}',
-                            '{{ event.date|date:"Y-m-d" }}',
-                            '{% url "edit_event" event.id %}')">
-                            Edit
-                        </button>
-
-                        <a href="{% url 'delete_event' event.id %}"
-                           class="btn delete"
-                           onclick="return confirm('Delete this event?')">
-                           Delete
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-
-    </main>
+<div class="profile-box">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
+<p>{{ request.user.username }}</p>
 </div>
+
+{% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
+
+<a href="{% url 'alumni_portal' %}">Dashboard</a>
+
+<!-- EVENTS MENU -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('events-menu')">
+Events ▾
+</div>
+
+<div class="submenu" id="events-menu">
+<a href="{% url 'create_event' %}">Add Event</a>
+<a href="{% url 'view_events_alumni' %}">View Events</a>
+<a href="{% url 'manage_events' %}">Manage Events</a>
+</div>
+</div>
+
+<!-- JOBS MENU -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('jobs-menu')">
+Jobs ▾
+</div>
+
+<div class="submenu" id="jobs-menu">
+<a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+<a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+</div>
+</div>
+
+<a href="{% url 'alumni_announcements' %}">Announcements</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+</aside>
+
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<button class="menu-btn" onclick="toggleSidebar()">☰</button>
+<h2>Manage Events</h2>
+</nav>
+
+
+<!-- CONTENT -->
+<div class="content">
+
+<div class="table-wrapper">
+
+<table class="event-table">
+
+<tr>
+<th>Title</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+
+{% for event in events %}
+
+<tr>
+<td>{{ event.title }}</td>
+<td>{{ event.date }}</td>
+
+<td>
+
+<button class="btn edit"
+onclick="openEditModal('{{ event.id }}',
+'{{ event.title }}',
+'{{ event.date|date:"Y-m-d" }}',
+'{% url "edit_event" event.id %}')">
+Edit
+</button>
+
+<a href="{% url 'delete_event' event.id %}"
+class="btn delete"
+onclick="return confirm('Delete this event?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
 
 <!-- EDIT MODAL -->
 <div id="editModal" class="modal">
-    <div class="modal-content">
-        <h2>Edit Event</h2>
 
-        <form id="editForm" method="POST">
-            {% csrf_token %}
+<div class="modal-content">
 
-            <label>Title</label>
-            <input type="text" name="title" id="editTitle" required>
+<h2>Edit Event</h2>
 
-            <label>Date</label>
-            <input type="date" name="date" id="editDate" required>
+<form id="editForm" method="POST">
+{% csrf_token %}
 
-            <div class="modal-actions">
-                <button type="submit" class="btn edit">Update</button>
-                <button type="button" class="btn cancel" onclick="closeModal()">Cancel</button>
-            </div>
-        </form>
-    </div>
+<label>Title</label>
+<input type="text" name="title" id="editTitle" required>
+
+<label>Date</label>
+<input type="date" name="date" id="editDate" required>
+
+<div class="modal-actions">
+<button type="submit" class="btn edit">Update</button>
+<button type="button" class="btn cancel" onclick="closeModal()">Cancel</button>
 </div>
 
+</form>
+
+</div>
+</div>
+
+
 <script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("active");
 }
 
-function openEditModal(id, title, date, url) {
-    document.getElementById("editModal").style.display = "flex";
-    document.getElementById("editTitle").value = title;
-    document.getElementById("editDate").value = date;
-    document.getElementById("editForm").action = url;
+function toggleMenu(id){
+const menu=document.getElementById(id);
+
+if(menu.style.display==="block"){
+menu.style.display="none";
+}else{
+menu.style.display="block";
+}
 }
 
-function closeModal() {
-    document.getElementById("editModal").style.display = "none";
+function openEditModal(id,title,date,url){
+document.getElementById("editModal").style.display="flex";
+document.getElementById("editTitle").value=title;
+document.getElementById("editDate").value=date;
+document.getElementById("editForm").action=url;
 }
+
+function closeModal(){
+document.getElementById("editModal").style.display="none";
+}
+
 </script>
 
 </body>
