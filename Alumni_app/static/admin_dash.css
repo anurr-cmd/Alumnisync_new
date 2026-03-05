@@ -319,7 +319,12 @@ button {
 }
 
 /* ================= MODAL ================= */
-
+.job-img{
+width:90px;
+height:90px;
+object-fit:contain;
+margin-bottom:15px;
+}
 .modal {
     display: none;
     position: fixed;
