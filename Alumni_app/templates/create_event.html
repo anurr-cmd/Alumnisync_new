@@ -1,70 +1,130 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Create Event | Alumni Sync</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'event.css' %}">
+<title>Create Event | Alumni Sync</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'event.css' %}">
 </head>
+
 <body>
 
-<div class="layout">
+<div class="container">
 
-    <!-- 🔹 SIDEBAR -->
-    <aside class="sidebar">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
+<div class="profile-box">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
+<p>{{ request.user.username }}</p>
+</div>
 
-    <!-- 🔹 PROFILE SECTION -->
-    <div class="profile-section">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
-        <p>{{ request.user.username }}</p>
+<a href="{% url 'alumni_portal' %}">Dashboard</a>
+
+<!-- EVENTS -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('events-menu')">
+Events ▾
+</div>
+
+<div class="submenu" id="events-menu">
+                <a href="{% url 'create_event' %}">Add Event</a>
+                <a href="{% url 'view_events_alumni' %}">View Events</a>
+                <a href="{% url 'manage_events' %}">Manage Events</a>
+            </div>
+</div>
+
+<!-- ALUMNI -->
+{% comment %} <div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('alumni-menu')">
+Alumni ▾
+</div>
+
+<div class="submenu" id="alumni-menu">
+<a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+</div>
+</div> {% endcomment %}
+
+<!-- JOBS -->
+<div class="menu-group">
+
+    <div class="menu-title" onclick="toggleMenu('jobs-menu')">
+        Jobs ▾
     </div>
 
-    <nav>
-        <a href="{% url 'alumni_portal' %}">Dashboard</a>
-        <a href="#" class="active">Create Event</a>
-        <a href="{% url 'view_events_alumni' %}">View Events</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </nav>
+    <div class="submenu" id="jobs-menu">
+        <a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+        <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+    </div>
+
+</div>
+
+<!-- ANNOUNCEMENTS -->
+<a href="{% url 'alumni_announcements' %}">Announcements</a>
+<a href="{% url 'logout' %}">Logout</a>
 
 </aside>
 
-    <!-- 🔹 MAIN CONTENT -->
-    <div class="main">
 
-        <div class="top-bar">
-    <h2 class="brand">Alumni Sync</h2>
-    
+<!-- MAIN -->
+<div class="main">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<button class="menu-btn" onclick="toggleSidebar()">☰</button>
+<h2>Alumni Sync</h2>
+</nav>
+
+
+<!-- CONTENT -->
+<main class="content">
+
+<h3 class="page-title">Create New Event</h3>
+
+<div class="form-card">
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="input-group">
+<label>Event Title</label>
+<input type="text" name="title" required>
 </div>
-<span class="page-title">Create New Event</span>
-        <div class="form-card">
-            <form method="POST">
-                {% csrf_token %}
 
-                <div class="input-group">
-                    <label>Event Title</label>
-                    <input type="text" name="title" required>
-                </div>
+<div class="input-group">
+<label>Description</label>
+<textarea name="description" required></textarea>
+</div>
 
-                <div class="input-group">
-                    <label>Description</label>
-                    <textarea name="description" required></textarea>
-                </div>
+<div class="input-group">
+<label>Date</label>
+<input type="date" name="date" required>
+</div>
 
-                <div class="input-group">
-                    <label>Date</label>
-                    <input type="date" name="date" required>
-                </div>
+<button type="submit">Create Event</button>
 
-                <button type="submit">Create Event</button>
-            </form>
-        </div>
-
-    </div>
+</form>
 
 </div>
+
+</main>
+
+</div>
+</div>
+
+
+<script>
+
+function toggleMenu(id){
+const menu=document.getElementById(id);
+menu.style.display=menu.style.display==="block"?"none":"block";
+}
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("active");
+}
+
+</script>
 
 </body>
 </html>
