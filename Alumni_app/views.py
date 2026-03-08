@@ -9,7 +9,20 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Feedback
 
 def index(request):
-    return render(request, 'index.html')
+
+    alumni_count = Profile.objects.filter(role="alumni").count()
+    event_count = Event.objects.count()
+    job_count = Job.objects.count()
+    announcement_count = Announcement.objects.count()
+
+    context = {
+        "alumni_count": alumni_count,
+        "event_count": event_count,
+        "job_count": job_count,
+        "announcement_count": announcement_count,
+    }
+
+    return render(request, "index.html", context)
 
 def about(request):
     return render(request, 'about.html')
@@ -17,7 +30,11 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def login_view(request):
+def login_portal(request):
+    return render(request, 'login_portal.html')
+
+def alumni_login(request):
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -25,35 +42,53 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-
-            # ✅ FIRST CHECK SUPERUSER
-            if user.is_superuser:
-                return redirect("admin_dashboard")
-
-            # ✅ Then check profile for normal users
             try:
                 profile = Profile.objects.get(user=user)
+
+                if profile.role == "alumni":
+                    login(request, user)
+                    return redirect("alumni_dashboard")
+                else:
+                    messages.error(request, "You are not an Alumni user.")
+
             except Profile.DoesNotExist:
-                messages.error(request, "Profile not found. Contact admin.")
-                return redirect("login")
-
-            next_url = request.GET.get("next")
-            if next_url:
-                return redirect(next_url)
-
-            if profile.role == "admin":
-                return redirect("admin_dashboard")
-            elif profile.role == "alumni":
-                return redirect("alumni_dashboard")
-            else:
-                return redirect("login")
+                messages.error(request, "Profile not found.")
 
         else:
             messages.error(request, "Invalid username or password")
 
-    return render(request, "login.html")
+    return render(request, "alumni_login.html")
 
+def admin_login(request):
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+
+            if user.is_superuser:
+                login(request, user)
+                return redirect("admin_dashboard")
+
+            try:
+                profile = Profile.objects.get(user=user)
+
+                if profile.role == "admin":
+                    login(request, user)
+                    return redirect("admin_dashboard")
+                else:
+                    messages.error(request, "You are not an Admin user.")
+
+            except Profile.DoesNotExist:
+                messages.error(request, "Profile not found.")
+
+        else:
+            messages.error(request, "Invalid username or password")
+
+    return render(request, "admin_login.html")
 # def forgot_password(request):
 #     if request.method == "POST":
 #         username = request.POST.get("username")

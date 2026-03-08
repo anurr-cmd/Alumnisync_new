@@ -2,93 +2,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Contact | Alumni Sync</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alumni Sync - Contact</title>
+<link rel="stylesheet" href="{% static 'contact.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <link rel="stylesheet" href="{% static 'navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'contact.css' %}">
-</head>
-<body>
-
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">Alumni Sync</a>
-
-        <!-- Toggle button -->
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#contactNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Collapsible menu -->
-        <div class="collapse navbar-collapse" id="contactNavbar">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'contact' %}">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+<nav>
+<div class="logo">AS Alumni Sync</div>
+<ul>
+<li><a href="{% url 'index' %}">Home</a></li>
+<li><a href="{% url 'about' %}">About</a></li>
+<li><a href="{% url 'contact' %}" class="active">Contact</a></li>
+<li><a href="{% url 'alumni_feedback' %}">Feedback</a></li>
+<li><a href="{% url 'login_portal' %}">Login</a></li>
+</ul>
 </nav>
 
 
-<!-- CONTACT HEADER -->
-<section class="contact-header">
-    <div class="container text-center">
-        <h1>Contact Us</h1>
-        <p>We’d love to hear from you</p>
-    </div>
+<section class="hero">
+<h1>Get in Touch</h1>
+<p>Have questions or need assistance? Our alumni relations team is here to help. Reach out to us through any of the channels below.</p>
 </section>
 
-<!-- CONTACT CONTENT -->
-<section class="contact-content">
-    <div class="container">
-        <div class="row">
 
-            <!-- CONTACT INFO -->
-            <div class="col-md-6">
-                <h3>Get in Touch</h3>
-                <p>If you have any questions or suggestions, feel free to contact us.</p>
+<section class="cards">
 
-                <div class="contact-box">
-                    <p><strong>Name:</strong> Anuvarshini</p>
-                    <p><strong>Email:</strong> anurr06@gmail.com</p>
-                    <p><strong>Phone:</strong> +91 9485756300</p>
-                    <p><strong>Role:</strong> Project Coordinator</p>
-                </div>
-            </div>
+<div class="card">
+<div class="icon"><i class="fa fa-envelope"></i></div>
+<h3>Email</h3>
+<p>alumni@college.edu</p>
+<p>support@alumniSync.edu</p>
+</div>
 
-            <!-- CONTACT FORM (UI only for now) -->
-            <div class="col-md-6">
-                <h3>Send a Message</h3>
-                <form>
-                    <input type="text" class="form-control mb-3" placeholder="Your Name">
-                    <input type="email" class="form-control mb-3" placeholder="Your Email">
-                    <textarea class="form-control mb-3" rows="4" placeholder="Your Message"></textarea>
-                    <button class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
+<div class="card">
+<div class="icon"><i class="fa fa-phone"></i></div>
+<h3>Phone</h3>
+<p>+1 (555) 123-4567</p>
+<p>+1 (555) 987-6543</p>
+</div>
 
-        </div>
-    </div>
+<div class="card">
+<div class="icon"><i class="fa fa-location-dot"></i></div>
+<h3>Address</h3>
+<p>123 College Avenue</p>
+<p>University City, ST 12345</p>
+</div>
+
+<div class="card">
+<div class="icon"><i class="fa fa-clock"></i></div>
+<h3>Office Hours</h3>
+<p>Mon-Fri: 9:00 AM - 5:00 PM</p>
+<p>Sat: 10:00 AM - 2:00 PM</p>
+</div>
+
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<section class="info-grid">
+
+<div class="info-box">
+
+<h3 style="color:#243c8f;margin-bottom:15px;">Visit Our Office</h3>
+
+<div class="map">
+<i class="fa fa-location-dot"></i>
+</div>
+
+<p>Our alumni relations office is located in the heart of campus.</p>
+
+<br>
+
+<p><b>Building:</b> Alumni Center, 3rd Floor</p>
+<p><b>Parking:</b> Visitor parking available in Lot C</p>
+<p><b>Public Transit:</b> Bus routes 12, 45, 78</p>
+
+</div>
+
+
+<div class="info-box">
+
+<h3 style="color:#243c8f;margin-bottom:15px;">Departments</h3>
+
+<div class="dept">
+<h4>Alumni Relations</h4>
+<span>relations@alumniSync.edu</span>
+</div>
+
+<div class="dept">
+<h4>Events & Programs</h4>
+<span>events@alumniSync.edu</span>
+</div>
+
+<div class="dept">
+<h4>Career Services</h4>
+<span>careers@alumniSync.edu</span>
+</div>
+
+<div class="dept">
+<h4>Technical Support</h4>
+<span>support@alumniSync.edu</span>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="cta">
+<h2>Need Immediate Assistance?</h2>
+<p>For urgent matters or feedback please submit your inquiries directly.</p>
+<a href="{% url 'alumni_feedback' %}">
+    <button>Submit Feedback</button>
+</a>
+</section>
+
+
+<footer>
+
+<div class="footer-grid">
+
+<div>
+<h4>Alumni Sync</h4>
+<p style="font-size:14px;">
+Connecting alumni and building stronger futures through networking and career opportunities.
+</p>
+</div>
+
+<div>
+<h4>Quick Links</h4>
+<ul>
+<li><a href="{% url 'index' %}">Home</a></li>
+<li><a href="{% url 'about' %}">About Us</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+<li><a href="{% url 'alumni_feedback' %}">Feedback</a></li>
+</ul>
+</div>
+
+<div>
+<h4>Contact Us</h4>
+<ul>
+<li>alumni@college.edu</li>
+<li>+1 (555) 123-4567</li>
+<li>123 College Avenue</li>
+</ul>
+</div>
+
+<div>
+<h4>Follow Us</h4>
+<i class="fab fa-linkedin"></i>
+<i class="fab fa-twitter"></i>
+<i class="fab fa-facebook"></i>
+</div>
+
+</div>
+
+<div class="bottom">
+<span>© 2026 Alumni Sync. All rights reserved.</span>
+<span>Privacy Policy | Terms of Service</span>
+</div>
+
+</footer>
+
 </body>
 </html>
