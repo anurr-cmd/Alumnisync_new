@@ -1,35 +1,190 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alumni Feedback</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'alumni_feedback.css' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'alumni_feedback.css' %}">
+<title>Alumni Sync | Feedback</title>
 </head>
 
 <body>
 
-<!-- Back button at top-left -->
-<div class="back-container">
-    <a href="{% url 'alumni_dashboard' %}">
-        <button class="back-btn">← Back to Dashboard</button>
-    </a>
+<header>
+<div><h2>AS Alumni Sync</h2></div>
+
+<nav>
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'about' %}">About</a>
+<a href="{% url 'contact' %}">Contact</a>
+<a href="{% url 'alumni_feedback' %}">Feedback</a>
+<a href="{% url 'login_portal' %}">Login</a>
+</nav>
+
+</header>
+
+
+<section class="hero">
+
+<div class="hero-icon">💬</div>
+
+<h1>We Value Your Feedback</h1>
+
+<p>
+Your thoughts and suggestions help us improve Alumni Sync.
+Share your experience, report issues, or suggest new features.
+</p>
+
+</section>
+
+
+<div class="container">
+
+<div class="card feedback-form">
+
+<h2>Submit Your Feedback</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+{% if request.user.is_authenticated %}
+
+<label>Username</label>
+<input type="text" value="{{ request.user.username }}" readonly>
+
+{% else %}
+
+<label>Your Name</label>
+<input type="text" name="name" placeholder="Enter your name">
+
+{% endif %}
+
+<br><br>
+
+<label>Message</label>
+<textarea name="message" rows="6"></textarea>
+
+<br><br>
+
+<button type="submit">Submit Feedback</button>
+
+</form>
+
 </div>
 
-<div class="wrapper">
-    <div class="card">
-        <h2>Submit Feedback</h2>
 
-        <form method="POST">
-            {% csrf_token %}
-            <textarea name="message" rows="5"
-                      placeholder="Write your feedback..." required></textarea>
-            <br><br>
-            <button class="submit-btn" type="submit">Submit</button>
-        </form>
-    </div>
+<div class="sidebar">
+
+<div class="card info-box">
+
+<h2>What to Include</h2>
+
+<ul>
+<li>Detailed description of your experience</li>
+<li>Specific features or areas of improvement</li>
+<li>Any technical issues you encountered</li>
+<li>Suggestions for new features</li>
+</ul>
+
 </div>
+
+
+<div class="card response-time-card">
+
+<h2>Response Time</h2>
+
+<p>
+We review all feedback submissions within 2-3 business days.
+</p>
+
+<a href="{% url 'contact' %}">
+<button>Contact Us</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<section class="user-feedback-section">
+
+<h2>Recent Community Feedback</h2>
+
+{% for feedback in feedbacks %}
+
+<div class="feedback-item">
+
+<p>
+<strong>{{ feedback.user.username }}</strong>
+</p>
+
+<p>{{ feedback.message }}</p>
+
+<small>{{ feedback.created_at }}</small>
+
+</div>
+
+{% empty %}
+
+<p>No feedback submitted yet.</p>
+
+{% endfor %}
+
+</section>
+
+
+<footer>
+
+<div>
+
+<h3>Alumni Sync</h3>
+
+<p>
+Connecting alumni and building stronger futures through
+professional networking and community engagement.
+</p>
+
+</div>
+
+<div>
+
+<h3>Quick Links</h3>
+
+<a href="#">Home</a><br>
+<a href="#">About</a><br>
+<a href="#">Contact</a>
+
+</div>
+
+<div>
+
+<h3>Contact</h3>
+
+<p>alumni@college.edu</p>
+<p>+1 (555) 123-4567</p>
+
+</div>
+
+<div>
+
+<h3>Follow Us</h3>
+
+<a href="#">LinkedIn</a>
+<a href="#">Twitter</a>
+<a href="#">Facebook</a>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>© 2026 Alumni Sync. All rights reserved.</p>
+
+</div>
+
+</footer>
 
 </body>
 </html>

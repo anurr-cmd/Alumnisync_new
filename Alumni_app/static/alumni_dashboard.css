@@ -1,55 +1,203 @@
+/* --- Root Variables for Green Theme --- */
+:root {
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --primary-green: #2d5a27;       /* Dark Forest Green */
+    --sidebar-text: #4a5568;
+    --text-main: #1a202c;
+    --text-muted: #718096;
+    --accent-green-light: #f0fdf4;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --sidebar-width: 260px;
+}
+
 body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-light);
     margin: 0;
-    background: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f") center/cover no-repeat;
+    color: var(--text-main);
 }
 
-/* Navbar styling ONLY (no layout changes) */
-.navbar {
-    background: #0a1a2f !important;
+/* --- Top Header --- */
+header {
+    height: 60px;
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    border-bottom: 1px solid #edf2f7;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.navbar .navbar-brand {
-    color: white !important;
-    font-weight: bold;
+header h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary-green); }
+
+header div a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-left: 20px;
 }
 
-.navbar .nav-link {
-    color: white !important;
+header div a:last-child {
+    background: #fff1f2; /* Light red for logout */
+    color: #e11d48;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-weight: 500;
 }
 
-.navbar .nav-link:hover {
-    text-decoration: underline;
+/* --- Layout Container --- */
+.dashboard-container {
+    display: flex;
+    min-height: calc(100vh - 60px);
 }
 
-/* Hero */
-.hero {
-    position: relative;
-    height: calc(100vh - 70px);
-    background-image: url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1");
-    background-size: cover;
-    background-position: center;
+/* --- Sidebar --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--white);
+    border-right: 1px solid #edf2f7;
+    padding: 30px 15px;
 }
 
-.hero .overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
+.profile {
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-.hero .content {
-    position: relative;
-    z-index: 1;
+.avatar {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-green);
     color: white;
-    max-width: 600px;
-    padding: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 10px;
 }
 
-.hero h1 {
-    font-size: 40px;
-    margin-bottom: 15px;
+.profile p { font-weight: 600; color: var(--text-main); margin: 0; }
+
+nav a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    transition: 0.2s;
 }
 
-.hero p {
-    font-size: 18px;
-    line-height: 1.6;
+nav a:hover {
+    background: var(--accent-green-light);
+    color: var(--primary-green);
 }
+
+/* Active link style from image */
+nav a:first-of-type { 
+    background: #333; /* Darker grey/black like image for dashboard specifically */
+    color: white; 
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    flex-grow: 1;
+    padding: 40px 60px;
+}
+
+.main-content h1 { font-size: 2rem; margin-bottom: 8px; }
+.main-content p { color: var(--text-muted); margin-bottom: 30px; }
+
+/* --- Stats Row --- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stats .card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.stats .card h2 { 
+    font-size: 2.2rem; 
+    margin: 0; 
+    color: var(--primary-green); 
+}
+
+.stats .card p { 
+    margin: 5px 0 0; 
+    font-weight: 500; 
+    color: var(--text-muted); 
+}
+
+/* --- Sections Grid (Events & Jobs) --- */
+/* To get side-by-side view like the image */
+.main-content {
+    display: grid;
+    grid-template-areas: 
+        "welcome welcome"
+        "stats stats"
+        "events jobs"
+        "announcements announcements";
+    grid-template-columns: 1fr 1fr;
+    gap: 0 30px;
+}
+
+.main-content h1, .main-content > p, .stats { grid-column: span 2; }
+
+section {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+}
+
+section h2 { 
+    font-size: 1.25rem; 
+    margin-bottom: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+}
+
+/* --- List Items --- */
+.list-item, .announcement {
+    padding: 15px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.list-item:last-child, .announcement:last-child { border-bottom: none; }
+
+.list-item h3, .announcement h3 { 
+    font-size: 1rem; 
+    margin: 0 0 5px; 
+    color: #2d3748; 
+}
+
+.list-item p, .announcement p { 
+    font-size: 0.85rem; 
+    margin: 2px 0; 
+    color: var(--text-muted); 
+}
+
+/* --- Specific for Announcements (horizontal layout) --- */
+section:last-of-type {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+section:last-of-type h2 { grid-column: span 3; }

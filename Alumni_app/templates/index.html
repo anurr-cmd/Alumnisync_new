@@ -1,251 +1,125 @@
-
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alumni Sync</title>
-<link rel="stylesheet" href="{% static 'index.css' %}">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+{% block body %}
+  <link rel="stylesheet" href="{% static 'index.css' %}" />
 
-</head>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
 
-<body>
+    <div class="hero-content">
+      <h1>
+        Connecting Alumni, <br />
+        Building <br />
+        <span>Futures.</span>
+      </h1>
 
-<!-- NAVBAR -->
+      <div class="login-card">
+        <p>Your gateway to a thriving professional network.</p>
 
-<header class="navbar">
+        <a href="{% url 'login_portal' %}"><button>Login to Portal →</button></a>
+      </div>
+    </div>
+  </section>
 
-<div class="logo">
-<div class="logo-circle">AS</div>
-<span>Alumni Sync</span>
-</div>
+  <!-- FEATURES -->
 
-<nav>
-<a href="{% url 'index' %}" class="active">Home</a>
-<a href="{% url 'about' %}">About</a>
-<a href="{% url 'contact' %}">Contact</a>
-<a href="{% url 'alumni_feedback' %}">Feedback</a>
-<a href="{% url 'login_portal' %}">Login</a>
-</nav>
+  <section class="features">
+    <div class="features-left">
+      <h2>A Legacy of <span>Excellence.</span></h2>
 
-</header>
+      <p>We are more than just a network, we are a community dedicated to the mutual success of every graduate.</p>
+    </div>
 
+    <div class="features-right">
+      <div class="feature">
+        <h3>Global Reach</h3>
+        <p>Connect with alumni across the globe and explore new opportunities.</p>
+      </div>
 
-<!-- HERO SECTION -->
+      <div class="feature">
+        <h3>Professional Growth</h3>
+        <p>Access job listings, mentorship programs and career resources.</p>
+      </div>
 
-<section class="hero">
+      <div class="feature">
+        <h3>Campus Connection</h3>
+        <p>Stay rooted with your alma mater through events and lectures.</p>
+      </div>
+    </div>
+  </section>
+  <!-- STATS SECTION -->
 
-<div class="hero-overlay"></div>
+  <section class="stats">
+    <h2>Our Growing Ecosystem</h2>
 
-<div class="hero-content">
-
-<h1>
-Connecting 
-Alumni, <br>
-Building <br>
-<span>Futures.</span>
-</h1>
-
-<div class="login-card">
-
-<p>Your gateway to a thriving professional network.</p>
-
-<a href="{% url 'login_portal' %}">
-    <button>Login to Portal →</button>
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- FEATURES -->
-
-<section class="features">
-
-<div class="features-left">
-
-<h2>A Legacy of <span>Excellence.</span></h2>
-
-<p>
-We are more than just a network, we are a community dedicated
-to the mutual success of every graduate.
-</p>
-
-</div>
-
-<div class="features-right">
-
-<div class="feature">
-<h3>Global Reach</h3>
-<p>Connect with alumni across the globe and explore new opportunities.</p>
-</div>
-
-<div class="feature">
-<h3>Professional Growth</h3>
-<p>Access job listings, mentorship programs and career resources.</p>
-</div>
-
-<div class="feature">
-<h3>Campus Connection</h3>
-<p>Stay rooted with your alma mater through events and lectures.</p>
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- STATS SECTION -->
-
-<section class="stats">
-
-<h2>Our Growing Ecosystem</h2>
-
-<div class="stats-grid">
-
-<div class="stat-box">
+    <div class="stats-grid">
+      <div class="stat-box">
         <h1>{{ alumni_count }}</h1>
         <p>Active Alumni</p>
-    </div>
+      </div>
 
-<div class="stat-box">
+      <div class="stat-box">
         <h1>{{ event_count }}</h1>
         <p>Upcoming Events</p>
-    </div>
+      </div>
 
-<div class="stat-box">
+      <div class="stat-box">
         <h1>{{ job_count }}</h1>
         <p>Career Opportunities</p>
-    </div>
+      </div>
 
-    <div class="stat-box">
+      <div class="stat-box">
         <h1>{{ announcement_count }}</h1>
         <p>Announcements</p>
+      </div>
     </div>
+  </section>
 
-</div>
+  <!-- ALUMNI SECTION -->
 
-</section>
+  {% comment %} <section class="alumni">
+    <h2>Distinguished Alumni</h2>
 
+    <div class="alumni-grid">
+      <div class="alumni-card">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2" />
+        <h3>Dr. Anya Sharma</h3>
+        <p>Lead Research Scientist</p>
+      </div>
 
+      <div class="alumni-card">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956" />
+        <h3>Sarah Rodriguez</h3>
+        <p>Marketing Director</p>
+      </div>
 
-<!-- ALUMNI SECTION -->
+      <div class="alumni-card">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e" />
+        <h3>Omar Hassan</h3>
+        <p>Project Manager</p>
+      </div>
+    </div>
+  </section> {% endcomment %}
 
-{% comment %} <section class="alumni">
+  <!-- PROFESSIONAL HUB -->
 
-<h2>Distinguished Alumni</h2>
+  <section class="hub">
+    <div class="hub-text">
+      <h2>Your Hub for <span>Professional Excellence.</span></h2>
 
-<div class="alumni-grid">
+      <p>Manage events, discover job opportunities and stay connected through one elegant dashboard.</p>
+    </div>
+  </section>
 
-<div class="alumni-card">
-<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2">
-<h3>Dr. Anya Sharma</h3>
-<p>Lead Research Scientist</p>
-</div>
+  <!-- CTA -->
 
-<div class="alumni-card">
-<img src="https://images.unsplash.com/photo-1580489944761-15a19d654956">
-<h3>Sarah Rodriguez</h3>
-<p>Marketing Director</p>
-</div>
+  <section class="cta">
+    <h2>Ready to Reconnect?</h2>
 
-<div class="alumni-card">
-<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e">
-<h3>Omar Hassan</h3>
-<p>Project Manager</p>
-</div>
+    <p>Join thousands of alumni shaping the future.</p>
 
-</div>
-
-</section> {% endcomment %}
-
-
-
-<!-- PROFESSIONAL HUB -->
-
-<section class="hub">
-
-<div class="hub-text">
-
-<h2>Your Hub for <span>Professional Excellence.</span></h2>
-
-<p>
-Manage events, discover job opportunities and stay connected
-through one elegant dashboard.
-</p>
-
-</div>
-
-</section>
-
-
-
-<!-- CTA -->
-
-<section class="cta">
-
-<h2>Ready to Reconnect?</h2>
-
-<p>
-Join thousands of alumni shaping the future.
-</p>
-
-<a href="{% url 'login_portal' %}">
-    <button>Access the portal</button>
-</a>
-
-</section>
-
-
-
-<!-- FOOTER -->
-
-<footer class="footer">
-
-<div class="footer-grid">
-
-<div>
-
-<h3>Alumni Sync</h3>
-<p>
-Connecting alumni and building stronger futures through
-professional networking.
-</p>
-
-</div>
-
-<div>
-
-<h4>Quick Links</h4>
-<p>Home</p>
-<p>About</p>
-<p>Contact</p>
-<p>Feedback</p>
-
-</div>
-
-<div>
-
-<h4>Contact Us</h4>
-<p>alumni@college.edu</p>
-<p>+91 555 123 4567</p>
-
-</div>
-
-</div>
-
-<p class="copyright">© 2026 Alumni Sync</p>
-
-</footer>
-
-
-</body>
-</html>
+    <a href="{% url 'login_portal' %}"><button>Access the portal</button></a>
+  </section>
+{% endblock %}

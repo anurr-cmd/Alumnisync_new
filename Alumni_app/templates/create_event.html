@@ -1,130 +1,122 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Create Event | Alumni Sync</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="{% static 'event.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Management | Alumni Sync</title>
+    <link rel="stylesheet" href="{% static 'event.css' %}">
 </head>
-
 <body>
 
-<div class="container">
+    <header class="top-header">
+        <div class="header-left">
+            <span class="close-icon">✕</span>
+            <h2>Events Management</h2>
+        </div>
+        <div class="header-right">
+            <a href="/">Back to Home</a>
+            <a href="/logout/" class="logout-btn">Logout</a>
+        </div>
+    </header>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-
-<div class="profile-box">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
-<p>{{ request.user.username }}</p>
-</div>
-
-<a href="{% url 'alumni_portal' %}">Dashboard</a>
-
-<!-- EVENTS -->
-<div class="menu-group">
-<div class="menu-title" onclick="toggleMenu('events-menu')">
-Events ▾
-</div>
-
-<div class="submenu" id="events-menu">
-                <a href="{% url 'create_event' %}">Add Event</a>
-                <a href="{% url 'view_events_alumni' %}">View Events</a>
-                <a href="{% url 'manage_events' %}">Manage Events</a>
+    <div class="layout-container">
+        <aside class="sidebar">
+            <div class="profile-section">
+                <div class="avatar-circle">
+                    {{ request.user.username|first|upper }}
+                </div>
+                <p class="dashboard-label">Alumni Dashboard</p>
             </div>
-</div>
+            <nav class="side-nav">
+                <ul>
+                    <li><a href="{% url 'alumni_dashboard' %}">Dashboard</a></li>
+                    <li class="active"><a href="{% url 'manage_events' %}">Events</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">Announcements</a></li>
+                </ul>
+            </nav>
+        </aside>
 
-<!-- ALUMNI -->
-{% comment %} <div class="menu-group">
-<div class="menu-title" onclick="toggleMenu('alumni-menu')">
-Alumni ▾
-</div>
-
-<div class="submenu" id="alumni-menu">
-<a href="{% url 'admin_view_alumni' %}">View Alumni</a>
-</div>
-</div> {% endcomment %}
-
-<!-- JOBS -->
-<div class="menu-group">
-
-    <div class="menu-title" onclick="toggleMenu('jobs-menu')">
-        Jobs ▾
+        <div class="page-header">
+    <div>
+        <h1>Events</h1>
+        <p>Manage and view all alumni events</p>
     </div>
+    <button class="add-btn" onclick="openModal()">+ Add Event</button>
+</div>
 
-    <div class="submenu" id="jobs-menu">
-        <a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
-        <a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+<div class="events-with-images-grid">
+    {% for event in events %}
+        {% if event.image_url %}
+            <div class="event-card has-image">
+                <img src="{{ event.image_url }}" alt="{{ event.title }}">
+                <div class="card-content">
+                    <h3>{{ event.title }}</h3>
+                    <p class="meta">📅 {{ event.date|date:"d/m/Y, H:i" }}</p>
+                    <p class="meta">📍 {{ event.location }}</p>
+                    <p class="desc">{{ event.description|truncatewords:18 }}</p>
+                    <div class="card-actions">
+                        <button class="register">Register</button>
+                        <div class="icons">
+                            <a href="{% url 'edit_event' event.id %}">✏️</a>
+                            <a href="{% url 'delete_event' event.id %}">🗑️</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="events-no-images-grid">
+    <h2>Other Events</h2>
+    {% for event in events %}
+        {% if not event.image_url %}
+            <div class="event-card no-image">
+                <div class="card-content">
+                    <h3>{{ event.title }}</h3>
+                    <p class="desc">{{ event.description|truncatewords:10 }}</p>
+                    <div class="card-actions">
+                         <a href="{% url 'edit_event' event.id %}">✏️</a>
+                         <a href="{% url 'delete_event' event.id %}">🗑️</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div id="eventModal" class="modal">
+    <div class="modal-box">
+        <span class="close" onclick="closeModal()">✕</span>
+        <h2>Create Event</h2>
+        <form method="POST" action="{% url 'create_event' %}">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Event Title" required>
+            <textarea name="description" placeholder="Event Description"></textarea>
+            <input type="datetime-local" name="date" required>
+            <input type="text" name="location" placeholder="Location">
+            <button type="submit">Create Event</button>
+        </form>
     </div>
-
 </div>
+    <script>
+    function openModal() {
+        document.getElementById("eventModal").style.display = "flex";
+    }
 
-<!-- ANNOUNCEMENTS -->
-<a href="{% url 'alumni_announcements' %}">Announcements</a>
-<a href="{% url 'logout' %}">Logout</a>
+    function closeModal() {
+        document.getElementById("eventModal").style.display = "none";
+    }
 
-</aside>
-
-
-<!-- MAIN -->
-<div class="main">
-
-<!-- NAVBAR -->
-<nav class="navbar">
-<button class="menu-btn" onclick="toggleSidebar()">☰</button>
-<h2>Alumni Sync</h2>
-</nav>
-
-
-<!-- CONTENT -->
-<main class="content">
-
-<h3 class="page-title">Create New Event</h3>
-
-<div class="form-card">
-
-<form method="POST">
-{% csrf_token %}
-
-<div class="input-group">
-<label>Event Title</label>
-<input type="text" name="title" required>
-</div>
-
-<div class="input-group">
-<label>Description</label>
-<textarea name="description" required></textarea>
-</div>
-
-<div class="input-group">
-<label>Date</label>
-<input type="date" name="date" required>
-</div>
-
-<button type="submit">Create Event</button>
-
-</form>
-
-</div>
-
-</main>
-
-</div>
-</div>
-
-
-<script>
-
-function toggleMenu(id){
-const menu=document.getElementById(id);
-menu.style.display=menu.style.display==="block"?"none":"block";
-}
-
-function toggleSidebar(){
-document.getElementById("sidebar").classList.toggle("active");
-}
-
+    // Close modal when clicking outside of the modal box
+    window.onclick = function(event) {
+        let modal = document.getElementById("eventModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
 </script>
-
 </body>
 </html>

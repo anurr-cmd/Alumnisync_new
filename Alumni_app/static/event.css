@@ -1,250 +1,263 @@
-/* ================= GLOBAL ================= */
-
-*{
-box-sizing:border-box;
+:root {
+    --primary-green: #2d5a27;       /* Dark Green */
+    --accent-green: #4f7942;        /* Sage Green */
+    --bg-mint: #f0fdf4;             /* Soft Mint */
+    --white: #ffffff;
+    --text-dark: #1a202c;
+    --text-muted: #718096;
+    --border-gray: #edf2f7;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#eef2f7,#f7f9fc);
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: var(--text-dark);
 }
 
-.container{
-display:flex;
-min-height:100vh;
+/* Header Styling */
+.top-header {
+    height: 60px;
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--border-gray);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-/* ================= SIDEBAR ================= */
-
-.sidebar{
-width:210px;
-background:linear-gradient(180deg,#0f172a,#020617);
-color:white;
-min-height:100vh;
-padding:20px 15px;
-transition:0.3s ease;
+.logout-btn {
+    background: #fff1f2;
+    color: #e11d48;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.profile-box{
-text-align:center;
-margin-bottom:25px;
+/* Sidebar Styling */
+.layout-container { display: flex; min-height: calc(100vh - 60px); }
+
+.sidebar {
+    width: 250px;
+    background: var(--white);
+    border-right: 1px solid var(--border-gray);
+    padding: 40px 15px;
 }
 
-.profile-box img{
-width:80px;
-height:80px;
-border-radius:50%;
-border:3px solid #667eea;
-object-fit:cover;
+.avatar-circle {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 10px;
 }
 
-.profile-box p{
-margin-top:10px;
-font-weight:600;
-cursor:pointer;
+.dashboard-label { text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+
+.side-nav ul { list-style: none; padding: 0; margin-top: 30px; }
+.side-nav li a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: 500;
 }
 
-.sidebar a{
-display:block;
-padding:8px 6px;
-color:#e2e8f0;
-text-decoration:none;
-margin:6px 0;
-font-size:14px;
-border-radius:6px;
-transition:0.25s;
+.side-nav li.active a { background: #333; color: white; }
+.side-nav li:not(.active) a:hover { background: var(--bg-mint); color: var(--primary-green); }
+
+/* Main Content & Grid */
+.main-content { flex: 1; padding: 40px 50px; }
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+/* ... existing sidebar and main layout styles ... */
+
+.add-btn {
+    background-color: #333; /* Darker like in ref */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.sidebar a:hover{
-background:#1e293b;
-color:white;
+/* Base styles for all event cards */
+.event-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
 }
 
-.active{
-background:#667eea;
-color:white !important;
+/* Styles for events with images (use CSS Grid for a 3-column layout) */
+.events-with-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
 }
 
-/* ================= MENU ================= */
-
-.menu-title{
-margin-top:18px;
-font-weight:600;
-cursor:pointer;
-color:#cbd5f5;
+.event-card.has-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-.submenu{
-display:none;
-margin-left:12px;
+.event-card.has-image .card-content {
+    padding: 20px;
 }
 
-.submenu a{
-font-size:13px;
-color:#94a3b8;
+/* Styles for events without images */
+.events-no-images-grid h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
-/* ================= MAIN ================= */
-
-.main{
-flex:1;
+.events-no-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-/* ================= NAVBAR ================= */
-
-.navbar{
-background:white;
-padding:15px 25px;
-display:flex;
-align-items:center;
-gap:15px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
+.event-card.no-image .card-content {
+    padding: 20px;
 }
 
-.navbar h2{
-font-weight:600;
+/* Style refined for no-image cards */
+.event-card.no-image h3 {
+    font-size: 1rem;
+    color: #444;
 }
 
-.menu-btn{
-font-size:22px;
-background:none;
-border:none;
-cursor:pointer;
-display:none;
+.event-card.no-image .desc {
+    color: #666;
+    margin-bottom: 15px;
 }
 
-/* ================= CONTENT ================= */
-
-.content{
-padding:30px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-min-height:80vh;
+/* Global button styles refined */
+.card-actions .register {
+    background-color: #ebf5ff; /* Light blue like ref */
+    color: #007bff;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500;
 }
 
-.page-title{
-font-size:20px;
-font-weight:600;
-color:#111827;
-margin-bottom:20px;
-text-align:center;
+/* Existing modal styles are fine, make sure display is 'none' by default in CSS */
+#eventModal {
+    display: none;
+}
+.add-event-btn {
+    background: #1a202c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-/* ================= FORM CARD ================= */
-
-.form-card{
-background:white;
-border-radius:16px;
-padding:25px;
-width:100%;
-max-width:650px;   /* increased from 520px */
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
 }
 
-/* ================= INPUT GROUP ================= */
-
-.input-group{
-margin-bottom:18px;
+.event-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: 0.3s;
 }
 
-.input-group label{
-display:block;
-margin-bottom:6px;
-font-size:14px;
-font-weight:600;
-color:#374151;
+.card-image img { width: 100%; height: 200px; object-fit: cover; }
+.card-body { padding: 25px; }
+
+.card-body h3 { margin: 0 0 10px; font-size: 1.25rem; }
+.event-meta { font-size: 0.85rem; color: var(--text-muted); margin: 5px 0; }
+.event-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-top: 15px; }
+
+/* Buttons & Icons */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
 }
 
-.input-group input,
-.input-group textarea{
-width:100%;
-padding:11px 12px;
-border-radius:8px;
-border:1px solid #d1d5db;
-font-size:14px;
-background:#f9fafb;
-transition:0.2s;
+.register-btn {
+    background: var(--bg-mint);
+    color: var(--primary-green);
+    border: none;
+    padding: 10px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-.input-group textarea{
-resize:none;
-height:90px;
+.action-icons a {
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 1.1rem;
+    padding: 5px;
 }
 
-/* INPUT FOCUS */
-
-.input-group input:focus,
-.input-group textarea:focus{
-outline:none;
-border-color:#667eea;
-background:white;
-box-shadow:0 0 0 3px rgba(102,126,234,0.15);
+/* Modal Styling */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-/* ================= BUTTON ================= */
-
-button{
-width:100%;
-padding:12px;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-border:none;
-border-radius:8px;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:0.25s;
+.modal-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 500px;
+    position: relative;
 }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 18px rgba(102,126,234,0.35);
+.modal-box input, .modal-box textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
-/* ================= MOBILE ================= */
-
-@media (max-width:768px){
-
-.sidebar{
-position:fixed;
-left:-220px;
-top:0;
-height:100%;
-z-index:1000;
-}
-
-.sidebar.active{
-left:0;
-}
-
-.menu-btn{
-display:block;
-}
-
-.content{
-padding:20px;
-}
-
-.form-card{
-width:100%;
-}
-
-}
-
-/* ================= SMALL MOBILE ================= */
-
-@media (max-width:480px){
-
-.navbar h2{
-font-size:18px;
-}
-
-.profile-box img{
-width:70px;
-height:70px;
-}
-
+.submit-btn {
+    width: 100%;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: 600;
+    cursor: pointer;
 }

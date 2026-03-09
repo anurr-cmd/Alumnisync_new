@@ -141,16 +141,19 @@ def register(request):
 
     return render(request, "register.html")
 
-@login_required
 def alumni_dashboard(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
 
     context = {
-        'profile': profile,
-        # keep your other counts here
-    }
-    return render(request, 'alumni_dashboard.html', context)
+        "total_events": Event.objects.count(),
+        "total_jobs": Job.objects.count(),
+        "total_announcements": Announcement.objects.count(),
 
+        "recent_events": Event.objects.order_by("-date")[:3],
+        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
+        "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
+    }
+
+    return render(request, "alumni_dashboard.html", context)
 
 @login_required
 def edit_profile(request):
@@ -249,15 +252,19 @@ def admin_portal(request):
 
 @login_required
 def create_event(request):
+
     if request.method == "POST":
+
         Event.objects.create(
             title=request.POST["title"],
             description=request.POST["description"],
             date=request.POST["date"],
             created_by=request.user
         )
+
         messages.success(request, "Event submitted for admin approval")
-        return redirect("alumni_portal")
+
+        return redirect("manage_events")
 
     return render(request, "create_event.html")
 
@@ -274,21 +281,37 @@ def view_events_alumni(request):
 
 
 # 🔹 MANAGE EVENTS (Main Page)
+@login_required
 def manage_events(request):
-    events = Event.objects.all().order_by('-date')
-    return render(request, 'manage_events.html', {'events': events})
 
+    if request.method == "POST":
+
+        Event.objects.create(
+            title=request.POST["title"],
+            description=request.POST["description"],
+            date=request.POST["date"],
+            created_by=request.user
+        )
+
+        return redirect("manage_events")
+
+    events = Event.objects.all().order_by("-date")
+
+    return render(request, "manage_events.html", {
+        "events": events
+    })
 
 # 🔹 EDIT EVENT (Modal form submits here)
 def edit_event(request, id):
     event = get_object_or_404(Event, id=id)
 
-    if request.method == 'POST':
-        event.title = request.POST.get('title')
-        event.date = request.POST.get('date')
+    if request.method == "POST":
+        event.title = request.POST.get("title")
+        event.description = request.POST.get("description")
+        event.date = request.POST.get("date")
         event.save()
 
-    return redirect('manage_events')
+    return redirect("manage_events")
 
 
 # 🔹 DELETE EVENT
@@ -560,19 +583,32 @@ def manage_admin_events(request):
 
     return render(request, "admin_events.html", {"events": events})
 
-@login_required
 def alumni_feedback(request):
-    if request.method == "POST":
-        message = request.POST.get("message")
 
-        Feedback.objects.create(
-            user=request.user,
-            message=message
-        )
+    if request.method == "POST":
+
+        message = request.POST.get("message")
+        name = request.POST.get("name")
+
+        if request.user.is_authenticated:
+
+            Feedback.objects.create(
+                user=request.user,
+                message=message
+            )
+
+        else:
+
+            Feedback.objects.create(
+                name=name,
+                message=message
+            )
 
         return redirect("alumni_feedback")
 
-    return render(request, "alumni_feedback.html", {})
+    feedbacks = Feedback.objects.all().order_by("-created_at")
+
+    return render(request, "alumni_feedback.html", {"feedbacks": feedbacks})
 
 
 @login_required
