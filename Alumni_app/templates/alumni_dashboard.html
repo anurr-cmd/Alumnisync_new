@@ -2,30 +2,54 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Alumni Dashboard | Alumni Sync</title>
 
 <link rel="stylesheet" href="{% static 'alumni_dashboard.css' %}">
+
+<!-- FONT AWESOME ICONS -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
+
 
 <body>
 
-<!-- TOP HEADER -->
+
+<!-- HEADER -->
 
 <header>
 
-<h2>Alumni Dashboard</h2>
+<h2><i class="fa-solid fa-graduation-cap"></i> Alumni Dashboard</h2>
 
 <div>
-<a href="{% url 'index' %}">Back to Home</a>
-<a href="{% url 'logout' %}">Logout</a>
+
+<a href="{% url 'index' %}">
+<i class="fa-solid fa-arrow-left"></i> Back to Home
+</a>
+
+<a href="{% url 'logout' %}">
+<i class="fa-solid fa-right-from-bracket"></i> Logout
+</a>
+
+<!-- EDIT PROFILE BUTTON -->
+
+<button onclick="openProfile()" class="edit-btn">
+<i class="fa-solid fa-pen"></i> Edit Profile
+</button>
+
 </div>
 
 </header>
 
 
+
 <div class="dashboard-container">
+
 
 <!-- SIDEBAR -->
 
@@ -41,16 +65,29 @@
 
 </div>
 
+
 <nav>
 
-<a href="{% url 'alumni_dashboard' %}">Dashboard</a>
-<a href="{% url 'create_event' %}">Events</a>
-<a href="#">Jobs</a>
-<a href="#">Announcements</a>
+<a href="{% url 'alumni_dashboard' %}">
+<i class="fa-solid fa-chart-line"></i> Dashboard
+</a>
+
+<a href="{% url 'create_event' %}">
+<i class="fa-solid fa-calendar"></i> Events
+</a>
+
+<a href="{% url 'jobs_alumni' %}">
+<i class="fa-solid fa-briefcase"></i> Jobs
+</a>
+
+<a href="#">
+<i class="fa-solid fa-bullhorn"></i> Announcements
+</a>
 
 </nav>
 
 </aside>
+
 
 
 <!-- MAIN CONTENT -->
@@ -62,26 +99,44 @@
 <p>Here's what's happening in your alumni network</p>
 
 
-<!-- STATS CARDS -->
+<!-- STATS -->
 
 <div class="stats">
 
 <div class="card">
+
+<i class="fa-solid fa-calendar-days"></i>
+
 <h2>{{ total_events }}</h2>
+
 <p>Total Events</p>
+
 </div>
 
+
 <div class="card">
+
+<i class="fa-solid fa-briefcase"></i>
+
 <h2>{{ total_jobs }}</h2>
+
 <p>Job Opportunities</p>
+
 </div>
+
 
 <div class="card">
+
+<i class="fa-solid fa-bullhorn"></i>
+
 <h2>{{ total_announcements }}</h2>
+
 <p>Announcements</p>
+
 </div>
 
 </div>
+
 
 
 <!-- RECENT EVENTS -->
@@ -96,9 +151,9 @@
 
 <h3>{{ event.title }}</h3>
 
-<p>{{ event.location }}</p>
+<p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
 
-<p>{{ event.date }}</p>
+<p><i class="fa-solid fa-calendar"></i> {{ event.date }}</p>
 
 </div>
 
@@ -109,6 +164,7 @@
 {% endfor %}
 
 </section>
+
 
 
 <!-- RECENT JOBS -->
@@ -125,7 +181,7 @@
 
 <p>{{ job.company }}</p>
 
-<p>{{ job.location }}</p>
+<p><i class="fa-solid fa-location-dot"></i> {{ job.location }}</p>
 
 </div>
 
@@ -136,6 +192,7 @@
 {% endfor %}
 
 </section>
+
 
 
 <!-- RECENT ANNOUNCEMENTS -->
@@ -168,6 +225,100 @@
 </main>
 
 </div>
+
+
+
+<!-- EDIT PROFILE MODAL -->
+
+<div id="profileModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeProfile()">&times;</span>
+
+<h2>Edit Profile</h2>
+
+<form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+{% csrf_token %}
+
+<h3>Basic Information</h3>
+
+<input type="text" name="full_name" value="{{ request.user.profile }}" placeholder="Full Name">
+<input type="email" name="email" value="{{ profile.email }}" placeholder="Email">
+{% comment %} <input type="text" name="company" value="{{ profile.company }}" placeholder="Company"> {% endcomment %}
+
+<input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+
+<input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Alternate Phone">
+
+<h3>Academic Information</h3>
+
+<input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Roll No">
+<input type="text" name="department" value="{{ profile.department }}" placeholder="Department">
+<input type="text" name="join_year" value="{{ profile.join_year }}" placeholder="Join Year">
+
+<input type="text" name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout Year">
+
+<h3>Professional Information</h3>
+
+<input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="Current Job Title">
+
+<input type="text" name="company" value="{{ profile.company }}" placeholder="Company">
+<input type="text" name="designation" value="{{ profile.designation }}" placeholder="Designation">
+
+<h3>Additional Information</h3>
+
+<textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
+
+<textarea name="remarks" placeholder="Remarks">{{ profile.remarks }}</textarea>
+
+
+<div class="file-upload-group">
+    <label>Proof ID</label>
+    <label class="custom-file-upload">
+        <input type="file" name="proof_id">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Proof
+    </label>
+</div>
+
+<div class="file-upload-group">
+    <label>Profile Photo</label>
+    <label class="custom-file-upload">
+        <input type="file" name="profile_photo">
+        <i class="fa-solid fa-image"></i> Choose Photo
+    </label>
+</div>
+
+<br><br>
+
+<button type="submit">Save Changes</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+function openProfile() {
+
+document.getElementById("profileModal").style.display = "block";
+
+}
+
+function closeProfile() {
+
+document.getElementById("profileModal").style.display = "none";
+
+}
+
+</script>
+
 
 </body>
 </html>

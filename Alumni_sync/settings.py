@@ -81,7 +81,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'login_portal'
 LOGIN_REDIRECT_URL = 'alumni_portal'
 
 MEDIA_URL = '/media/'

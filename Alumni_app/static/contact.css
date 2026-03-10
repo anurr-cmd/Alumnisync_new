@@ -1,3 +1,6 @@
+/* IMPORT GOOGLE FONT */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 /* RESET & UNIVERSAL */
 * {
     margin: 0;
@@ -6,7 +9,7 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif; /* Changed to Montserrat */
     background-color: #ffffff;
     color: #1a3c34;
     line-height: 1.6;
@@ -29,6 +32,7 @@ nav {
     font-weight: 700;
     font-size: 1.2rem;
     color: #1a3c34;
+    letter-spacing: -0.5px;
 }
 
 .logo::before {
@@ -41,8 +45,9 @@ nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     margin-right: 10px;
+    font-weight: 700;
 }
 
 nav ul {
@@ -53,14 +58,15 @@ nav ul {
 
 nav ul li a {
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #666;
+    font-weight: 500;
     transition: 0.3s;
 }
 
 nav ul li a.active {
     color: #1a3c34;
-    font-weight: 600;
+    font-weight: 700;
     border-bottom: 2px solid #2d6a4f;
     padding-bottom: 5px;
 }
@@ -68,21 +74,24 @@ nav ul li a.active {
 /* HERO SECTION */
 .hero {
     text-align: center;
-    padding: 100px 15% 60px;
+    padding: 100px 15% 80px;
     background-color: #f9fbfb;
 }
 
 .hero h1 {
     font-size: 3.5rem;
     color: #1a3c34;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -1px;
 }
 
 .hero p {
     color: #666;
     max-width: 700px;
     margin: 0 auto;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 /* CONTACT CARDS */
@@ -90,8 +99,8 @@ nav ul li a.active {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 25px;
-    padding: 40px 8%;
-    margin-top: -40px; /* Slight overlap with hero */
+    padding: 0 8%;
+    margin-top: -40px; /* Overlap with hero background */
 }
 
 .card {
@@ -100,11 +109,11 @@ nav ul li a.active {
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-    transition: transform 0.3s;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
 }
 
 .card .icon {
@@ -116,20 +125,21 @@ nav ul li a.active {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 1.5rem;
+    margin: 0 auto 25px;
+    font-size: 1.4rem;
 }
 
 .card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
     color: #1a3c34;
+    font-weight: 700;
 }
 
 .card p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #555;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 /* INFO GRID (Map & Depts) */
@@ -137,7 +147,7 @@ nav ul li a.active {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    padding: 80px 8%;
+    padding: 100px 8%;
 }
 
 .info-box {
@@ -145,6 +155,11 @@ nav ul li a.active {
     padding: 40px;
     border-radius: 15px;
     border: 1px solid #f0f0f0;
+}
+
+.info-box h3 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .map {
@@ -170,19 +185,21 @@ nav ul li a.active {
 .dept h4 {
     color: #1a3c34;
     margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 1rem;
 }
 
 .dept span {
     color: #2d6a4f;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 /* CTA SECTION */
 .cta {
     margin: 40px 8% 80px;
     padding: 80px 40px;
-    background: linear-gradient(135deg, #40916c 0%, #1b4332 100%);
+    background: linear-gradient(135deg, #2d6a4f 0%, #1a3c34 100%);
     border-radius: 20px;
     text-align: center;
     color: white;
@@ -191,48 +208,55 @@ nav ul li a.active {
 .cta h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
+    font-weight: 700;
 }
 
 .cta p {
     margin-bottom: 30px;
     opacity: 0.9;
+    font-size: 1rem;
 }
 
 .cta button {
-    padding: 15px 40px;
+    padding: 16px 45px;
     background: #fff;
-    color: #1b4332;
+    color: #1a3c34;
     border: none;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .cta button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 /* FOOTER */
 footer {
     background: #1a3c34;
     color: #e8f3ee;
-    padding: 80px 8% 30px;
+    padding: 80px 8% 40px;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 50px;
+    gap: 50px;
+    margin-bottom: 60px;
 }
 
 .footer-grid h4 {
     color: #fff;
     margin-bottom: 25px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
 }
 
 .footer-grid ul { list-style: none; }
@@ -240,7 +264,8 @@ footer {
 .footer-grid li, .footer-grid p {
     color: #b2c7bd;
     margin-bottom: 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 400;
 }
 
 .footer-grid a {
@@ -255,21 +280,29 @@ footer {
     margin-right: 20px;
     font-size: 1.2rem;
     cursor: pointer;
+    transition: color 0.3s;
 }
 
+.footer-grid i:hover { color: #52b788; }
+
 .bottom {
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.08);
     padding-top: 30px;
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #8da198;
+    font-weight: 400;
 }
 
 /* RESPONSIVE */
+@media (max-width: 992px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 768px) {
-    .info-grid, .footer-grid {
-        grid-template-columns: 1fr;
-    }
-    .hero h1 { font-size: 2.5rem; }
+    .info-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.2rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .bottom { flex-direction: column; gap: 10px; text-align: center; }
 }
