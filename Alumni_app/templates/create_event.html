@@ -1,122 +1,270 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events Management | Alumni Sync</title>
-    <link rel="stylesheet" href="{% static 'event.css' %}">
+<meta charset="UTF-8">
+<title>Events Management</title>
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Your CSS File -->
+<link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
-    <header class="top-header">
-        <div class="header-left">
-            <span class="close-icon">✕</span>
-            <h2>Events Management</h2>
-        </div>
-        <div class="header-right">
-            <a href="/">Back to Home</a>
-            <a href="/logout/" class="logout-btn">Logout</a>
-        </div>
-    </header>
+<header>
 
-    <div class="layout-container">
-        <aside class="sidebar">
-            <div class="profile-section">
-                <div class="avatar-circle">
-                    {{ request.user.username|first|upper }}
-                </div>
-                <p class="dashboard-label">Alumni Dashboard</p>
-            </div>
-            <nav class="side-nav">
-                <ul>
-                    <li><a href="{% url 'alumni_dashboard' %}">Dashboard</a></li>
-                    <li class="active"><a href="{% url 'manage_events' %}">Events</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">Announcements</a></li>
-                </ul>
-            </nav>
-        </aside>
+<h2>Events Management</h2>
 
-        <div class="page-header">
-    <div>
-        <h1>Events</h1>
-        <p>Manage and view all alumni events</p>
-    </div>
-    <button class="add-btn" onclick="openModal()">+ Add Event</button>
+<div>
+<a href="#">Back to Home</a>
+<a href="#">Logout</a>
 </div>
 
-<div class="events-with-images-grid">
-    {% for event in events %}
-        {% if event.image_url %}
-            <div class="event-card has-image">
-                <img src="{{ event.image_url }}" alt="{{ event.title }}">
-                <div class="card-content">
-                    <h3>{{ event.title }}</h3>
-                    <p class="meta">📅 {{ event.date|date:"d/m/Y, H:i" }}</p>
-                    <p class="meta">📍 {{ event.location }}</p>
-                    <p class="desc">{{ event.description|truncatewords:18 }}</p>
-                    <div class="card-actions">
-                        <button class="register">Register</button>
-                        <div class="icons">
-                            <a href="{% url 'edit_event' event.id %}">✏️</a>
-                            <a href="{% url 'delete_event' event.id %}">🗑️</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
+</header>
+
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="profile">
+
+<div class="avatar">A</div>
+
+<p>Alumni Dashboard</p>
+
 </div>
 
-<div class="events-no-images-grid">
-    <h2>Other Events</h2>
-    {% for event in events %}
-        {% if not event.image_url %}
-            <div class="event-card no-image">
-                <div class="card-content">
-                    <h3>{{ event.title }}</h3>
-                    <p class="desc">{{ event.description|truncatewords:10 }}</p>
-                    <div class="card-actions">
-                         <a href="{% url 'edit_event' event.id %}">✏️</a>
-                         <a href="{% url 'delete_event' event.id %}">🗑️</a>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
+<ul>
+
+<li>
+<i class="fa-solid fa-table-columns"></i>
+Dashboard
+</li>
+
+<li class="active">
+<i class="fa-solid fa-calendar"></i>
+Events
+</li>
+
+<li>
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</li>
+
+<li>
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</li>
+
+</ul>
+
 </div>
 
-<div id="eventModal" class="modal">
-    <div class="modal-box">
-        <span class="close" onclick="closeModal()">✕</span>
-        <h2>Create Event</h2>
-        <form method="POST" action="{% url 'create_event' %}">
-            {% csrf_token %}
-            <input type="text" name="title" placeholder="Event Title" required>
-            <textarea name="description" placeholder="Event Description"></textarea>
-            <input type="datetime-local" name="date" required>
-            <input type="text" name="location" placeholder="Location">
-            <button type="submit">Create Event</button>
-        </form>
-    </div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<div class="top">
+
+<div>
+
+<h1>Events</h1>
+
+<p>Manage and view all alumni events</p>
+
 </div>
-    <script>
-    function openModal() {
-        document.getElementById("eventModal").style.display = "flex";
-    }
 
-    function closeModal() {
-        document.getElementById("eventModal").style.display = "none";
-    }
+<button>
 
-    // Close modal when clicking outside of the modal box
-    window.onclick = function(event) {
-        let modal = document.getElementById("eventModal");
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-</script>
+<i class="fa-solid fa-plus"></i>
+Add Event
+
+</button>
+
+</div>
+
+
+
+<!-- EVENTS GRID -->
+
+<div class="events-grid">
+
+
+<!-- EVENT CARD 1 -->
+
+<div class="card">
+
+<img src="event1.jpg">
+
+<div class="card-content">
+
+<h3>Annual Alumni Reunion Gala</h3>
+
+<p>
+
+<i class="fa-solid fa-calendar"></i>
+10/26/2024, 11:30 PM
+
+</p>
+
+<p>
+
+<i class="fa-solid fa-location-dot"></i>
+Grand Ballroom, University Convention Center
+
+</p>
+
+<p>
+
+Join us for our annual alumni reunion gala, a night of fine dining...
+
+</p>
+
+<div class="actions">
+
+<button>
+
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+Register
+
+</button>
+
+<div>
+
+<i class="fa-solid fa-pen"></i>
+
+<i class="fa-solid fa-trash"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- EVENT CARD 2 -->
+
+<div class="card">
+
+<img src="event2.jpg">
+
+<div class="card-content">
+
+<h3>Career Development Workshop</h3>
+
+<p>
+
+<i class="fa-solid fa-calendar"></i>
+9/15/2024, 3:30 PM
+
+</p>
+
+<p>
+
+<i class="fa-solid fa-location-dot"></i>
+Online (Zoom)
+
+</p>
+
+<p>
+
+A virtual workshop designed to equip alumni with latest strategies...
+
+</p>
+
+<div class="actions">
+
+<button>
+
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+Register
+
+</button>
+
+<div>
+
+<i class="fa-solid fa-pen"></i>
+
+<i class="fa-solid fa-trash"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- EVENT CARD 3 -->
+
+<div class="card">
+
+<img src="event3.jpg">
+
+<div class="card-content">
+
+<h3>Alumni Networking Mixer</h3>
+
+<p>
+
+<i class="fa-solid fa-calendar"></i>
+11/8/2024, 11:00 PM
+
+</p>
+
+<p>
+
+<i class="fa-solid fa-location-dot"></i>
+The Innovation Hub, Downtown
+
+</p>
+
+<p>
+
+An exclusive networking event for alumni working in technology...
+
+</p>
+
+<div class="actions">
+
+<button>
+
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+Register
+
+</button>
+
+<div>
+
+<i class="fa-solid fa-pen"></i>
+
+<i class="fa-solid fa-trash"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
 </body>
 </html>
