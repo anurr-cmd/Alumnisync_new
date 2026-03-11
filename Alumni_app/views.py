@@ -571,26 +571,23 @@ def alumni_announcements(request):
 
 @login_required
 def manage_admin_events(request):
-    if request.user.profile.role.lower() != "admin":
-        return redirect("login")
+
+    profile = Profile.objects.get(user=request.user)
+
+    if profile.role.lower() != "admin":
+        return redirect("login_portal")
 
     events = Event.objects.all().order_by("-id")
 
     if request.method == "POST":
+
         event_id = request.POST.get("event_id")
         action = request.POST.get("action")
 
         event = get_object_or_404(Event, id=event_id)
 
-        # ✏️ EDIT ONLY
-        if action == "edit":
-            event.title = request.POST.get("title")
-            event.description = request.POST.get("description")
-            event.date = request.POST.get("date")
-            event.save()
-
-        # ✅ APPROVE (NO TITLE CHANGE HERE)
-        elif action == "approve":
+        # ✅ APPROVE
+        if action == "approve":
             event.is_approved = True
             event.is_rejected = False
             event.save()
@@ -600,6 +597,18 @@ def manage_admin_events(request):
             event.is_rejected = True
             event.is_approved = False
             event.save()
+
+        # ✏️ EDIT
+        elif action == "edit":
+            event.title = request.POST.get("title")
+            event.description = request.POST.get("description")
+            event.date = request.POST.get("date")
+            event.location = request.POST.get("location")
+            event.save()
+
+        # 🗑 DELETE
+        elif action == "delete":
+            event.delete()
 
         return redirect("admin_events")
 

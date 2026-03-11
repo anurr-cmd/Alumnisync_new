@@ -1,42 +1,85 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Events Management</title>
 
 <link rel="stylesheet" href="{% static 'admin_events.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 
 <body>
 
 <!-- Sidebar -->
+
 <div class="sidebar">
 
 <div class="sidebar-header">
-<h2>Events Management</h2>
+<h2><i class="fa-solid fa-calendar-check"></i> Events Management</h2>
 </div>
 
 <div class="admin-profile">
-<div class="avatar">AD</div>
+<div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
 <p>Admin Dashboard</p>
 </div>
 
 <ul class="menu">
-<li><a href="#">Dashboard</a></li>
-<li class="active"><a href="#">Events</a></li>
-<li><a href="#">Jobs</a></li>
-<li><a href="#">Announcements</a></li>
-<li><a href="#">Alumni Details</a></li>
-<li><a href="#">Feedback</a></li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-gauge"></i>
+Dashboard
+</a>
+</li>
+
+<li class="active">
+<a href="#">
+<i class="fa-solid fa-calendar-days"></i>
+Events
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+Alumni Details
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-comments"></i>
+Feedback
+</a>
+</li>
+
 </ul>
 
 </div>
 
+<!-- Main Content -->
 
-<!-- Main -->
 <div class="main-content">
 
 <div class="topbar">
@@ -49,41 +92,41 @@
 <p>Approve, edit, and manage all alumni events</p>
 </div>
 
-
 <!-- EVENTS GRID -->
+
 <div class="events-grid">
 
 {% for event in events %}
 
 <div class="event-card">
 
+<!-- Event Image -->
+
 <div class="event-image">
 
-{% if event.image_url %}
-<img src="{{ event.image_url }}">
-{% else %}
-<img src="{% static 'default_event.jpg' %}">
+{% if event.image_url %} <img src="{{ event.image_url }}">
+{% else %} <img src="{% static 'default_event.jpg' %}">
 {% endif %}
 
-{% if event.is_approved %}
-<span class="status approved">Approved</span>
-{% else %}
-<span class="status pending">Pending</span>
+{% if event.is_approved %} <span class="status approved">Approved</span>
+{% else %} <span class="status pending">Pending</span>
 {% endif %}
 
 </div>
+
+<!-- Event Details -->
 
 <div class="event-details">
 
 <h3>{{ event.title }}</h3>
 
 <p class="event-date">
-<i class="fa fa-calendar"></i>
+<i class="fa-solid fa-calendar-days"></i>
 {{ event.date }}
 </p>
 
 <p class="event-location">
-<i class="fa fa-location-dot"></i>
+<i class="fa-solid fa-location-dot"></i>
 {{ event.location }}
 </p>
 
@@ -91,37 +134,55 @@
 {{ event.description|truncatewords:20 }}
 </p>
 
+<!-- ACTION BUTTONS -->
 
 <div class="event-actions">
 
 {% if not event.is_approved %}
-<a href="{% url 'approve_event' event.id %}" class="approve">
-<i class="fa fa-check"></i>
-</a>
 
-<a href="{% url 'reject_event' event.id %}" class="reject">
-<i class="fa fa-times"></i>
-</a>
+<!-- APPROVE -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="approve">
+<button class="approve">
+<i class="fa-solid fa-check"></i>
+</button>
+</form>
+
+<!-- REJECT -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="reject">
+<button class="reject">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</form>
+
 {% endif %}
 
-{% comment %} <a href="{% url 'view_event' event.id %}" class="view">
-<i class="fa fa-eye"></i>
-</a> {% endcomment %}
+<!-- EDIT -->
 
 <button class="edit-btn"
 data-id="{{ event.id }}"
 data-title="{{ event.title }}"
 data-date="{{ event.date }}"
 data-location="{{ event.location }}"
-data-description="{{ event.description }}">
-<i class="fa fa-pen"></i>
-</button>
+data-description="{{ event.description }}"> <i class="fa-solid fa-pen-to-square"></i> </button>
 
-<a href="{% url 'delete_event' event.id %}"
-onclick="return confirm('Are you sure you want to delete this event?')"
-class="delete">
-<i class="fa fa-trash"></i>
-</a>
+<!-- DELETE -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="delete">
+<button class="delete" onclick="return confirm('Delete this event?')">
+<i class="fa-solid fa-trash"></i>
+</button>
+</form>
 
 </div>
 
@@ -132,6 +193,9 @@ class="delete">
 
 </div>
 </div>
+
+<!-- EDIT MODAL -->
+
 <div id="editModal" class="modal">
 
 <div class="modal-content">
@@ -139,15 +203,19 @@ class="delete">
 <h2>Edit Event</h2>
 
 <form id="editForm" method="POST">
+
 {% csrf_token %}
 
-<input type="text" name="title" id="editTitle" placeholder="Event Title">
+<input type="hidden" name="event_id" id="editId">
+<input type="hidden" name="action" value="edit">
 
-<input type="datetime-local" name="date" id="editDate">
+<input type="text" name="title" id="editTitle" placeholder="Event Title" required>
 
-<input type="text" name="location" id="editLocation" placeholder="Location">
+<input type="date" name="date" id="editDate" required>
 
-<textarea name="description" id="editDescription"></textarea>
+<input type="text" name="location" id="editLocation" placeholder="Location" required>
+
+<textarea name="description" id="editDescription" placeholder="Description"></textarea>
 
 <button type="submit">Update Event</button>
 
@@ -157,6 +225,9 @@ class="delete">
 
 </div>
 </div>
+
+<!-- SCRIPT -->
+
 <script>
 
 const modal = document.getElementById("editModal");
@@ -165,14 +236,11 @@ document.querySelectorAll(".edit-btn").forEach(button => {
 
 button.addEventListener("click", function(){
 
-const id = this.dataset.id;
-
+document.getElementById("editId").value = this.dataset.id;
 document.getElementById("editTitle").value = this.dataset.title;
 document.getElementById("editDate").value = this.dataset.date;
 document.getElementById("editLocation").value = this.dataset.location;
 document.getElementById("editDescription").value = this.dataset.description;
-
-document.getElementById("editForm").action = "/edit-event/" + id + "/";
 
 modal.style.display = "block";
 
@@ -185,13 +253,12 @@ modal.style.display = "none";
 }
 
 window.onclick = function(event){
-
 if(event.target == modal){
 modal.style.display = "none";
 }
-
 }
 
 </script>
+
 </body>
 </html>

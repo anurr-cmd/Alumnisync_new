@@ -1,163 +1,160 @@
-/* --- GOOGLE FONTS & VARIABLES --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
-
+/* --- Alumni Sync Theme Colors --- */
 :root {
-    --primary-green: #2d6a4f;      /* Wix Emerald */
-    --primary-dark: #1b4332;       /* Deep Forest */
-    --accent-mint: #eaf5f0;        /* Background highlights */
+    --primary-teal: #1a3a3a;
+    --accent-green: #2d5a27;
+    --bg-light: #f4f7f6;
+    --sidebar-text: #6b7280;
+    --danger-red: #dc2626;
     --white: #ffffff;
-    --text-main: #2d3748;
-    --text-muted: #718096;
-    --bg-light: #f8fafb;           /* Clean background */
-    --border-color: #e2e8f0;
-    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    --status-approved: #2d6a4f;
 }
 
-/* --- BASE STYLES --- */
+/* General Reset */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-light);
+    font-family: 'Inter', -apple-system, sans-serif;
     margin: 0;
+    padding: 0;
+    background-color: var(--bg-light); 
     display: flex;
 }
 
-/* --- SIDEBAR --- */
+/* Sidebar Styling - Matching Image */
 .sidebar {
     width: 260px;
-    background: var(--white);
-    border-right: 1px solid var(--border-color);
-    padding: 40px 15px;
-    position: fixed;
     height: 100vh;
+    background: var(--white);
+    border-right: 1px solid #e5e7eb;
+    position: fixed;
+    padding: 30px 0;
 }
 
 .sidebar-header h2 {
-    font-family: 'Poppins';
-    font-size: 1.2rem;
-    color: var(--primary-dark);
+    display: none; /* Based on image, it uses the profile section instead */
+}
+
+.admin-profile {
     text-align: center;
-    margin-bottom: 30px;
+    padding: 0 20px 30px 20px;
 }
 
 .avatar {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
+    background: #2d4a4a;
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 0 auto 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 auto 15px;
 }
 
 .admin-profile p {
-    text-align: center;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 30px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
 }
 
 .menu {
     list-style: none;
-    padding: 0;
+    padding: 10px 15px;
+}
+
+.menu li {
+    margin-bottom: 8px;
 }
 
 .menu li a {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 12px 20px;
-    color: var(--text-muted);
+    color: var(--sidebar-text);
     text-decoration: none;
-    border-radius: 12px;
-    margin-bottom: 5px;
-    transition: 0.3s;
+    gap: 12px;
+    font-size: 15px;
     font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s;
 }
 
-.menu li.active a, .menu li a:hover {
-    background: var(--accent-mint);
-    color: var(--primary-green);
+.menu li.active a {
+    background-color: #333333; /* Dark pill from your dashboard */
+    color: var(--white);
 }
 
-/* --- MAIN CONTENT --- */
+.menu li a:hover:not(.active) {
+    background-color: #f9fafb;
+}
+
+/* Main Content Area */
 .main-content {
     margin-left: 260px;
-    flex-grow: 1;
-    padding: 40px;
+    flex: 1;
+    padding: 40px 60px;
 }
 
-/* TOPBAR BUTTONS */
 .topbar {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
+/* Matching the "Back to Home" and "Logout" buttons */
 .topbar a {
     text-decoration: none;
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    color: #111827;
+    background: #f3f4f6;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 600;
-    align-self: center;
 }
 
 .logout {
     background: #fff1f2;
-    color: #e11d48;
-    border: 1px solid #ffe4e6;
-    padding: 8px 20px;
+    color: var(--danger-red);
+    border: none;
+    padding: 10px 24px;
     border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 700;
-    transition: 0.3s;
 }
 
-.logout:hover {
-    background: #e11d48;
-    color: white;
-}
-
-/* --- PAGE HEADER --- */
+/* Page Headers */
 .page-header h1 {
-    font-family: 'Poppins';
-    font-size: 2.2rem;
+    font-size: 32px;
+    color: #111827;
+    font-weight: 800;
     margin: 0;
 }
 
 .page-header p {
-    color: var(--text-muted);
-    margin-top: 5px;
+    color: #6b7280;
+    margin-top: 8px;
 }
 
-/* --- EVENTS GRID & CARDS --- */
+/* Events Grid - Clean White Cards */
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
 
 .event-card {
     background: var(--white);
-    border-radius: 24px;
+    border-radius: 20px; /* More rounded like dashboard cards */
     overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.event-card:hover {
-    transform: translateY(-8px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .event-image {
     position: relative;
-    height: 200px;
+    height: 220px;
 }
 
 .event-image img {
@@ -166,98 +163,211 @@ body {
     object-fit: cover;
 }
 
+/* Status Pill */
 .status {
     position: absolute;
     top: 15px;
     right: 15px;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .status.approved {
-    background: var(--primary-green);
-    color: white;
+    background: #dcfce7;
+    color: #166534;
 }
 
+.status.pending {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* Event Details text */
 .event-details {
-    padding: 25px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    padding: 24px;
 }
 
 .event-details h3 {
-    font-family: 'Poppins';
-    font-size: 1.2rem;
-    margin: 0 0 10px;
-    color: var(--primary-dark);
+    margin: 0;
+    font-size: 20px;
+    color: #111827;
+    font-weight: 700;
 }
 
 .event-date, .event-location {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 2px 0;
+    font-size: 14px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .event-desc {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--text-main);
-    margin: 15px 0;
+    font-size: 15px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 20px 0;
 }
 
-/* --- ATTRACTIVE BUTTONS --- */
+/* Action Buttons - Dashboard style */
+/* Container for actions */
 .event-actions {
-    margin-top: auto;
     display: flex;
+    align-items: center;
     gap: 10px;
     padding-top: 15px;
-    border-top: 1px solid var(--border-color);
+    margin-top: 15px;
+    border-top: 1px solid #f1f5f9;
 }
 
-.event-actions button {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
+/* Base style for all action buttons */
+.event-actions button, 
+.event-actions .edit-btn {
     border: none;
-    font-weight: 700;
     cursor: pointer;
-    font-size: 0.8rem;
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 8px;
 }
 
-/* Approve Button - Emerald Vibe */
+/* --- APPROVE & REJECT (Small Circular/Square Icons) --- */
 .approve {
-    background: var(--accent-mint);
-    color: var(--primary-green);
+    background-color: #ecfdf5 !important; /* Soft Green */
+    color: #10b981 !important;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
 }
 
 .approve:hover {
-    background: var(--primary-green);
-    color: white;
+    background-color: #10b981 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
 }
 
-/* View/Edit - Blue Tones */
-.view, .edit {
-    background: #f1f5f9;
-    color: #475569;
+.reject {
+    background-color: #fff1f2 !important; /* Soft Red/Pink */
+    color: #f43f5e !important;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
 }
 
-.view:hover, .edit:hover {
-    background: #475569;
-    color: white;
+.reject:hover {
+    background-color: #f43f5e !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
 }
 
-/* Delete - Red Alert */
+/* --- EDIT BUTTON (The Primary Action) --- */
+.edit-btn {
+    background-color: #f8fafc !important; /* Light Slate */
+    color: #64748b !important;
+    flex: 1; /* Makes it fill the middle space */
+    height: 36px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #e2e8f0 !important;
+    gap: 8px;
+}
+
+.edit-btn::after {
+    content: 'Edit Details'; /* Adds text next to the icon */
+    font-size: 12px;
+}
+
+.edit-btn:hover {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border-color: #334155 !important;
+}
+
+/* --- DELETE BUTTON --- */
 .delete {
-    background: #fef2f2;
-    color: #dc2626;
+    background-color: #f8fafc !important;
+    color: #94a3b8 !important;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0 !important;
 }
 
 .delete:hover {
-    background: #dc2626;
+    background-color: #fee2e2 !important;
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+/* --- ADJUSTMENT FOR PENDING STATE --- */
+/* This ensures the Approve/Reject and Edit/Delete sit nicely on one line */
+form[style="display:inline;"] {
+    display: flex !important;
+}
+
+/* Modal / Pop-up Styling */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 40px;
+    width: 480px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #111827;
+    font-weight: 800;
+    text-align: center;
+}
+
+#editForm input, #editForm textarea {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+#editForm button[type="submit"] {
+    background-color: #111827; /* Dark button like the dashboard menu */
     color: white;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#editForm button[type="button"] {
+    background: none;
+    color: #9ca3af;
+    width: 100%;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
 }
