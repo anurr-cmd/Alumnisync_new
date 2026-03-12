@@ -246,3 +246,47 @@ input:focus {
         padding: 40px 5%;
     }
 }
+
+/* --- REGISTRATION SECTION STYLES --- */
+
+/* Horizontal Divider with Gradient */
+.login-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+    margin: 25px 0;
+    width: 100%;
+}
+
+.register-section {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.register-section p {
+    color: #718096; /* Muted Slate Gray */
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Highlighter Style Link (Not a solid button) */
+.register-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #2d6a4f;            /* Primary Emerald Green */
+    padding: 8px 16px;
+    border-radius: 8px;        /* Soft Wix-style corners */
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent; /* Keeps layout stable */
+}
+
+/* Hover Effect: The "Highlighter" Look */
+.register-link:hover {
+    background-color: #eaf5f0; /* Soft Mint Background highlight */
+    color: #1b4332;            /* Darker Forest Green */
+    padding-left: 20px;        /* Subtle shift for the arrow */
+    border-color: #d1e7dd;     /* Subtle border to define the highlight */
+}

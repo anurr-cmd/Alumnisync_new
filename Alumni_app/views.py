@@ -114,32 +114,21 @@ def logout_view(request):
     logout(request)
     return redirect("login_portal")
 
-def register(request):
+def alumni_register(request):
+
     if request.method == "POST":
+
         username = request.POST.get("username")
         password = request.POST.get("password")
 
-        try:
-            user = User.objects.create_user(
-                username=username,
-                password=password
-            )
+        User.objects.create_user(
+            username=username,
+            password=password
+        )
 
-            Profile.objects.create(
-                user=user,
-                role="alumni"
-            )
+        return redirect("alumni_dashboard")
 
-            login(request, user)
-
-            # 👇 Directly to dashboard
-            return redirect("alumni_dashboard")
-
-        except:
-            messages.error(request, "Username already exists.")
-            return redirect("register")
-
-    return render(request, "register.html")
+    return render(request,"alumni_register.html")
 
 @login_required
 def alumni_dashboard(request):
@@ -472,22 +461,22 @@ def add_job_alumni(request):
     return redirect("jobs_alumni")
 
 @login_required
-def add_job_admin(request):
-    profile = Profile.objects.get(user=request.user)
-
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
+def add_job(request):
 
     if request.method == "POST":
+
+        title = request.POST.get("title")
+        company = request.POST.get("company")
+        description = request.POST.get("description")
+
         Job.objects.create(
-            title=request.POST.get("title"),
-            company=request.POST.get("company"),
-            description=request.POST.get("description"),
-            posted_by=request.user,
-            # is_approved=True   # admin jobs auto-approved
+            title=title,
+            company=company,
+            description=description,
+            posted_by=request.user
         )
 
-    return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
 
 @login_required
@@ -509,21 +498,19 @@ def edit_job_alumni(request, id):
     return redirect("jobs_alumni")
 
 @login_required
-def edit_job_admin(request, id):
-    profile = Profile.objects.get(user=request.user)
+def edit_job(request,id):
 
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
-
-    job = get_object_or_404(Job, id=id)
+    job = Job.objects.get(id=id)
 
     if request.method == "POST":
+
         job.title = request.POST.get("title")
         job.company = request.POST.get("company")
         job.description = request.POST.get("description")
+
         job.save()
 
-    return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
 
 @login_required
@@ -537,18 +524,13 @@ def delete_job_alumni(request, id):
     return redirect("jobs_alumni")
 
 @login_required
-def delete_job_admin(request, id):
-    profile = Profile.objects.get(user=request.user)
+def delete_job(request,id):
 
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
+    job = Job.objects.get(id=id)
 
-    job = get_object_or_404(Job, id=id)
+    job.delete()
 
-    if request.method == "POST":
-        job.delete()
-
-    return redirect("manage_jobs_admin")
+    return redirect("admin_jobs")
 
 @login_required
 def view_alumni(request):

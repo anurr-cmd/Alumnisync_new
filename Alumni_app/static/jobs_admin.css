@@ -1,0 +1,258 @@
+/* --- GOOGLE FONTS & VARIABLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --primary-green: #2d6a4f;      /* Wix Emerald Green */
+    --primary-dark: #1b4332;       /* Deep Forest Green */
+    --accent-mint: #eaf5f0;        /* Light Mint BG */
+    --white: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --bg-light: #f8fafb;           /* Dashboard Background */
+    --border-color: #e2e8f0;
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* --- BASE STYLES --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    margin: 0;
+    display: flex;
+    color: var(--text-main);
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: 260px;
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+    padding: 40px 15px;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-header h2 {
+    font-family: 'Poppins';
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 auto 10px;
+}
+
+.admin-profile p { text-align: center; font-weight: 600; margin-bottom: 30px; }
+
+.menu { list-style: none; padding: 0; }
+.menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.menu li.active a { background: #333; color: white; }
+.menu li a:hover:not(.active) { background: var(--accent-mint); color: var(--primary-green); }
+
+/* --- MAIN CONTENT & TOPBAR --- */
+.main-content {
+    margin-left: 260px;
+    flex-grow: 1;
+    padding: 40px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.topbar a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; align-self: center;}
+
+.logout {
+    background: #fff1f2;
+    color: #e11d48;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* --- PAGE HEADER & ADD BUTTON --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.page-header h1 { font-family: 'Poppins'; font-size: 2.2rem; margin: 0; }
+
+.add-job {
+    background: #3498db; /* Blue as per your reference image */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Poppins';
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.add-job:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
+
+/* --- JOB CARDS --- */
+.job-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    box-shadow: var(--card-shadow);
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+.job-card:hover { border-color: var(--primary-green); transform: translateX(5px); }
+
+.job-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--accent-mint);
+}
+
+.job-details h3 { font-family: 'Poppins'; margin: 0 0 8px; color: var(--primary-dark); }
+.company { color: var(--primary-green); font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; display: flex; gap: 15px; }
+.posted { color: var(--text-muted); font-weight: 400; }
+.description { font-size: 0.9rem; line-height: 1.6; color: var(--text-main); max-width: 800px; }
+
+/* --- ACTIONS --- */
+.job-actions {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.apply {
+    background: var(--accent-mint);
+    color: var(--primary-green);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.job-actions button:not(.apply) {
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.job-actions button:hover { background: var(--primary-green); color: white; }
+
+/* --- MODAL POPUP STYLES --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    animation: modalSlide 0.4s ease-out;
+}
+
+@keyframes modalSlide {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.modal-content h2 { font-family: 'Poppins'; color: var(--primary-dark); margin-bottom: 25px; }
+
+.modal-content label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.modal-content input, .modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-family: inherit;
+}
+
+.modal-content button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-family: 'Poppins';
+    cursor: pointer;
+}
+
+.modal-content button[type="submit"]:hover { background: var(--primary-dark); }

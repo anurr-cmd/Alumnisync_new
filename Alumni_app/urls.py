@@ -5,11 +5,12 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('register/', views.register, name='register'),
+    # path('register/', views.register, name='register'),
     path("edit-profile/", views.edit_profile, name="edit_profile"),
     path('login/', views.login_portal, name='login_portal'),
     path('alumni/login/', views.alumni_login, name='alumni_login'),
     path('admin/login/', views.admin_login, name='admin_login'),
+    path("register/alumni/", views.alumni_register, name="alumni_register"),
     # path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('logout/', views.logout_view, name='logout'),
     
@@ -51,11 +52,9 @@ path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
     path("edit-job-alumni/<int:id>/", views.edit_job_alumni, name="edit_job_alumni"),
     path("alumni/jobs/delete/<int:id>/", views.delete_job_alumni, name="delete_job_alumni"),
     # ===== ADMIN JOBS =====path
-    path("admin/jobs/manage/", views.jobs_admin, name="jobs_admin"),
-    path("admin/jobs/", views.view_jobs_admin, name="view_jobs_admin"),
-    # ===== ADMIN JOB ACTIONS =====
-    path("admin/jobs/add/", views.add_job_admin, name="add_job_admin"),
-    path("admin/jobs/edit/<int:id>/", views.edit_job_admin, name="edit_job_admin"),
-    path("admin/jobs/delete/<int:id>/", views.delete_job_admin, name="delete_job_admin"),
+    path("admin/jobs/",views.jobs_admin,name="jobs_admin"),
+    path("edit-job/<int:id>/",views.edit_job,name="edit_job"),
+    path("delete-job/<int:id>/",views.delete_job,name="delete_job"),
+    path("add-job/",views.add_job,name="add_job"),
 
 ]
