@@ -33,8 +33,12 @@
             <div class="topbar">
                 <h2><i class="fa-solid fa-xmark"></i> Feedback Management</h2>
                 <div class="top-links">
-                    <a href="#">Back to Home</a>
-                    <button class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                    <a href="{% url 'admin_dashboard' %}">Back to Home</a>
+                    <a href="{% url 'logout' %}">
+    <button class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+</a>
                 </div>
             </div>
 
@@ -76,7 +80,7 @@
                     <div class="feedback-content">
                         <div class="card-top-row">
                             <h3>{{f.subject}}</h3>
-                            <span class="status-badge">Review</span>
+                            {% comment %} <span class="status-badge">Review</span> {% endcomment %}
                         </div>
                         <div class="user-info">
                             <i class="fa-regular fa-envelope"></i> {{f.email}}
@@ -89,8 +93,8 @@
                                 <i class="fa-regular fa-calendar"></i> {{f.created_at}}
                             </div>
                             <div class="card-actions">
-                                <button class="btn-sm">View</button>
-                                <button class="btn-sm danger">Delete</button>
+                                {% comment %} <button class="btn-sm">View</button> {% endcomment %}
+                                <button class="btn-sm danger" onclick="deleteAnnouncement('{{a.id}}')">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -104,4 +108,17 @@
         </div>
     </div>
 </body>
+<script>
+
+function deleteAnnouncement(id){
+
+if(confirm("Are you sure you want to delete this announcement?")){
+
+window.location.href = "/delete-announcement/" + id + "/";
+
+}
+
+}
+
+</script>
 </html>

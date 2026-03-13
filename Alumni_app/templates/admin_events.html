@@ -83,8 +83,12 @@ Feedback
 <div class="main-content">
 
 <div class="topbar">
-<a href="#">Back to Home</a>
-<button class="logout">Logout</button>
+<a href="{% url 'admin_dashboard' %}">Back to Home</a>
+<a href="{% url 'logout' %}">
+    <button class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+</a>
 </div>
 
 <div class="page-header">
