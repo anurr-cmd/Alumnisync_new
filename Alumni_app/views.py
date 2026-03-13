@@ -340,39 +340,61 @@ def delete_event(request, id):
     return redirect('create_event')
 
 # ===== ANNOUNCEMENTS =====
-def announcements(request):
-    announcements = Announcement.objects.all()
-    return render(request, "announcements.html", {"announcements": announcements})
+def announcements_page(request):
 
-@login_required
+    announcements = Announcement.objects.all().order_by('-posted_on')
+
+    context = {
+        'announcements': announcements
+    }
+
+    return render(request, 'admin_announcements.html', context)
+
+
+
+# ADD ANNOUNCEMENT
 def add_announcement(request):
+
     if request.method == "POST":
+
+        title = request.POST.get('title')
+        message = request.POST.get('message')
+        image_url = request.POST.get('image_url')
+
         Announcement.objects.create(
-            title=request.POST["title"],
-            message=request.POST["message"],
-            image_url=request.POST.get('image_url', '')
+            title=title,
+            message=message,
+            image_url=image_url
         )
-    return redirect("admin_announcements")
+
+    return redirect('announcements_page')
 
 
 
-@login_required
+# EDIT ANNOUNCEMENT
 def edit_announcement(request, id):
-    announcement = Announcement.objects.get(id=id)
+
+    announcement = get_object_or_404(Announcement, id=id)
 
     if request.method == "POST":
-        announcement.title = request.POST['title']
-        announcement.message = request.POST['message']
-        announcement.image_url = request.POST.get('image_url', '')
+
+        announcement.title = request.POST.get('title')
+        announcement.message = request.POST.get('message')
+
         announcement.save()
 
-    return redirect('admin_announcements')
+    return redirect('announcements_page')
 
-@login_required
+
+
+# DELETE ANNOUNCEMENT
 def delete_announcement(request, id):
-    ann = get_object_or_404(Announcement, id=id)
-    ann.delete()
-    return redirect("admin_announcements")
+
+    announcement = get_object_or_404(Announcement, id=id)
+
+    announcement.delete()
+
+    return redirect('announcements_page')
 
 # -----jobs----
 
