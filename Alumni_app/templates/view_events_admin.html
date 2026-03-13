@@ -6,7 +6,7 @@
     <title>Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'view_events.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
 </head>
 <body>
 
@@ -18,14 +18,51 @@
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
             <h3>Admin</h3>
         </div>
-        <h2 class="logo">Alumni Sync</h2>
-        <ul>
-            <li><a href="{% url 'admin_portal' %}">Dashboard</a></li>
-            <li class="active"><a href="{% url 'view_events_admin' %}">Events</a></li>
-            <li><a href="{% url 'view_jobs_admin' %}">Jobs</a></li>
-            {% comment %} <li><a href="{% url 'view_announcements' %}">Announcements</a></li> {% endcomment %}
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
+        {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
+        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title,active" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+            <a href="{% url 'view_events_admin' %}">View Events</a>
+        </div>
+    </div>
+
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('job-menu')">
+        Jobs ▾
+    </div>
+
+    <div class="submenu" id="job-menu">
+        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+    </div>
+</div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
     </aside>
 
     <!-- 🔹 MAIN CONTENT -->
@@ -47,6 +84,11 @@
     </main>
 
 </div>
-
+<script>
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+</script>
 </body>
 </html>

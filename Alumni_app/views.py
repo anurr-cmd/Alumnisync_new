@@ -9,7 +9,20 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Feedback
 
 def index(request):
-    return render(request, 'index.html')
+
+    alumni_count = Profile.objects.filter(role="alumni").count()
+    event_count = Event.objects.count()
+    job_count = Job.objects.count()
+    announcement_count = Announcement.objects.count()
+
+    context = {
+        "alumni_count": alumni_count,
+        "event_count": event_count,
+        "job_count": job_count,
+        "announcement_count": announcement_count,
+    }
+
+    return render(request, "index.html", context)
 
 def about(request):
     return render(request, 'about.html')
@@ -17,7 +30,11 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def login_view(request):
+def login_portal(request):
+    return render(request, 'login_portal.html')
+
+def alumni_login(request):
+
     if request.method == "POST":
         username = request.POST.get("username") 
         
@@ -26,33 +43,53 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-
-            if user.is_superuser:
-                return redirect("admin_dashboard")
-
             try:
                 profile = Profile.objects.get(user=user)
+
+                if profile.role == "alumni":
+                    login(request, user)
+                    return redirect("alumni_dashboard")
+                else:
+                    messages.error(request, "You are not an Alumni user.")
+
             except Profile.DoesNotExist:
-                messages.error(request, "Profile not found. Contact admin.")
-                return redirect("login")
-
-            next_url = request.GET.get("next")
-            if next_url:
-                return redirect(next_url)
-
-            if profile.role == "admin":
-                return redirect("admin_dashboard")
-            elif profile.role == "alumni":
-                return redirect("alumni_dashboard")
-            else:
-                return redirect("login")
+                messages.error(request, "Profile not found.")
 
         else:
             messages.error(request, "Invalid username or password")
 
-    return render(request, "login.html")
+    return render(request, "alumni_login.html")
 
+def admin_login(request):
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+
+            if user.is_superuser:
+                login(request, user)
+                return redirect("admin_dashboard")
+
+            try:
+                profile = Profile.objects.get(user=user)
+
+                if profile.role == "admin":
+                    login(request, user)
+                    return redirect("admin_dashboard")
+                else:
+                    messages.error(request, "You are not an Admin user.")
+
+            except Profile.DoesNotExist:
+                messages.error(request, "Profile not found.")
+
+        else:
+            messages.error(request, "Invalid username or password")
+
+    return render(request, "admin_login.html")
 # def forgot_password(request):
 #     if request.method == "POST":
 #         username = request.POST.get("username")
@@ -76,45 +113,42 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("login_portal")
 
-def register(request):
+def alumni_register(request):
+
     if request.method == "POST":
+
         username = request.POST.get("username")
         password = request.POST.get("password")
 
-        try:
-            user = User.objects.create_user(
-                username=username,
-                password=password
-            )
+        User.objects.create_user(
+            username=username,
+            password=password
+        )
 
-            Profile.objects.create(
-                user=user,
-                role="alumni"
-            )
+        return redirect("alumni_dashboard")
 
-            login(request, user)
-
-            # 👇 Directly to dashboard
-            return redirect("alumni_dashboard")
-
-        except:
-            messages.error(request, "Username already exists.")
-            return redirect("register")
-
-    return render(request, "register.html")
+    return render(request,"alumni_register.html")
 
 @login_required
 def alumni_dashboard(request):
+
     profile, created = Profile.objects.get_or_create(user=request.user)
 
     context = {
-        'profile': profile,
-        # keep your other counts here
-    }
-    return render(request, 'alumni_portal.html', context)
+        "profile": profile,
 
+        "total_events": Event.objects.count(),
+        "total_jobs": Job.objects.count(),
+        "total_announcements": Announcement.objects.count(),
+
+        "recent_events": Event.objects.order_by("-date")[:3],
+        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
+        "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
+    }
+
+    return render(request, "alumni_dashboard.html", context)
 
 @login_required
 def edit_profile(request):
@@ -124,11 +158,11 @@ def edit_profile(request):
         # Text fields
         profile.roll_no = request.POST.get("roll_no")
         profile.email = request.POST.get("email")
-        profile.designation = request.POST.get("designation")
+        profile.designation = request.POST.get("designation") or None
         profile.appointment_order = request.POST.get("appointment_order")
-        profile.remarks = request.POST.get("remarks")
+        profile.remarks = request.POST.get("remarks") or None
         profile.department = request.POST.get("department")
-        profile.address = request.POST.get("address")
+        profile.address = request.POST.get("address") or None
         profile.current_job = request.POST.get("current_job")
         profile.company = request.POST.get("company")
         profile.location = request.POST.get("location")
@@ -137,11 +171,17 @@ def edit_profile(request):
 
         # Integer fields
         join_year = request.POST.get("join_year")
-        profile.join_year = int(join_year) if join_year else None
+        if join_year and join_year != "None":
+            profile.join_year = int(join_year)
+        else:
+            profile.join_year = None
+
 
         passout_year = request.POST.get("passout_year")
-        profile.passout_year = int(passout_year) if passout_year else None
-
+        if passout_year and passout_year != "None":
+            profile.passout_year = int(passout_year)
+        else:
+            profile.passout_year = None
         # File fields
         if request.FILES.get("profile_image"):
             profile.profile_image = request.FILES.get("profile_image")
@@ -158,10 +198,24 @@ def edit_profile(request):
 def superuser_required(user):
     return user.is_superuser
 
-@login_required
-@user_passes_test(superuser_required)
 def admin_dashboard(request):
-    return render(request, "admin_dashboard.html")
+
+    total_alumni = Profile.objects.filter(role="alumni").count()
+    total_events = Event.objects.count()
+    total_jobs = Job.objects.count()
+    total_announcements = Announcement.objects.count()
+
+    recent_events = Event.objects.order_by('-date')[:5]
+    recent_jobs = Job.objects.order_by('-posted_on')[:5]
+
+    return render(request,"admin_dashboard.html",{
+        "total_alumni": total_alumni,
+        "total_events": total_events,
+        "total_jobs": total_jobs,
+        "total_announcements": total_announcements,
+        "recent_events": recent_events,
+        "recent_jobs": recent_jobs
+    })
 
 # @login_required
 # def alumni_dashboard(request):
@@ -189,17 +243,17 @@ def admin_view_alumni(request):
         "alumni_list": alumni_list
     })
 
-@login_required
-def alumni_portal(request):
-    job_count = Job.objects.count()
-    event_count = Event.objects.count()
-    announcement_count = Announcement.objects.count()
+# @login_required
+# def alumni_portal(request):
+#     job_count = Job.objects.count()
+#     event_count = Event.objects.count()
+#     announcement_count = Announcement.objects.count()
 
-    return render(request, "alumni_portal.html", {
-        "job_count": job_count,
-        "event_count": event_count,
-        "announcement_count": announcement_count,
-    })
+#     return render(request, "alumni_portal.html", {
+#         "job_count": job_count,
+#         "event_count": event_count,
+#         "announcement_count": announcement_count,
+#     })
 
 @login_required
 def admin_portal(request):
@@ -213,53 +267,78 @@ def admin_portal(request):
 
 @login_required
 def create_event(request):
+
     if request.method == "POST":
+
         Event.objects.create(
             title=request.POST["title"],
             description=request.POST["description"],
             date=request.POST["date"],
             created_by=request.user
         )
+
         messages.success(request, "Event submitted for admin approval")
-        return redirect("alumni_portal")
 
-    return render(request, "create_event.html")
+        return redirect("create_event")
 
-@login_required
-def view_events_admin(request):
-    events = Event.objects.filter(is_approved=True)
-    return render(request, "view_events_admin.html", {"events": events})
+    # GET request
+    events = Event.objects.filter(is_approved=True).order_by("-date")
+
+    return render(request, "create_event.html", {
+        "events": events
+    })
+
+# @login_required
+# def view_events_admin(request):
+#     events = Event.objects.filter(is_approved=True)
+#     return render(request, "view_events_admin.html", {"events": events})
 
 
-@login_required
-def view_events_alumni(request):
-    events = Event.objects.filter(is_approved=True)
-    return render(request, "view_events_alumni.html", {"events": events})
+# @login_required
+# def view_events_alumni(request):
+#     events = Event.objects.filter(is_approved=True)
+#     return render(request, "view_events_alumni.html", {"events": events})
 
 
 # 🔹 MANAGE EVENTS (Main Page)
-def manage_events(request):
-    events = Event.objects.all().order_by('-date')
-    return render(request, 'manage_events.html', {'events': events})
+# @login_required
+# def manage_events(request):
 
+#     if request.method == "POST":
+
+#         Event.objects.create(
+#             title=request.POST["title"],
+#             description=request.POST["description"],
+#             date=request.POST["date"],
+#             created_by=request.user
+#         )
+
+#         return redirect("manage_events")
+
+#     events = Event.objects.filter(is_approved=True).order_by("-date")
+
+#     return render(request, "manage_events.html", {
+#         "events": events
+#     })
 
 # 🔹 EDIT EVENT (Modal form submits here)
 def edit_event(request, id):
     event = get_object_or_404(Event, id=id)
 
-    if request.method == 'POST':
-        event.title = request.POST.get('title')
-        event.date = request.POST.get('date')
+    if request.method == "POST":
+        event.title = request.POST.get("title")
+        event.description = request.POST.get("description")
+        event.date = request.POST.get("date")
         event.save()
 
-    return redirect('manage_events')
+    return redirect("create_event")
 
 
 # 🔹 DELETE EVENT
 def delete_event(request, id):
     event = get_object_or_404(Event, id=id)
     event.delete()
-    return redirect('manage_events')
+    return redirect('create_event')
 
 # ===== ANNOUNCEMENTS =====
 def announcements(request):
@@ -298,13 +377,13 @@ def delete_announcement(request, id):
 
 # -----jobs----
 
-@login_required
-def view_jobs_alumni(request):
-    jobs = Job.objects.all().order_by("-posted_on")
+# @login_required
+# def view_jobs_alumni(request):
+#     jobs = Job.objects.all().order_by("-posted_on")
 
-    return render(request, "view_jobs_alumni.html", {
-        "jobs": jobs
-    })
+#     return render(request, "view_jobs_alumni.html", {
+#         "jobs": jobs
+#     })
 
 @login_required
 def view_jobs_admin(request):
@@ -316,36 +395,33 @@ def view_jobs_admin(request):
 
 
 @login_required
-def manage_jobs_alumni(request):
+def jobs_alumni(request):
     profile = Profile.objects.get(user=request.user)
 
     if profile.role.lower() != "alumni":
-        return redirect("manage_jobs_alumni")
+        return redirect("index")   # ✅ change here
 
     if request.method == "POST":
         Job.objects.create(
             title=request.POST["title"],
             company=request.POST["company"],
             description=request.POST["description"],
-            location=request.POST["location"],
-            posted_by=request.user   # ✅ FIXED
+            # location=request.POST["location"],
+            posted_by=request.user
         )
-        return redirect("manage_jobs_alumni")
+        return redirect("jobs_alumni")
 
-    jobs = Job.objects.filter(posted_by=request.user)  # ✅ FIXED
+    jobs = Job.objects.all().order_by("-posted_on")
 
-    return render(request, "manage_jobs_alumni.html", {
-        "jobs": jobs,
-        "portal": "alumni"
-    })
+    return render(request, "jobs_alumni.html", {"jobs": jobs})
 
 @login_required
-def manage_jobs_admin(request):
+def jobs_admin(request):
     profile = Profile.objects.get(user=request.user)
 
     # Only admin allowed here
     if profile.role.lower() != "admin":
-        return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
     if request.method == "POST":
         job = get_object_or_404(Job, id=request.POST["job_id"])
@@ -357,11 +433,11 @@ def manage_jobs_admin(request):
             job.is_approved = False
 
         job.save()
-        return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
     jobs = Job.objects.all()
 
-    return render(request, "manage_jobs_admin.html", {
+    return render(request, "jobs_admin.html", {
         "jobs": jobs,
         "portal": "admin"
     })
@@ -376,31 +452,32 @@ def add_job_alumni(request):
 
     if request.method == "POST":
         Job.objects.create(
-            title=request.POST.get("title"),
-            company=request.POST.get("company"),
-            description=request.POST.get("description"),
+        title=request.POST.get("title"),
+        company=request.POST.get("company"),
+        description=request.POST.get("description"),
+        # location=request.POST.get("location"),
+        posted_by=request.user
+)
+
+    return redirect("jobs_alumni")
+
+@login_required
+def add_job(request):
+
+    if request.method == "POST":
+
+        title = request.POST.get("title")
+        company = request.POST.get("company")
+        description = request.POST.get("description")
+
+        Job.objects.create(
+            title=title,
+            company=company,
+            description=description,
             posted_by=request.user
         )
 
-    return redirect("manage_jobs_alumni")
-
-@login_required
-def add_job_admin(request):
-    profile = Profile.objects.get(user=request.user)
-
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
-
-    if request.method == "POST":
-        Job.objects.create(
-            title=request.POST.get("title"),
-            company=request.POST.get("company"),
-            description=request.POST.get("description"),
-            posted_by=request.user,
-            # is_approved=True   # admin jobs auto-approved
-        )
-
-    return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
 
 @login_required
@@ -410,64 +487,51 @@ def edit_job_alumni(request, id):
 
     # Alumni can edit ONLY their jobs
     if profile.role.lower() == "alumni" and job.posted_by != request.user:
-        return redirect("manage_jobs_alumni")
+        return redirect("jobs_alumni")
 
     if request.method == "POST":
         job.title = request.POST.get("title")
         job.company = request.POST.get("company")
         job.description = request.POST.get("description")
+        # job.location = request.POST.get("location")
         job.save()
 
-    return redirect("manage_jobs_alumni")
+    return redirect("jobs_alumni")
 
 @login_required
-def edit_job_admin(request, id):
-    profile = Profile.objects.get(user=request.user)
+def edit_job(request,id):
 
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
-
-    job = get_object_or_404(Job, id=id)
+    job = Job.objects.get(id=id)
 
     if request.method == "POST":
+
         job.title = request.POST.get("title")
         job.company = request.POST.get("company")
         job.description = request.POST.get("description")
+
         job.save()
 
-    return redirect("manage_jobs_admin")
+        return redirect("jobs_admin")
 
 
 @login_required
 def delete_job_alumni(request, id):
     job = get_object_or_404(Job, id=id)
-    profile = Profile.objects.get(user=request.user)
 
-    # Alumni can delete ONLY their jobs
-    if profile.role.lower() == "alumni" and job.posted_by != request.user:
-        return redirect("manage_jobs_alumni")
+    if job.posted_by != request.user:
+        return redirect("jobs_alumni")
 
-    if request.method == "POST":
-        job.delete()
-
-    if profile.role.lower() == "admin":
-        return redirect("manage_jobs_admin")
-
-    return redirect("manage_jobs_alumni")
+    job.delete()
+    return redirect("jobs_alumni")
 
 @login_required
-def delete_job_admin(request, id):
-    profile = Profile.objects.get(user=request.user)
+def delete_job(request,id):
 
-    if profile.role.lower() != "admin":
-        return redirect("manage_jobs_alumni")
+    job = Job.objects.get(id=id)
 
-    job = get_object_or_404(Job, id=id)
+    job.delete()
 
-    if request.method == "POST":
-        job.delete()
-
-    return redirect("manage_jobs_admin")
+    return redirect("admin_jobs")
 
 @login_required
 def view_alumni(request):
@@ -490,26 +554,23 @@ def alumni_announcements(request):
 
 @login_required
 def manage_admin_events(request):
-    if request.user.profile.role.lower() != "admin":
-        return redirect("login")
+
+    profile = Profile.objects.get(user=request.user)
+
+    if profile.role.lower() != "admin":
+        return redirect("login_portal")
 
     events = Event.objects.all().order_by("-id")
 
     if request.method == "POST":
+
         event_id = request.POST.get("event_id")
         action = request.POST.get("action")
 
         event = get_object_or_404(Event, id=event_id)
 
-        # ✏️ EDIT ONLY
-        if action == "edit":
-            event.title = request.POST.get("title")
-            event.description = request.POST.get("description")
-            event.date = request.POST.get("date")
-            event.save()
-
-        # ✅ APPROVE (NO TITLE CHANGE HERE)
-        elif action == "approve":
+        # ✅ APPROVE
+        if action == "approve":
             event.is_approved = True
             event.is_rejected = False
             event.save()
@@ -520,23 +581,48 @@ def manage_admin_events(request):
             event.is_approved = False
             event.save()
 
+        # ✏️ EDIT
+        elif action == "edit":
+            event.title = request.POST.get("title")
+            event.description = request.POST.get("description")
+            event.date = request.POST.get("date")
+            event.location = request.POST.get("location")
+            event.save()
+
+        # 🗑 DELETE
+        elif action == "delete":
+            event.delete()
+
         return redirect("admin_events")
 
     return render(request, "admin_events.html", {"events": events})
 
-@login_required
 def alumni_feedback(request):
-    if request.method == "POST":
-        message = request.POST.get("message")
 
-        Feedback.objects.create(
-            user=request.user,
-            message=message
-        )
+    if request.method == "POST":
+
+        message = request.POST.get("message")
+        name = request.POST.get("name")
+
+        if request.user.is_authenticated:
+
+            Feedback.objects.create(
+                user=request.user,
+                message=message
+            )
+
+        else:
+
+            Feedback.objects.create(
+                name=name,
+                message=message
+            )
 
         return redirect("alumni_feedback")
 
-    return render(request, "alumni_feedback.html", {})
+    feedbacks = Feedback.objects.all().order_by("-created_at")
+
+    return render(request, "alumni_feedback.html", {"feedbacks": feedbacks})
 
 
 @login_required

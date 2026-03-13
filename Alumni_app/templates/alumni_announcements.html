@@ -1,69 +1,165 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Alumni Announcements</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin.css' %}">
+
+<title>Announcements | Alumni Sync</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="{% static 'alumni_announcements.css' %}">
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="dashboard-container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="profile-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
-            <h3>Alumni Panel</h3>
-        </div>
+<!-- SIDEBAR -->
 
-        <a href="{% url 'alumni_portal' %}">Dashboard</a>
-        <a href="{% url 'view_events_alumni' %}">Events</a>
-        <a class="active" href="{% url 'alumni_announcements' %}">Announcements</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </aside>
+<aside class="sidebar">
 
-    <!-- MAIN -->
-    <div class="main">
+<div class="profile">
 
-        <!-- TOP BAR -->
-        <div class="navbar">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <span>Announcements</span>
-        </div>
-
-        <div class="content">
-
-            {% for ann in announcements %}
-            <div class="announcement-card">
-
-                <img src="{{ ann.image_url }}" class="announcement-img">
-
-                <div class="announcement-body">
-                    <h3>{{ ann.title }}</h3>
-
-                    <p class="date">
-                        Posted on {{ ann.posted_on }}
-                    </p>
-
-                    <p>{{ ann.message }}</p>
-                </div>
-
-            </div>
-            {% empty %}
-                <p>No announcements available.</p>
-            {% endfor %}
-
-        </div>
-    </div>
+<div class="avatar">
+{{ request.user.username|first|upper }}
 </div>
 
-<script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
-}
-</script>
+<p>{{ request.user.username }}</p>
+
+</div>
+
+<nav>
+
+<a href="{% url 'alumni_dashboard' %}">
+<i class="fa-solid fa-chart-line"></i> Dashboard
+</a>
+
+<a href="{% url 'create_event' %}">
+<i class="fa-solid fa-calendar"></i> Events
+</a>
+
+<a href="{% url 'jobs_alumni' %}">
+<i class="fa-solid fa-briefcase"></i> Jobs
+</a>
+
+<a href="{% url 'alumni_announcements' %}" class="active">
+<i class="fa-solid fa-bullhorn"></i> Announcements
+</a>
+
+<a href="{% url 'logout' %}">
+<i class="fa-solid fa-right-from-bracket"></i> Logout
+</a>
+
+</nav>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+<div class="page-title">
+<h2>Announcements</h2>
+</div>
+
+<div class="top-actions">
+<a href="{% url 'index' %}">Back to Home</a>
+<a href="{% url 'logout' %}">Logout</a>
+</div>
+
+</div>
+
+<!-- PAGE HEADER -->
+
+<div class="page-header">
+
+<h1>Announcements</h1>
+
+<p>Stay updated with the latest news and announcements</p>
+
+</div>
+
+<!-- ANNOUNCEMENTS GRID -->
+
+<div class="announcements-grid">
+
+{% for announcement in announcements %}
+
+<div class="announcement-card">
+
+<div class="announcement-header">
+
+<h3>{{ announcement.title }}</h3>
+
+<div class="announcement-icon">
+<i class="fa-solid fa-paper-plane"></i>
+</div>
+
+</div>
+
+<div class="announcement-meta">
+
+<span class="priority-tag">
+Low Priority
+</span>
+
+<span class="department">
+Admin Office
+</span>
+
+</div>
+{% if announcement.image_url %}
+
+<div class="announcement-image">
+
+<img src="{{ announcement.image_url }}" alt="Announcement Image">
+
+</div>
+
+{% endif %}
+<div class="announcement-body">
+
+<p>
+
+{{ announcement.message }}
+
+</p>
+
+</div>
+
+
+
+<div class="announcement-footer">
+
+<i class="fa-regular fa-calendar"></i>
+
+<span>
+
+{{ announcement.posted_on|date:"F d, Y" }}
+
+</span>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</main>
+
+</div>
 
 </body>
+
 </html>

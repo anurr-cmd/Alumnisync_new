@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alumni Sync - Login</title>
+
+<link rel="stylesheet" href="{% static 'login_portal.css' %}">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+<div class="logo">
+<div class="logo-circle">AS</div>
+<span>Alumni Sync</span>
+</div>
+
+<nav>
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'about' %}">About</a>
+<a href="{% url 'contact' %}">Contact</a>
+<a href="{% url 'alumni_feedback' %}">Feedback</a>
+<a href="{% url 'login_portal' %}">Login</a>
+</nav>
+
+</header>
+
+
+
+<!-- WELCOME SECTION -->
+
+<section class="login-section">
+
+<h1>Welcome Back</h1>
+
+<p class="subtitle">Select your portal to continue</p>
+
+
+<div class="portal-container">
+
+
+<!-- ALUMNI PORTAL -->
+
+<div class="portal-card">
+
+<div class="icon alumni-icon">
+<i class="fa-regular fa-user"></i>
+</div>
+
+<h2>Alumni Portal</h2>
+
+<p>
+Access your dashboard, manage events, view jobs,
+and stay connected with the alumni community.
+</p>
+
+<a href="{% url 'alumni_login' %}" class="login-link">
+Login as Alumni →
+</a>
+
+</div>
+
+
+
+<!-- ADMIN PORTAL -->
+
+<div class="portal-card">
+
+<div class="icon admin-icon">
+<i class="fa-solid fa-shield"></i>
+</div>
+
+<h2>Admin Portal</h2>
+
+<p>
+Manage alumni data, approve events, post jobs,
+create announcements, and view feedback.
+</p>
+
+<a href="{% url 'admin_login' %}" class="login-link">
+Login as Admin →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-col">
+
+<div class="footer-logo">
+
+<div class="logo-circle">AS</div>
+
+<span>Alumni Sync</span>
+
+</div>
+
+<p>
+Connecting alumni and building stronger futures through
+professional networking, career opportunities, and
+community engagement.
+</p>
+
+</div>
+
+
+<div class="footer-col">
+
+<h4>Quick Links</h4>
+
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'about' %}">About Us</a>
+<a href="{% url 'contact' %}">Contact</a>
+<a href="{% url 'alumni_feedback' %}">Feedback</a>
+
+</div>
+
+
+<div class="footer-col">
+
+<h4>Contact Us</h4>
+
+<p><i class="fa-regular fa-envelope"></i> alumni@college.edu</p>
+
+<p><i class="fa-solid fa-phone"></i> +1 (555) 123–4567</p>
+
+<p><i class="fa-solid fa-location-dot"></i>
+123 College Avenue<br>
+University City, ST 12345
+</p>
+
+</div>
+
+
+<div class="footer-col">
+
+<h4>Follow Us</h4>
+
+<div class="social-icons">
+
+<i class="fa-brands fa-linkedin"></i>
+
+<i class="fa-brands fa-twitter"></i>
+
+<i class="fa-brands fa-facebook"></i>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+<p>© 2026 Alumni Sync. All rights reserved.</p>
+
+<div class="footer-links">
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
+</div>
+
+</div>
+
+</footer>
+
+
+</body>
+</html>

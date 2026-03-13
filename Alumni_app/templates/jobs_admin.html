@@ -1,0 +1,302 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Jobs Management</title>
+
+<link rel="stylesheet" href="{% static 'jobs_admin.css' %}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+<h2>Jobs Management</h2>
+</div>
+
+<div class="admin-profile">
+<div class="avatar">AD</div>
+<p>Admin Dashboard</p>
+</div>
+
+<ul class="menu">
+
+<li>
+<a href="{% url 'admin_dashboard' %}">
+<i class="fa-solid fa-table-columns"></i>
+Dashboard
+</a>
+</li>
+
+<li>
+<a href="{% url 'admin_events' %}">
+<i class="fa-solid fa-calendar"></i>
+Events
+</a>
+</li>
+
+<li class="active">
+<a href="{% url 'jobs_admin' %}">
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</a>
+</li>
+
+<li>
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+Alumni Details
+</a>
+</li>
+
+<li>
+<a href="{% url 'admin_feedback' %}">
+<i class="fa-solid fa-comment"></i>
+Feedback
+</a>
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+<a href="#">Back to Home</a>
+
+<button class="logout">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</button>
+
+</div>
+
+
+
+<!-- PAGE HEADER -->
+
+<div class="page-header">
+
+<div>
+<h1>Job Postings</h1>
+<p>Add, edit, and manage all job opportunities</p>
+</div>
+
+<button class="add-job" onclick="openAddModal()">
+<i class="fa-solid fa-plus"></i>
+Add Job
+</button>
+
+</div>
+
+
+
+<!-- JOB LIST -->
+
+<div class="jobs-container">
+
+{% for job in jobs %}
+
+<div class="job-card">
+
+
+<div class="job-left">
+
+<img src="{{ job.get_image_url }}" class="job-icon">
+
+</div>
+
+
+<div class="job-details">
+
+<h3>{{ job.title }}</h3>
+
+<p class="company">
+
+<i class="fa-solid fa-building"></i>
+{{ job.company }}
+
+<span class="posted">
+Posted: {{ job.posted_on|date:"M d, Y" }}
+</span>
+
+</p>
+
+<p class="description">
+{{ job.description }}
+</p>
+
+</div>
+
+
+
+<div class="job-actions">
+
+<button class="apply">
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+Apply
+</button>
+
+
+<button onclick="openEdit('{{ job.id }}','{{ job.title }}','{{ job.company }}','{{ job.description }}')">
+<i class="fa-solid fa-pen"></i>
+</button>
+
+
+<button onclick="deleteJob('{{ job.id }}')">
+<i class="fa-solid fa-trash"></i>
+</button>
+
+</div>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+
+
+<!-- EDIT JOB POPUP -->
+
+<div id="editModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">&times;</span>
+
+<h2>Edit Job</h2>
+
+<form method="POST" id="editForm">
+
+{% csrf_token %}
+
+<label>Job Title</label>
+<input type="text" name="title" id="editTitle">
+
+<label>Company</label>
+<input type="text" name="company" id="editCompany">
+
+<label>Description</label>
+<textarea name="description" id="editDescription"></textarea>
+
+<button type="submit">Update Job</button>
+
+</form>
+
+</div>
+
+</div>
+<!-- ADD JOB POPUP -->
+
+<div id="addModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeAddModal()">&times;</span>
+
+<h2>Add New Job</h2>
+
+<form method="POST" action="{% url 'add_job' %}">
+
+{% csrf_token %}
+
+<label>Job Title</label>
+<input type="text" name="title" required>
+
+<label>Company</label>
+<input type="text" name="company" required>
+
+<label>Description</label>
+<textarea name="description" rows="5" required></textarea>
+
+<button type="submit">Post Job</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+function openAddModal(){
+document.getElementById("addModal").style.display="block";
+}
+
+function closeAddModal(){
+document.getElementById("addModal").style.display="none";
+}
+
+
+
+function openEdit(id,title,company,description){
+
+document.getElementById("editModal").style.display="block";
+
+document.getElementById("editTitle").value=title;
+document.getElementById("editCompany").value=company;
+document.getElementById("editDescription").value=description;
+
+document.getElementById("editForm").action="/alumni_app/edit-job/"+id+"/";
+
+}
+
+
+function closeModal(){
+
+document.getElementById("editModal").style.display="none";
+
+}
+
+
+
+function deleteJob(id){
+
+if(confirm("Are you sure you want to delete this job?")){
+
+window.location.href="/delete-job/"+id+"/";
+
+}
+
+}
+
+
+</script>
+
+
+</body>
+</html>

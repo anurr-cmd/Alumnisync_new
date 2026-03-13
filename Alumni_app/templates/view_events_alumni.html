@@ -2,63 +2,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Events</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'view_events.css' %}">
+<meta charset="UTF-8">
+<title>Events | Alumni Sync</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'view_events.css' %}">
 </head>
+
 <body>
 
-<div class="dashboard">
+<div class="container">
 
-    <!-- 🔹 SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="profile-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
-            <h3>Alumni</h3>
-        </div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-        <h2 class="logo">Alumni Sync</h2>
+<div class="profile-box">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s">
+<p>Alumni</p>
+</div>
 
-        <ul>
-            <li><a href="{% url 'alumni_portal' %}">Dashboard</a></li>
-            <li class="active"><a href="{% url 'view_events_alumni' %}">Events</a></li>
-            <li><a href="{% url 'view_jobs_alumni' %}">Jobs</a></li>
-            <li><a href="{% url 'alumni_announcements' %}">Announcements</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </aside>
+{% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
 
-    <!-- 🔹 MAIN CONTENT -->
-    <main class="content">
+<a href="{% url 'alumni_portal' %}">Dashboard</a>
 
-        <!-- TOP BAR -->
-        <div class="top-bar">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <h1>All Events</h1>
-        </div>
+<!-- EVENTS MENU -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('events-menu')">
+Events ▾
+</div>
 
-        <div class="events-grid">
-            {% for event in events %}
-            <div class="event-card">
-                <img src="{{ event.image_url }}" alt="{{ event.title }}">
-                <div class="event-body">
-                    <h3>{{ event.title }}</h3>
-                    <p>{{ event.description|truncatewords:15 }}</p>
-                    <span>{{ event.date }}</span>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+<div class="submenu" id="events-menu">
+<a href="{% url 'create_event' %}">Add Event</a>
+<a href="{% url 'view_events_alumni' %}">View Events</a>
+<a href="{% url 'manage_events' %}">Manage Events</a>
+</div>
+</div>
 
-    </main>
+<!-- JOBS MENU -->
+<div class="menu-group">
+<div class="menu-title" onclick="toggleMenu('jobs-menu')">
+Jobs ▾
+</div>
+
+<div class="submenu" id="jobs-menu">
+<a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
+<a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+</div>
+</div>
+
+<a href="{% url 'alumni_announcements' %}">Announcements</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+</aside>
+
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<button class="menu-btn" onclick="toggleSidebar()">☰</button>
+<h2>All Events</h2>
+</nav>
+
+
+<!-- EVENTS -->
+<div class="content">
+
+<div class="events-grid">
+{% for event in events %}
+
+<div class="event-card">
+
+<img src="{{ event.image_url }}" alt="{{ event.title }}">
+
+<div class="event-body">
+<h3>{{ event.title }}</h3>
+<p>{{ event.description|truncatewords:15 }}</p>
+<span>{{ event.date }}</span>
+</div>
 
 </div>
 
+{% endfor %}
+</div>
+
+</div>
+
+</div>
+</div>
+
+
 <script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
+
+function toggleMenu(id){
+const menu=document.getElementById(id);
+
+if(menu.style.display==="block"){
+menu.style.display="none";
 }
+else{
+menu.style.display="block";
+}
+
+}
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("active");
+}
+
 </script>
 
 </body>

@@ -1,148 +1,263 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Manage Alumni Events</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_events.css' %}">
+<meta charset="UTF-8">
+<title>Events Management</title>
+
+<link rel="stylesheet" href="{% static 'admin_events.css' %}">
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
 
-<div class="container">
+<!-- Sidebar -->
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="profile-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
-            <h3>Admin</h3>
-        </div>
+<div class="sidebar">
 
-        <ul class="menu">
-            <li><a href="{% url 'admin_portal' %}">Dashboard</a></li>
+<div class="sidebar-header">
+<h2><i class="fa-solid fa-calendar-check"></i> Events Management</h2>
+</div>
 
-            <li><a href="{% url 'admin_events' %}" class="active">Approval Events</a></li>
+<div class="admin-profile">
+<div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+<p>Admin Dashboard</p>
+</div>
 
-            <li><a href="{% url 'admin_view_alumni' %}">View Alumni</a></li>
-            <li><a href="{% url 'manage_jobs_admin' %}">Job</a></li>
-            <li><a href="{% url 'admin_announcements' %}">Manage Announcements</a></li>
+<ul class="menu">
 
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </aside>
+<li>
+<a href="{% url 'admin_dashboard' %}">
+<i class="fa-solid fa-gauge"></i>
+Dashboard
+</a>
+</li>
 
-    <!-- CONTENT -->
-    <div class="content">
-        <h2>Manage Alumni Events</h2>
+<li class="active">
+<a href="{% url 'admin_events' %}">
+<i class="fa-solid fa-calendar-days"></i>
+Events
+</a>
+</li>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Created By</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+<li>
+<a href="{% url 'jobs_admin' %}">
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</a>
+</li>
 
-            <tbody>
-            {% for event in events %}
-                <tr>
-                    <td>{{ event.title }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>
-                        {% if event.created_by %}
-                            {{ event.created_by.username }}
-                        {% else %}
-                            Admin
-                        {% endif %}
-                    </td>
+<li>
+<a href="#">
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</a>
+</li>
 
-                    <td>
-                        {% if event.is_approved %}
-                            ✅ Approved
-                        {% elif event.is_rejected %}
-                            ❌ Rejected
-                        {% else %}
-                            ⏳ Pending
-                        {% endif %}
-                    </td>
+<li>
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+Alumni Details
+</a>
+</li>
 
-                    <td>
-                        <!-- APPROVE -->
-                        <form method="POST" style="display:inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="event_id" value="{{ event.id }}">
-                            <input type="hidden" name="action" value="approve">
-                            <button class="approve-btn">Approve</button>
-                        </form>
+<li>
+<a href="{% url 'admin_feedback' %}">
+<i class="fa-solid fa-comments"></i>
+Feedback
+</a>
+</li>
 
-                        <!-- REJECT -->
-                        <form method="POST" style="display:inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="event_id" value="{{ event.id }}">
-                            <input type="hidden" name="action" value="reject">
-                            <button class="reject-btn">Reject</button>
-                        </form>
+</ul>
 
-                        <!-- EDIT -->
-                        <button class="edit-btn"
-                                onclick="openEdit(
-                                '{{ event.id }}',
-                                '{{ event.title|escapejs }}',
-                                '{{ event.description|escapejs }}',
-                                '{{ event.date }}')">
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+</div>
 
+<!-- Main Content -->
+
+<div class="main-content">
+
+<div class="topbar">
+<a href="#">Back to Home</a>
+<button class="logout">Logout</button>
+</div>
+
+<div class="page-header">
+<h1>Events Management</h1>
+<p>Approve, edit, and manage all alumni events</p>
+</div>
+
+<!-- EVENTS GRID -->
+
+<div class="events-grid">
+
+{% for event in events %}
+
+<div class="event-card">
+
+<!-- Event Image -->
+
+<div class="event-image">
+
+{% if event.image_url %} <img src="{{ event.image_url }}">
+{% else %} <img src="{% static 'default_event.jpg' %}">
+{% endif %}
+
+{% if event.is_approved %} <span class="status approved">Approved</span>
+{% else %} <span class="status pending">Pending</span>
+{% endif %}
+
+</div>
+
+<!-- Event Details -->
+
+<div class="event-details">
+
+<h3>{{ event.title }}</h3>
+
+<p class="event-date">
+<i class="fa-solid fa-calendar-days"></i>
+{{ event.date }}
+</p>
+
+<p class="event-location">
+<i class="fa-solid fa-location-dot"></i>
+{{ event.location }}
+</p>
+
+<p class="event-desc">
+{{ event.description|truncatewords:20 }}
+</p>
+
+<!-- ACTION BUTTONS -->
+
+<div class="event-actions">
+
+{% if not event.is_approved %}
+
+<!-- APPROVE -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="approve">
+<button class="approve">
+<i class="fa-solid fa-check"></i>
+</button>
+</form>
+
+<!-- REJECT -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="reject">
+<button class="reject">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</form>
+
+{% endif %}
+
+<!-- EDIT -->
+
+<button class="edit-btn"
+data-id="{{ event.id }}"
+data-title="{{ event.title }}"
+data-date="{{ event.date }}"
+data-location="{{ event.location }}"
+data-description="{{ event.description }}"> <i class="fa-solid fa-pen-to-square"></i> </button>
+
+<!-- DELETE -->
+
+<form method="POST" style="display:inline;">
+{% csrf_token %}
+<input type="hidden" name="event_id" value="{{ event.id }}">
+<input type="hidden" name="action" value="delete">
+<button class="delete" onclick="return confirm('Delete this event?')">
+<i class="fa-solid fa-trash"></i>
+</button>
+</form>
+
+</div>
+
+</div>
+</div>
+
+{% endfor %}
+
+</div>
 </div>
 
 <!-- EDIT MODAL -->
+
 <div id="editModal" class="modal">
-    <div class="modal-content">
-        <h3>Edit Event</h3>
 
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="event_id" id="event_id">
-            <input type="hidden" name="action" value="approve">
+<div class="modal-content">
 
-            <label>Title</label>
-            <input type="text" name="title" id="title" required>
+<h2>Edit Event</h2>
 
-            <label>Description</label>
-            <textarea name="description" id="description" required></textarea>
+<form id="editForm" method="POST">
 
-            <label>Date</label>
-            <input type="date" name="date" id="date" required>
+{% csrf_token %}
 
-            <div class="modal-buttons">
-                <button type="submit" class="approve-btn">Save & Approve</button>
-                <button type="button" onclick="closeEdit()" class="reject-btn">Cancel</button>
-            </div>
-        </form>
-    </div>
+<input type="hidden" name="event_id" id="editId">
+<input type="hidden" name="action" value="edit">
+
+<input type="text" name="title" id="editTitle" placeholder="Event Title" required>
+
+<input type="date" name="date" id="editDate" required>
+
+<input type="text" name="location" id="editLocation" placeholder="Location" required>
+
+<textarea name="description" id="editDescription" placeholder="Description"></textarea>
+
+<button type="submit">Update Event</button>
+
+<button type="button" onclick="closeModal()">Cancel</button>
+
+</form>
+
+</div>
 </div>
 
+<!-- SCRIPT -->
+
 <script>
-function openEdit(id, title, description, date) {
-    document.getElementById("editModal").style.display = "flex";
-    document.getElementById("event_id").value = id;
-    document.getElementById("title").value = title;
-    document.getElementById("description").value = description;
-    document.getElementById("date").value = date;
+
+const modal = document.getElementById("editModal");
+
+document.querySelectorAll(".edit-btn").forEach(button => {
+
+button.addEventListener("click", function(){
+
+document.getElementById("editId").value = this.dataset.id;
+document.getElementById("editTitle").value = this.dataset.title;
+document.getElementById("editDate").value = this.dataset.date;
+document.getElementById("editLocation").value = this.dataset.location;
+document.getElementById("editDescription").value = this.dataset.description;
+
+modal.style.display = "block";
+
+});
+
+});
+
+function closeModal(){
+modal.style.display = "none";
 }
 
-function closeEdit() {
-    document.getElementById("editModal").style.display = "none";
+window.onclick = function(event){
+if(event.target == modal){
+modal.style.display = "none";
 }
+}
+
 </script>
 
 </body>

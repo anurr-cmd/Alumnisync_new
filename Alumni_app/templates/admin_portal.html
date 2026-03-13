@@ -5,7 +5,7 @@
 <head>
     <title>Admin Dashboard | Alumni Sync</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
 </head>
 <body>
 
@@ -42,14 +42,15 @@
     </div>
 
     <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('job-menu')">
-            Jobs ▾
-        </div>
-        <div class="submenu" id="events-menu">
-            <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-            <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
-        </div>
+    <div class="menu-title" onclick="toggleMenu('job-menu')">
+        Jobs ▾
     </div>
+
+    <div class="submenu" id="job-menu">
+        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
+        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+    </div>
+</div>
     <!-- ANNOUNCEMENTS -->
     <div class="menu-group">
         <div class="menu-title" onclick="toggleMenu('announcement-menu')">

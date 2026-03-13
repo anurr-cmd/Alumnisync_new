@@ -1,0 +1,256 @@
+/* --- GOOGLE FONTS & VARIABLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+    --primary-green: #2d6a4f;      /* Wix Emerald */
+    --primary-dark: #1b4332;       /* Deep Forest */
+    --accent-mint: #eaf5f0;        /* Light Highlight */
+    --white: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --bg-light: #f8fafb;           /* Clean background */
+    --border-color: #e2e8f0;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* --- BASE STYLES --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    margin: 0;
+    color: var(--text-main);
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.logo-circle {
+    background: var(--primary-green);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    margin-left: 25px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.navbar nav a:hover {
+    color: var(--primary-green);
+}
+
+/* --- REGISTER CARD --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+}
+
+.login-card {
+    background: var(--white);
+    width: 100%;
+    max-width: 450px;
+    padding: 50px 40px;
+    border-radius: 24px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+}
+
+.login-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-mint);
+    color: var(--primary-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 20px;
+}
+
+.login-card h2 {
+    font-family: 'Poppins';
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: var(--primary-dark);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+/* --- FORM STYLES --- */
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-left: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: #333; /* Wix Dark Contrast */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background: var(--primary-green);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(45, 106, 79, 0.3);
+}
+
+.back-link {
+    display: block;
+    margin-top: 25px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    color: var(--primary-green);
+}
+
+/* --- HIGHLIGHTER LINK SECTION --- */
+.login-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-color), transparent);
+    margin: 30px 0;
+}
+
+.register-section p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.register-link {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--primary-green);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Poppins';
+    transition: all 0.3s ease;
+}
+
+.register-link:hover {
+    background-color: var(--accent-mint);
+    padding-left: 20px; /* Subtle arrow shift */
+}
+
+/* --- FOOTER --- */
+.footer {
+    background: #222;
+    color: white;
+    padding: 60px 8% 30px;
+    font-size: 0.9rem;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.footer-col h4 {
+    font-family: 'Poppins';
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.footer-col a {
+    display: block;
+    color: #cbd5e0;
+    text-decoration: none;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.footer-col a:hover {
+    color: var(--primary-green);
+}
+
+.social-icons i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.social-icons i:hover {
+    color: var(--primary-green);
+}
+
+.footer-bottom {
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    color: #a0aec0;
+}

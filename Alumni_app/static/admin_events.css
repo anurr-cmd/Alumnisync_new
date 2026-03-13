@@ -1,195 +1,373 @@
-/* RESET */
-* {
+/* --- Alumni Sync Theme Colors --- */
+:root {
+    --primary-teal: #1a3a3a;
+    --accent-green: #2d5a27;
+    --bg-light: #f4f7f6;
+    --sidebar-text: #6b7280;
+    --danger-red: #dc2626;
+    --white: #ffffff;
+}
+
+/* General Reset */
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
-/* PAGE BACKGROUND */
-body {
-    background: #f2f5f9;
-}
-
-/* MAIN WRAPPER */
-.container {
+    background-color: var(--bg-light); 
     display: flex;
-    min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* Sidebar Styling - Matching Image */
 .sidebar {
-    width: 240px;
-    background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
-    color: #fff;
-    padding: 20px;
+    width: 260px;
+    height: 100vh;
+    background: var(--white);
+    border-right: 1px solid #e5e7eb;
+    position: fixed;
+    padding: 30px 0;
 }
 
-.profile-section {
+.sidebar-header h2 {
+    display: none; /* Based on image, it uses the profile section instead */
+}
+
+.admin-profile {
     text-align: center;
-    margin-bottom: 30px;
+    padding: 0 20px 30px 20px;
 }
 
-.profile-img {
-    width: 80px;
+.avatar {
+    width: 60px;
+    height: 60px;
+    background: #2d4a4a;
+    color: white;
     border-radius: 50%;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 auto 15px;
 }
 
-.sidebar h3 {
-    font-weight: 600;
+.admin-profile p {
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
 }
 
 .menu {
     list-style: none;
+    padding: 10px 15px;
 }
 
 .menu li {
-    margin: 15px 0;
+    margin-bottom: 8px;
 }
 
-.menu a {
-    color: #dce7f0;
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--sidebar-text);
     text-decoration: none;
-    display: block;
-    padding: 10px 14px;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.menu a:hover,
-.menu a.active {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* CONTENT AREA */
-.content {
-    flex: 1;
-    padding: 30px;
-}
-
-/* PAGE TITLE */
-.content h2 {
-    font-size: 26px;
-    margin-bottom: 25px;
-    color: #1f2937;
-}
-
-/* TABLE CARD */
-table {
-    width: 100%;
-    background: #fff;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 500;
     border-radius: 12px;
-    border-collapse: collapse;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s;
 }
 
-/* TABLE HEADER */
-thead {
-    background: #1e3a8a;
-    color: #fff;
+.menu li.active a {
+    background-color: #333333; /* Dark pill from your dashboard */
+    color: var(--white);
 }
 
-th {
-    padding: 14px;
-    text-align: left;
-    font-weight: 600;
+.menu li a:hover:not(.active) {
+    background-color: #f9fafb;
 }
 
-/* TABLE BODY */
-td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-    color: #374151;
+/* Main Content Area */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 40px 60px;
 }
 
-tr:hover {
-    background: #f1f5f9;
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
 }
 
-/* STATUS TEXT */
-td:nth-child(4) {
-    font-weight: 600;
-}
-
-/* BUTTONS */
-button {
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
+/* Matching the "Back to Home" and "Logout" buttons */
+.topbar a {
+    text-decoration: none;
+    color: #111827;
+    background: #f3f4f6;
+    padding: 10px 20px;
+    border-radius: 10px;
     font-size: 14px;
-    margin-right: 6px;
+    font-weight: 600;
 }
 
-/* APPROVE */
-.approve-btn {
-    background: #16a34a;
-    color: #fff;
+.logout {
+    background: #fff1f2;
+    color: var(--danger-red);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-.approve-btn:hover {
-    background: #15803d;
+/* Page Headers */
+.page-header h1 {
+    font-size: 32px;
+    color: #111827;
+    font-weight: 800;
+    margin: 0;
 }
 
-/* REJECT */
-.reject-btn {
-    background: #dc2626;
-    color: #fff;
+.page-header p {
+    color: #6b7280;
+    margin-top: 8px;
 }
 
-.reject-btn:hover {
-    background: #b91c1c;
+/* Events Grid - Clean White Cards */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
 }
 
-/* EDIT */
+.event-card {
+    background: var(--white);
+    border-radius: 20px; /* More rounded like dashboard cards */
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.event-image {
+    position: relative;
+    height: 220px;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Status Pill */
+.status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.pending {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* Event Details text */
+.event-details {
+    padding: 24px;
+}
+
+.event-details h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #111827;
+    font-weight: 700;
+}
+
+.event-date, .event-location {
+    font-size: 14px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.event-desc {
+    font-size: 15px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+/* Action Buttons - Dashboard style */
+/* Container for actions */
+.event-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Base style for all action buttons */
+.event-actions button, 
+.event-actions .edit-btn {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+/* --- APPROVE & REJECT (Small Circular/Square Icons) --- */
+.approve {
+    background-color: #ecfdf5 !important; /* Soft Green */
+    color: #10b981 !important;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+}
+
+.approve:hover {
+    background-color: #10b981 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.reject {
+    background-color: #fff1f2 !important; /* Soft Red/Pink */
+    color: #f43f5e !important;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+}
+
+.reject:hover {
+    background-color: #f43f5e !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+
+/* --- EDIT BUTTON (The Primary Action) --- */
 .edit-btn {
-    background: #2563eb;
-    color: #fff;
+    background-color: #f8fafc !important; /* Light Slate */
+    color: #64748b !important;
+    flex: 1; /* Makes it fill the middle space */
+    height: 36px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #e2e8f0 !important;
+    gap: 8px;
+}
+
+.edit-btn::after {
+    content: 'Edit Details'; /* Adds text next to the icon */
+    font-size: 12px;
 }
 
 .edit-btn:hover {
-    background: #1d4ed8;
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border-color: #334155 !important;
 }
 
-/* MODAL */
+/* --- DELETE BUTTON --- */
+.delete {
+    background-color: #f8fafc !important;
+    color: #94a3b8 !important;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.delete:hover {
+    background-color: #fee2e2 !important;
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+/* --- ADJUSTMENT FOR PENDING STATE --- */
+/* This ensures the Approve/Reject and Edit/Delete sit nicely on one line */
+form[style="display:inline;"] {
+    display: flex !important;
+}
+
+/* Modal / Pop-up Styling */
 .modal {
-    display: none;
+    display: none; 
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(8px);
 }
 
 .modal-content {
-    background: #fff;
-    width: 400px;
-    padding: 25px;
-    border-radius: 12px;
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 40px;
+    width: 480px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.modal-content h3 {
-    margin-bottom: 15px;
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #111827;
+    font-weight: 800;
+    text-align: center;
 }
 
-.modal-content label {
-    font-weight: 600;
-    display: block;
-    margin-top: 10px;
-}
-
-.modal-content input,
-.modal-content textarea {
+#editForm input, #editForm textarea {
     width: 100%;
-    padding: 8px;
-    margin-top: 6px;
-    border-radius: 6px;
-    border: 1px solid #cbd5e1;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 12px;
+    font-size: 15px;
 }
 
-.modal-buttons {
-    margin-top: 20px;
-    text-align: right;
+#editForm button[type="submit"] {
+    background-color: #111827; /* Dark button like the dashboard menu */
+    color: white;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#editForm button[type="button"] {
+    background: none;
+    color: #9ca3af;
+    width: 100%;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
 }
