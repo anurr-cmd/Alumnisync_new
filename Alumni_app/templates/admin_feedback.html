@@ -1,32 +1,107 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Admin Feedback View</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Management</title>
     <link rel="stylesheet" href="{% static 'admin_feedback.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-<div class="top-bar">
-    <a href="{% url 'admin_dashboard' %}">
-        <button class="back-btn">← Back</button>
-    </a>
-</div>
+    <div class="dashboard-container">
 
-<div class="parent-container">
-    <h2>Alumni Feedback</h2>
-
-    {% for fb in feedbacks %}
-        <div class="feedback-card">
-            <div class="username">{{ fb.user.username }}</div>
-            <div class="message">{{ fb.message }}</div>
-            <div class="date">{{ fb.created_at }}</div>
+        <div class="sidebar">
+            <div class="admin-profile">
+                <div class="circle">AD</div>
+                <p>Admin Dashboard</p>
+            </div>
+            <ul class="menu">
+                <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-table-columns"></i> Dashboard</a></li>
+                <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar"></i> Events</a></li>
+                <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+                <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
+                <li class="active"><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comment"></i> Feedback</a></li>
+            </ul>
         </div>
-    {% empty %}
-        <p style="text-align:center;">No feedback available</p>
-    {% endfor %}
-</div>
 
+        <div class="main-content">
+            <div class="topbar">
+                <h2><i class="fa-solid fa-xmark"></i> Feedback Management</h2>
+                <div class="top-links">
+                    <a href="#">Back to Home</a>
+                    <button class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+
+            <div class="feedback-header">
+                <h1>User Feedback</h1>
+                <p>View all feedback messages submitted by users</p>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-icon gray"><i class="fa-regular fa-comment"></i></div>
+                    <div>
+                        <h3>{{ feedbacks.count }}</h3>
+                        <p>Total Feedback</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon orange"><i class="fa-regular fa-clock"></i></div>
+                    <div>
+                        <h3>New</h3>
+                        <p>Recent Submissions</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon green"><i class="fa-regular fa-circle-check"></i></div>
+                    <div>
+                        <h3>Active</h3>
+                        <p>User Engagement</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-list">
+                {% for f in feedbacks %}
+                <div class="feedback-card">
+                    <div class="feedback-icon">
+                        <i class="fa-regular fa-message"></i>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="card-top-row">
+                            <h3>{{f.subject}}</h3>
+                            <span class="status-badge">Review</span>
+                        </div>
+                        <div class="user-info">
+                            <i class="fa-regular fa-envelope"></i> {{f.email}}
+                            <span class="user-name">by {{f.name}}</span>
+                        </div>
+                        <p class="feedback-message">{{f.message}}</p>
+                        <hr>
+                        <div class="feedback-footer">
+                            <div class="feedback-date">
+                                <i class="fa-regular fa-calendar"></i> {{f.created_at}}
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-sm">View</button>
+                                <button class="btn-sm danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <p>No feedback messages available.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

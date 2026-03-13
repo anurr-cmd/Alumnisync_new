@@ -1,209 +1,280 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Admin Announcements</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Announcements</title>
+
+<link rel="stylesheet" href="{% static 'admin_announcements.css' %}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
+
+
 <body>
 
-<div class="container">
+<div class="dashboard-container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="profile-box">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="admin">
-            <h3>Admin Panel</h3>
-        </div>
+<!-- SIDEBAR -->
 
-        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+<div class="sidebar">
 
-    <!-- EVENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('events-menu')">
-            Events ▾
-        </div>
-        <div class="submenu" id="events-menu">
-            <a href="{% url 'admin_events' %}">Approval Events</a>
-            <a href="{% url 'view_events_admin' %}">View Events</a>
-        </div>
-    </div>
-
-    <!-- ALUMNI -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
-            Alumni ▾
-        </div>
-        <div class="submenu" id="alumni-menu">
-            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
-        </div>
-    </div>
-
-    <div class="menu-group">
-    <div class="menu-title" onclick="toggleMenu('job-menu')">
-        Jobs ▾
-    </div>
-
-    <div class="submenu" id="job-menu">
-        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
-    </div>
-</div>
-    <!-- ANNOUNCEMENTS -->
-    <div class="menu-group">
-        <div class="menu-title , active" onclick="toggleMenu('announcement-menu')">
-            Announcements ▾
-        </div>
-        <div class="submenu" id="announcement-menu">
-            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
-        </div>
-    </div>
-
-    <a href="{% url 'logout' %}">Logout</a>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main">
-
-        <div class="navbar">
-            Announcements
-            <button type="button" class="btn" onclick="openModal('addModal')">
-                Add Announcement
-            </button>
-        </div>
-
-        <div class="content">
-            <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-
-                {% for a in announcements %}
-                <tr>
-                    <td>{{ a.title }}</td>
-                    <td>{{ a.posted_on|date:"M d, Y" }}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button type="button"
-                                    class="btn-edit"
-                                    onclick="openModal('editModal{{ a.id }}')">
-                                Edit
-                            </button>
-
-                            <button type="button"
-                                    class="btn-delete"
-                                    onclick="openModal('deleteModal{{ a.id }}')">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+<div class="admin-profile">
+<div class="circle">AD</div>
+<p>Admin Dashboard</p>
 </div>
 
-<!-- ADD MODAL -->
-<div id="addModal" class="modal">
-    <div class="modal-box">
-        <h3>Add Announcement</h3>
+<ul class="menu">
 
-        <form method="POST" action="{% url 'add_announcement' %}" enctype="multipart/form-data">
-            {% csrf_token %}
+<li>
+<a href="{% url 'admin_dashboard' %}">
+<i class="fa-solid fa-table-columns"></i>
+Dashboard
+</a>
+</li>
 
-            <input type="text" name="title" placeholder="Title" required>
+<li>
+<a href="{% url 'admin_events' %}">
+<i class="fa-solid fa-calendar"></i>
+Events
+</a>
+</li>
 
-            <textarea name="message" placeholder="Message" required></textarea>
+<li>
+<a href="{% url 'jobs_admin' %}">
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</a>
+</li>
 
-            <!-- File upload -->
-            <input type="file" name="image" accept="image/*">
+<li class="active">
+<a href="{% url 'announcements_page' %}">
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</a>
+</li>
 
-            <!-- Buttons -->
-            <div class="modal-actions">
-                <button type="submit" class="btn btn-save">Save</button>
-                <button type="button" class="btn btn-cancel" onclick="closeModal('addModal')">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </div>
+<li>
+<a href="{% url 'admin_view_alumni' %}">
+<i class="fa-solid fa-user-graduate"></i>
+Alumni Details
+</a>
+</li>
+
+<li>
+<a href="{% url 'admin_feedback' %}">
+<i class="fa-solid fa-comment"></i>
+Feedback
+</a>
+</li>
+
+</ul>
+
 </div>
 
-<!-- EDIT + DELETE MODALS -->
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+<div class="topbar">
+
+<h2>
+<i class="fa-solid fa-xmark"></i>
+Announcements Management
+</h2>
+
+<div class="top-links">
+
+<a href="#">Back to Home</a>
+
+<button class="logout">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</button>
+
+</div>
+
+</div>
+
+
+<!-- HEADER -->
+
+<div class="announcement-header">
+
+<div>
+<h1>Announcements</h1>
+<p>Create, edit, and manage all announcements</p>
+</div>
+
+<button onclick="openAddPopup()" class="add-btn">
+<i class="fa-solid fa-plus"></i>
+Add Announcement
+</button>
+
+</div>
+
+
+
+<!-- ANNOUNCEMENT LIST -->
+
+<div class="announcement-grid">
+
 {% for a in announcements %}
 
-<!-- EDIT MODAL -->
-<div id="editModal{{ a.id }}" class="modal">
-    <div class="modal-box">
-        <h3>Edit Announcement</h3>
+<div class="card">
+    <div class="icon">
+        {% if a.image_url %}
+            <img src="{{ a.image_url }}" alt="img" class="announcement-img">
+        {% else %}
+            <i class="fa-solid fa-bullhorn"></i>
+        {% endif %}
+    </div>
 
-        <form method="POST" action="{% url 'edit_announcement' a.id %}">
-            {% csrf_token %}
-            <input type="text" name="title" value="{{ a.title }}" required>
-            <textarea name="message" required>{{ a.message }}</textarea>
-            <input type="text" name="image_url" value="{{ a.image_url }}" placeholder="Image URL">
-            <button type="submit" class="btn-primary">Update</button>
-        </form>
-
-        <div class="modal-actions">
-            <button type="button"
-                    class="btn-secondary"
-                    onclick="closeModal('editModal{{ a.id }}')">
-                Cancel
-            </button>
+    <div class="card-body">
+        <div class="card-header">
+            <h3>{{a.title}}</h3>
         </div>
+        
+        <div class="tag">
+            <span class="priority">Low Priority</span>
+            <span class="dept"><i class="fa-solid fa-building"></i> {{a.department}}</span>
+            <span class="date">Posted: {{a.posted_on}}</span>
+        </div>
+
+        <p class="message">{{a.message}}</p>
     </div>
-</div>
 
-<!-- DELETE MODAL -->
-<div id="deleteModal{{ a.id }}" class="modal">
-    <div class="modal-box">
-        <h3>Delete Announcement?</h3>
-        <p>Are you sure you want to delete this announcement?</p>
+    <div class="actions">
+        <button class="btn-action btn-edit" title="Edit" 
+                onclick="openEditPopup('{{a.id}}','{{a.title}}','{{a.message}}')">
+            <i class="fa-solid fa-pen"></i>
+        </button>
 
-        <form method="POST" action="{% url 'delete_announcement' a.id %}">
+        <form method="POST" action="{% url 'delete_announcement' a.id %}" style="display:inline;">
             {% csrf_token %}
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn-cancel"
-                        onclick="closeModal('deleteModal{{ a.id }}')">
-                    Cancel
-                </button>
-
-                <button type="submit"
-                        class="btn-danger">
-                    Delete
-                </button>
-            </div>
+            <button type="submit" class="btn-action btn-delete" 
+                    onclick="return confirm('Delete this?')">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         </form>
     </div>
 </div>
 
+</div>
 
 {% endfor %}
 
-<!-- MODAL SCRIPT -->
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ADD POPUP -->
+
+<div id="addPopup" class="popup">
+
+<div class="popup-content">
+
+<h2>Add Announcement</h2>
+
+<form method="POST" action="{% url 'add_announcement' %}">
+{% csrf_token %}
+
+<label>Title</label>
+<input type="text" name="title" required>
+
+<label>Message</label>
+<textarea name="message" required></textarea>
+
+{% comment %} <label>Image URL</label>
+<input type="text" name="image_url"> {% endcomment %}
+
+<div class="popup-buttons">
+
+<button type="submit">Save</button>
+
+<button type="button" onclick="closeAddPopup()">Cancel</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<!-- EDIT POPUP -->
+
+<div id="editPopup" class="popup">
+
+<div class="popup-content">
+
+<h2>Edit Announcement</h2>
+
+<form method="POST" id="editForm">
+{% csrf_token %}
+
+<label>Title</label>
+<input type="text" name="title" id="editTitle">
+
+<label>Message</label>
+<textarea name="message" id="editMessage"></textarea>
+
+<div class="popup-buttons">
+
+<button type="submit">Update</button>
+
+<button type="button" onclick="closeEditPopup()">Cancel</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+
 <script>
-function openModal(id) {
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = "none";
-    });
-    document.getElementById(id).style.display = "flex";
+
+function openAddPopup(){
+document.getElementById("addPopup").style.display="flex";
 }
 
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
+function closeAddPopup(){
+document.getElementById("addPopup").style.display="none";
 }
 
-function toggleMenu(id) {
-    const menu = document.getElementById(id);
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+function openEditPopup(id,title,message){
+
+document.getElementById("editPopup").style.display="flex";
+
+document.getElementById("editTitle").value = title;
+document.getElementById("editMessage").value = message;
+
+document.getElementById("editForm").action =
+"/alumni_app/admin/announcements/edit/" + id + "/";
 }
+
+function closeEditPopup(){
+document.getElementById("editPopup").style.display="none";
+}
+
 </script>
+
 
 </body>
 </html>
