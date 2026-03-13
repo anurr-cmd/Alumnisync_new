@@ -19,7 +19,8 @@ def contact(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username") 
+        
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
@@ -27,11 +28,9 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            # ✅ FIRST CHECK SUPERUSER
             if user.is_superuser:
                 return redirect("admin_dashboard")
 
-            # ✅ Then check profile for normal users
             try:
                 profile = Profile.objects.get(user=user)
             except Profile.DoesNotExist:
