@@ -1,110 +1,177 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Registered Alumni</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
+<meta charset="UTF-8">
+<title>Alumni Directory</title>
+<link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
 <div class="container">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="profile-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
-            <h3>Admin</h3>
-        </div>
+<!-- SIDEBAR -->
 
-        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+<div class="sidebar">
 
-    <!-- EVENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('events-menu')">
-            Events ▾
-        </div>
-        <div class="submenu" id="events-menu">
-            <a href="{% url 'admin_events' %}">Approval Events</a>
-            <a href="{% url 'view_events_admin' %}">View Events</a>
-        </div>
-    </div>
+<div class="logo">✖ Alumni Management</div>
 
-    <!-- ALUMNI -->
-    <div class="menu-group">
-        <div class="menu-title , active" onclick="toggleMenu('alumni-menu')">
-            Alumni ▾
-        </div>
-        <div class="submenu" id="alumni-menu">
-            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
-        </div>
-    </div>
-
-    <div class="menu-group">
-    <div class="menu-title" onclick="toggleMenu('job-menu')">
-        Jobs ▾
-    </div>
-
-    <div class="submenu" id="job-menu">
-        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
-    </div>
+<div class="profile">
+<div class="profile-circle">AD</div>
+<div>Admin Dashboard</div>
 </div>
-    <!-- ANNOUNCEMENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
-            Announcements ▾
-        </div>
-        <div class="submenu" id="announcement-menu">
-            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
-        </div>
-    </div>
 
-    <a href="{% url 'logout' %}">Logout</a>
-    </aside>
+<div class="menu">
+<li>
+<a href="{% url 'admin_dashboard' %}">
+<i class="fa-solid fa-gauge"></i>
+Dashboard
+</a>
+</li>
 
-    <!-- Content -->
-    <div class="content">
-        <h2>Registered Alumni</h2>
+<li>
+<a href="{% url 'admin_events' %}">
+<i class="fa-solid fa-calendar-days"></i>
+Events
+</a>
+</li>
 
-        <table>
-            <tr>
-                <th>Profile</th>
-                <th>Username</th>
-                <th>Roll No</th>
-                <th>Department</th>
-                <th>Passout Year</th>
-                <th>Company</th>
-                <th>Location</th>
-            </tr>
+<li>
+<a href="{% url 'jobs_admin' %}">
+<i class="fa-solid fa-briefcase"></i>
+Jobs
+</a>
+</li>
 
-            {% for alumni in alumni_list %}
-            <tr>
-                <td>
-                    {% if alumni.profile_image %}
-                        <img src="{{ alumni.profile_image.url }}" class="avatar">
-                    {% else %}
-                        <span style="color:#999;">No Image</span>
-                    {% endif %}
-                </td>
+<li>
+<a href="{% url 'announcements_page' %}">
+<i class="fa-solid fa-bullhorn"></i>
+Announcements
+</a>
+</li>
 
-                <td>{{ alumni.user.username }}</td>
-                <td>{{ alumni.roll_no }}</td>
-                <td>{{ alumni.department }}</td>
-                <td>{{ alumni.passout_year }}</td>
-                <td>{{ alumni.company }}</td>
-                <td>{{ alumni.location }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+<li class="active">
+<a href="{% url 'admin_view_alumni' %}">
+<i class="fa-solid fa-user-graduate"></i>
+Alumni Details
+</a>
+</li>
+
+<li>
+<a href="{% url 'admin_feedback' %}">
+<i class="fa-solid fa-comments"></i>
+Feedback
+</a>
+</li>
 
 </div>
-<script>
-    function toggleMenu(id) {
-    const menu = document.getElementById(id);
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-</script>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="topbar">
+<div>
+<h2>Alumni Directory</h2>
+<small>View and manage all registered alumni members</small>
+</div>
+
+<div class="topbar">
+<a href="{% url 'admin_dashboard' %}">Back to Home</a>
+<a href="{% url 'logout' %}">
+    <button class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+</a>
+</div>
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+<form method="GET">
+🔍 <input type="text" name="q" placeholder="Search alumni by name, email, department, designation, company, phone..." value="{{query}}">
+</form>
+</div>
+
+<!-- TABLE -->
+
+<table>
+
+<tr>
+<th>Profile</th>
+<th>Name</th>
+<th>Roll No</th>
+<th>Email</th>
+<th>Department</th>
+<th>Join Year</th>
+<th>Passout</th>
+<th>Designation</th>
+<th>Current Job</th>
+<th>Company</th>
+<th>Location</th>
+<th>Phone</th>
+<th>Link</th>
+</tr>
+
+{% for p in profiles %}
+
+<tr>
+
+<td>
+{% if p.profile_image %}
+<img src="{{p.profile_image.url}}" class="profile-img">
+{% else %}
+👤
+{% endif %}
+</td>
+
+<td>{{p.user.username}}</td>
+
+<td>{{p.roll_no|default:"-"}}</td>
+
+<td>{{p.email|default:"-"}}</td>
+
+<td>{{p.department|default:"-"}}</td>
+
+<td>{{p.join_year|default:"-"}}</td>
+
+<td>{{p.passout_year|default:"-"}}</td>
+
+<td>{{p.designation|default:"-"}}</td>
+
+<td>{{p.current_job|default:"-"}}</td>
+
+<td>{{p.company|default:"-"}}</td>
+
+<td>{{p.location|default:"-"}}</td>
+
+<td>{{p.phone|default:"-"}}</td>
+
+<td class="link-icon">
+<a href="#">🔗</a>
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="13" style="text-align:center;">No Alumni Found</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
 </body>
 </html>
+```

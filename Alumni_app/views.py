@@ -1,12 +1,17 @@
+import logging
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
+from django.db.models import Q
 from .models import Profile,Event,Job,Announcement
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.db import IntegrityError
 from .models import Feedback
+
+logger = logging.getLogger(__name__)
 
 def index(request):
 
@@ -221,25 +226,59 @@ def admin_dashboard(request):
 #     return render(request, "alumni_dashboard.html")
 
 
-@login_required
 def admin_view_alumni(request):
+    q = request.GET.get('q', '')
+    logger.info(f"Search query: {q}")
 
-    # Ensure admin profile exists
-    profile, created = Profile.objects.get_or_create(
-        user=request.user,
-        defaults={"role": "Admin"}
-    )
+    profiles = Profile.objects.select_related('user').all()
 
-    # Force admin role for admin section
-    if profile.role.lower() != "admin":
-        profile.role = "Admin"
-        profile.save()
+    if q:
+        # Check if query is a year
+        try:
+            year = int(q)
+            year_filter = Q(join_year=year) | Q(passout_year=year)
+        except ValueError:
+            year_filter = Q(join_year__icontains=q) | Q(passout_year__icontains=q)
 
-    # Fetch alumni (case-insensitive)
-    alumni_list = Profile.objects.filter(role__iexact="alumni")
+        # Apply search filters
+        profiles = profiles.filter(
+            Q(user__username__icontains=q) |
+            Q(roll_no__icontains=q) |
+            Q(email__icontains=q) |
+            Q(department__icontains=q) |
+            Q(current_job__icontains=q) |
+            Q(company__icontains=q) |
+            Q(location__icontains=q) |
+            Q(phone__icontains=q) |
+            Q(alternate_phone__icontains=q) |
+            Q(designation__icontains=q) |
+            year_filter
+        ).distinct()
+
+    # If AJAX request return JSON
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        data = []
+
+        for p in profiles:
+            data.append({
+                "username": p.user.username if p.user else "",
+                "roll_no": p.roll_no or "",
+                "email": p.email or "",
+                "department": p.department or "",
+                "join_year": p.join_year or "",
+                "passout_year": p.passout_year or "",
+                "current_job": p.current_job or "",
+                "company": p.company or "",
+                "location": p.location or "",
+                "phone": p.phone or "",
+                "designation": p.designation or ""
+            })
+
+        return JsonResponse({"profiles": data})
 
     return render(request, "admin_view_alumni.html", {
-        "alumni_list": alumni_list
+        "profiles": profiles,
+        "query": q
     })
 
 # @login_required
