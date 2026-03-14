@@ -7,6 +7,7 @@
     <title>Alumni Directory | Admin</title>
     <link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
 </head>
 <body>
 
@@ -15,7 +16,6 @@
         <div class="admin-profile">
             <div class="circle">AD</div>
             <p>Admin Dashboard</p>
-            
         </div>
         <ul class="menu">
             <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
@@ -40,57 +40,62 @@
 
         <div class="header-section">
             <h1>Alumni Directory</h1>
-            <p>View and manage all registered alumni members in the system.</p>
+            <p>View and manage all registered alumni members.</p>
+        </div>
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
+
+                <div>
+
+                    <h3>{{ profiles.count }}</h3>
+
+                    <p>Total Alumni</p>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue"><i class="fa-solid fa-user-check"></i></div>
+
+                <div>
+
+                    <h3>Verified</h3>
+
+                    <p>Profiles</p>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
-                <div>
-                    <h3>{{ profiles.count }}</h3>
-                    <p>Total Alumni</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon blue"><i class="fa-solid fa-user-check"></i></div>
-                <div>
-                    <h3>Verified</h3>
-                    <p>Profiles</p>
-                </div>
-            </div>
-        </div>
+
 
         <div class="search-container">
-            <form method="GET" class="search-form">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" name="q" placeholder="Search by name, email, department, company..." value="{{query}}">
-                <button type="submit">Search</button>
-            </form>
-        </div>
 
+            <form method="GET" class="search-form">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text" name="q" placeholder="Search by name, email, department, company..." value="{{query}}">
+
+                <button type="submit">Search</button>
+
+            </form>
+
+        </div>
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Profile</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Roll No</th>
-                        <th>Email</th>
-                        <th>Department</th>
-                        <th>Join Year</th>
-                        <th>Passout</th>
-                        <th>Designation</th>
-                        <th>Current Job</th>
-                        <th>Company</th>
-                        <th>Location</th>
-                        <th>Phone</th>
-                        <th>Alt Phone</th>
-                        <th>LinkedIn</th>
-                        <th>Scholar</th>
-                        <th>Proof ID</th>
-                        <th>Comp ID</th>
-                        <th>Appointment</th>
+                        <th>Profile</th><th>Name</th><th>Role</th><th>Roll No</th>
+                        <th>Email</th><th>Dept</th><th>Designation</th>
+                        <th>LinkedIn</th><th>Scholar</th><th>Proof</th><th>Comp ID</th><th>Order</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,11 +103,8 @@
                     <tr>
                         <td>
                             <div class="table-img-container">
-                                {% if p.profile_image %}
-                                <img src="{{p.profile_image.url}}" class="profile-img">
-                                {% else %}
-                                <div class="img-placeholder"><i class="fa-solid fa-user"></i></div>
-                                {% endif %}
+                                {% if p.profile_image %}<img src="{{p.profile_image.url}}" class="profile-img">
+                                {% else %}<div class="img-placeholder"><i class="fa-solid fa-user"></i></div>{% endif %}
                             </div>
                         </td>
                         <td><span class="name-text">{{p.user.username}}</span></td>
@@ -110,43 +112,41 @@
                         <td>{{p.roll_no|default:"-"}}</td>
                         <td><small>{{p.email|default:"-"}}</small></td>
                         <td>{{p.department|default:"-"}}</td>
-                        <td>{{p.join_year|default:"-"}}</td>
-                        <td>{{p.passout_year|default:"-"}}</td>
                         <td>{{p.designation|default:"-"}}</td>
-                        <td>{{p.current_job|default:"-"}}</td>
-                        <td>{{p.company|default:"-"}}</td>
-                        <td>{{p.location|default:"-"}}</td>
-                        <td>{{p.phone|default:"-"}}</td>
-                        <td>{{p.alternate_phone|default:"-"}}</td>
+                        
                         <td>
-                            {% if p.linkedin_profile %}
-                            <a href="{{p.linkedin_profile}}" class="action-icon ln" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                            {% else %}-{% endif %}
+                            {% if p.linkedin_profile and p.linkedin_profile != "None" and p.linkedin_profile != "" %}
+                            <a href="{{ p.linkedin_profile }}" class="action-icon ln" target="_blank">
+                            <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                            {% else %}
+                             -
+                            {% endif %}
                         </td>
                         <td>
-                            {% if p.google_scholar %}
-                            <a href="{{p.google_scholar}}" class="action-icon gs" target="_blank"><i class="fa-solid fa-graduation-cap"></i></a>
-                            {% else %}-{% endif %}
+                            {% if p.google_scholar and p.google_scholar != "None" and p.google_scholar != "" %}
+                            <a href="{{ p.google_scholar }}" class="action-icon gs" target="_blank">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            </a>
+                            {% else %}
+                                -
+                            {% endif %}
                         </td>
                         <td>
                             {% if p.proof_id %}
-                            <a href="{{p.proof_id.url}}" class="doc-link" target="_blank"><i class="fa-solid fa-file-invoice"></i></a>
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.proof_id.url}}"><i class="fa-solid fa-file-invoice"></i></a>
                             {% else %}-{% endif %}
                         </td>
                         <td>
                             {% if p.company_id_image %}
-                            <a href="{{p.company_id_image.url}}" class="doc-link" target="_blank"><i class="fa-solid fa-id-card"></i></a>
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.company_id_image.url}}"><i class="fa-solid fa-id-card"></i></a>
                             {% else %}-{% endif %}
                         </td>
                         <td>
                             {% if p.appointment_order %}
-                            <a href="{{p.appointment_order.url}}" class="doc-link" target="_blank"><i class="fa-solid fa-file-signature"></i></a>
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.appointment_order.url}}"><i class="fa-solid fa-file-signature"></i></a>
                             {% else %}-{% endif %}
                         </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="19" class="empty-msg">No Alumni Found Matching Your Search</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -154,6 +154,57 @@
         </div>
     </div>
 </div>
+
+<div id="documentModal" class="doc-modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content-wrapper">
+        <img class="modal-content-img" id="fullImage" src="">
+        <iframe id="fullPDF" class="modal-content-pdf" style="display:none; width:80%; height:100%; border-radius:12px;"></iframe>
+    </div>
+    <a href="#" id="modalDownload" class="modal-download-btn" download>
+        <i class="fa-solid fa-download"></i> Download Document
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById("documentModal");
+        const fullImage = document.getElementById("fullImage");
+        const fullPDF = document.getElementById("fullPDF");
+        const downloadBtn = document.getElementById("modalDownload");
+        const closeModal = document.querySelector(".close-modal");
+
+        document.querySelectorAll('.view-document').forEach(item => {
+            item.addEventListener('click', function() {
+                const fileUrl = this.getAttribute('data-url');
+                downloadBtn.href = fileUrl;
+
+                fullImage.classList.remove('show');
+                fullImage.style.display = "none";
+                fullPDF.style.display = "none";
+
+                if (fileUrl.toLowerCase().endsWith('.pdf')) {
+                    fullPDF.src = fileUrl;
+                    fullPDF.style.display = "block";
+                } else {
+                    fullImage.src = fileUrl;
+                    fullImage.style.display = "block";
+                    setTimeout(() => { fullImage.classList.add('show'); }, 10);
+                }
+                modal.style.display = "flex";
+            });
+        });
+
+        const closeAll = () => {
+            modal.style.display = "none";
+            fullPDF.src = "";
+            fullImage.classList.remove('show');
+        };
+
+        closeModal.onclick = closeAll;
+        window.onclick = (e) => { if (e.target == modal) closeAll(); };
+    });
+</script>
 
 </body>
 </html>
