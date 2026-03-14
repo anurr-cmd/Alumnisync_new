@@ -69,10 +69,10 @@ class Profile(models.Model):
     roll_no = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(max_length=254, blank=True, null=True)
     designation = models.CharField(max_length=150, blank=True, null=True)
-    appointment_order = models.CharField(max_length=150, blank=True, null=True)
-
+    # appointment_order = models.CharField(max_length=150, blank=True, null=True)
+    appointment_order = models.FileField(upload_to="appointment_orders/", blank=True, null=True)
     proof_id = models.FileField(upload_to="id", max_length=100, blank=True, null=True)
-    
+    company_id_image = models.FileField(upload_to="company_id/", max_length=100, blank=True, null=True)
     remarks = models.TextField(blank=True, null=True)
     
     department = models.CharField(max_length=100, blank=True, null=True)
@@ -89,6 +89,8 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     alternate_phone = models.CharField(max_length=15, blank=True, null=True)
+    linkedin_profile = models.URLField(blank=True, null=True)
+    google_scholar = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.passout_year}"

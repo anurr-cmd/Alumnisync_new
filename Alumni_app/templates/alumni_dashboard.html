@@ -80,7 +80,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <i class="fa-solid fa-briefcase"></i> Jobs
 </a>
 
-<a href="#">
+<a href="{% url 'alumni_announcements' %}">
 <i class="fa-solid fa-bullhorn"></i> Announcements
 </a>
 
@@ -231,75 +231,83 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <!-- EDIT PROFILE MODAL -->
 
 <div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProfile()">&times;</span>
 
-<div class="modal-content">
+        <h2>Edit Profile</h2>
 
-<span class="close" onclick="closeProfile()">&times;</span>
+        <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
 
-<h2>Edit Profile</h2>
+            <h3>Basic Information</h3>
 
-<form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
-{% csrf_token %}
+            <input type="text" name="full_name" value="{{ request.user.username }}" placeholder="Full Name">
+            <input type="email" name="email" value="{{ profile.email }}" placeholder="Email">
+            <input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+            <input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Alternate Phone">
+            <input type="text" name="role" value="{{ profile.role }}" placeholder="Role">
 
-<h3>Basic Information</h3>
+            <h3>Academic Information</h3>
 
-<input type="text" name="full_name" value="{{ request.user.profile }}" placeholder="Full Name">
-<input type="email" name="email" value="{{ profile.email }}" placeholder="Email">
-{% comment %} <input type="text" name="company" value="{{ profile.company }}" placeholder="Company"> {% endcomment %}
+            <input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Roll No">
+            <input type="text" name="department" value="{{ profile.department }}" placeholder="Department">
+            <input type="text" name="join_year" value="{{ profile.join_year }}" placeholder="Join Year">
+            <input type="text" name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout Year">
 
-<input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+            <h3>Professional Information</h3>
 
-<input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Alternate Phone">
+            <input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="Current Job Title">
+            <input type="text" name="company" value="{{ profile.company }}" placeholder="Company">
+            <input type="text" name="designation" value="{{ profile.designation }}" placeholder="Designation">
+            <input type="text" name="location" value="{{ profile.location }}" placeholder="Location">
+            {% comment %} <input type="text" name="appointment_order" value="{{ profile.appointment_order }}" placeholder="Appointment Order"> {% endcomment %}
 
-<h3>Academic Information</h3>
+            <h3>Online Profiles & Links</h3>
 
-<input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Roll No">
-<input type="text" name="department" value="{{ profile.department }}" placeholder="Department">
-<input type="text" name="join_year" value="{{ profile.join_year }}" placeholder="Join Year">
+            <input type="text" name="linkedin_profile" value="{{ profile.linkedin_profile }}" placeholder="https://linkedin.com/in/yourprofile">
+            <input type="text" name="google_scholar" value="{{ profile.google_scholar }}" placeholder="https://scholar.google.com/citations?...">
 
-<input type="text" name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout Year">
+            <h3>Additional Information</h3>
 
-<h3>Professional Information</h3>
+            <textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
+            <textarea name="remarks" placeholder="Remarks">{{ profile.remarks }}</textarea>
 
-<input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="Current Job Title">
-
-<input type="text" name="company" value="{{ profile.company }}" placeholder="Company">
-<input type="text" name="designation" value="{{ profile.designation }}" placeholder="Designation">
-
-<h3>Additional Information</h3>
-
-<textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
-
-<textarea name="remarks" placeholder="Remarks">{{ profile.remarks }}</textarea>
-
-
-<div class="file-upload-group">
-    <label>Proof ID</label>
+            <div class="file-upload-group">
+                <label>Proof ID</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="proof_id">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Proof
+                </label>
+            </div>
+            <div class="file-upload-group">
+    <label>Appointment Order Image</label>
     <label class="custom-file-upload">
-        <input type="file" name="proof_id">
-        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Proof
+        <input type="file" name="appointment_order">
+        <i class="fa-solid fa-file-arrow-up"></i> Upload Appointment Order
     </label>
 </div>
+            <div class="file-upload-group">
+                <label>Company ID Image</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="company_id_image">
+                    <i class="fa-solid fa-id-card"></i> Upload Company ID
+                </label>
+            </div>
 
-<div class="file-upload-group">
-    <label>Profile Photo</label>
-    <label class="custom-file-upload">
-        <input type="file" name="profile_photo">
-        <i class="fa-solid fa-image"></i> Choose Photo
-    </label>
+            <div class="file-upload-group">
+                <label>Profile Photo</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="profile_image">
+                    <i class="fa-solid fa-image"></i> Choose Photo
+                </label>
+            </div>
+
+            <br><br>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
 </div>
-
-<br><br>
-
-<button type="submit">Save Changes</button>
-
-</form>
-
-</div>
-
-</div>
-
-
 
 <!-- JAVASCRIPT -->
 

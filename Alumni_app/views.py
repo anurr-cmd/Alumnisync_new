@@ -41,26 +41,20 @@ def login_portal(request):
 def alumni_login(request):
 
     if request.method == "POST":
+
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            try:
-                profile = Profile.objects.get(user=user)
-
-                if profile.role == "alumni":
-                    login(request, user)
-                    return redirect("alumni_dashboard")
-                else:
-                    messages.error(request, "You are not an Alumni user.")
-
-            except Profile.DoesNotExist:
-                messages.error(request, "Profile not found.")
+            login(request, user)
+            return redirect("alumni_dashboard")
 
         else:
-            messages.error(request, "Invalid username or password")
+            return render(request, "alumni_login.html", {
+                "error": "Invalid username or password"
+            })
 
     return render(request, "alumni_login.html")
 
@@ -126,14 +120,22 @@ def alumni_register(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
 
+        # user already exist check
+        if User.objects.filter(username=username).exists():
+            return render(request, "alumni_register.html", {
+                "error": "User already exists. Please login."
+            })
+
+        # create new user
         User.objects.create_user(
             username=username,
             password=password
         )
 
-        return redirect("alumni_dashboard")
+        # after register go to login page
+        return redirect("alumni_login")
 
-    return render(request,"alumni_register.html")
+    return render(request, "alumni_register.html")
 
 @login_required
 def alumni_dashboard(request):
@@ -156,42 +158,53 @@ def alumni_dashboard(request):
 
 @login_required
 def edit_profile(request):
-    profile = request.user.profile  # assuming OneToOneField
+    profile = request.user.profile
 
     if request.method == "POST":
-        # Text fields
         profile.roll_no = request.POST.get("roll_no")
         profile.email = request.POST.get("email")
-        profile.designation = request.POST.get("designation") or None
-        profile.appointment_order = request.POST.get("appointment_order")
-        profile.remarks = request.POST.get("remarks") or None
+        profile.designation = request.POST.get("designation")
+        profile.remarks = request.POST.get("remarks")
         profile.department = request.POST.get("department")
-        profile.address = request.POST.get("address") or None
+        profile.address = request.POST.get("address")
         profile.current_job = request.POST.get("current_job")
         profile.company = request.POST.get("company")
         profile.location = request.POST.get("location")
         profile.phone = request.POST.get("phone")
         profile.alternate_phone = request.POST.get("alternate_phone")
 
-        # Integer fields
+        profile.role = request.POST.get("role")
+        profile.linkedin_profile = request.POST.get("linkedin_profile")
+        profile.google_scholar = request.POST.get("google_scholar")
+
+        full_name = request.POST.get("full_name")
+        if full_name:
+            request.user.username = full_name
+            request.user.save()
+
         join_year = request.POST.get("join_year")
         if join_year and join_year != "None":
             profile.join_year = int(join_year)
-        else:
-            profile.join_year = None
-
+        # else:
+        #     profile.join_year = None
 
         passout_year = request.POST.get("passout_year")
         if passout_year and passout_year != "None":
             profile.passout_year = int(passout_year)
-        else:
-            profile.passout_year = None
-        # File fields
+        # else:
+        #     profile.passout_year = None
+
         if request.FILES.get("profile_image"):
             profile.profile_image = request.FILES.get("profile_image")
 
         if request.FILES.get("proof_id"):
             profile.proof_id = request.FILES.get("proof_id")
+
+        if request.FILES.get("company_id_image"):
+            profile.company_id_image = request.FILES.get("company_id_image")
+
+        if request.FILES.get("appointment_order"):
+            profile.appointment_order = request.FILES.get("appointment_order")
 
         profile.save()
         messages.success(request, "Profile updated successfully.")
@@ -227,53 +240,65 @@ def admin_dashboard(request):
 
 
 def admin_view_alumni(request):
-    q = request.GET.get('q', '')
-    logger.info(f"Search query: {q}")
-
+    q = request.GET.get('q', '').strip()
+    
+    # Start with all profiles and optimize with select_related
     profiles = Profile.objects.select_related('user').all()
 
     if q:
-        # Check if query is a year
+        # 1. Handle Year Filters (Try to convert query to int for exact year matches)
+        year_q = None
         try:
-            year = int(q)
-            year_filter = Q(join_year=year) | Q(passout_year=year)
+            year_q = int(q)
         except ValueError:
-            year_filter = Q(join_year__icontains=q) | Q(passout_year__icontains=q)
+            pass
 
-        # Apply search filters
-        profiles = profiles.filter(
+        # 2. Build the Filter Query
+        # This covers every visible field in your HTML table
+        query_filter = (
             Q(user__username__icontains=q) |
+            Q(role__icontains=q) |
             Q(roll_no__icontains=q) |
             Q(email__icontains=q) |
             Q(department__icontains=q) |
+            Q(designation__icontains=q) |
             Q(current_job__icontains=q) |
             Q(company__icontains=q) |
             Q(location__icontains=q) |
             Q(phone__icontains=q) |
             Q(alternate_phone__icontains=q) |
-            Q(designation__icontains=q) |
-            year_filter
-        ).distinct()
+            Q(linkedin_profile__icontains=q) |
+            Q(google_scholar__icontains=q)
+        )
 
-    # If AJAX request return JSON
+        # 3. Add Year filters if the query is numeric
+        if year_q:
+            query_filter |= Q(join_year=year_q) | Q(passout_year=year_q)
+        else:
+            # Also check icontains for years if they are stored as strings/charfields
+            query_filter |= Q(join_year__icontains=q) | Q(passout_year__icontains=q)
+
+        profiles = profiles.filter(query_filter).distinct()
+
+    # AJAX Response Logic
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         data = []
-
         for p in profiles:
             data.append({
                 "username": p.user.username if p.user else "",
+                "role": p.role or "",
                 "roll_no": p.roll_no or "",
                 "email": p.email or "",
                 "department": p.department or "",
                 "join_year": p.join_year or "",
                 "passout_year": p.passout_year or "",
+                "designation": p.designation or "",
                 "current_job": p.current_job or "",
                 "company": p.company or "",
                 "location": p.location or "",
                 "phone": p.phone or "",
-                "designation": p.designation or ""
+                "alternate_phone": p.alternate_phone or "",
             })
-
         return JsonResponse({"profiles": data})
 
     return render(request, "admin_view_alumni.html", {
