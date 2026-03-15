@@ -17,7 +17,7 @@
             <h3>Admin Panel</h3>
         </div>
 
-        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+        <a href="{% url 'admin_dashboard' %}" >Dashboard</a>
 
     <!-- EVENTS -->
     <div class="menu-group">
@@ -26,7 +26,6 @@
         </div>
         <div class="submenu" id="events-menu">
             <a href="{% url 'admin_events' %}">Approval Events</a>
-            <a href="{% url 'view_events_admin' %}">View Events</a>
         </div>
     </div>
 
@@ -45,10 +44,6 @@
         Jobs ▾
     </div>
 
-    <div class="submenu" id="job-menu">
-        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
-    </div>
 </div>
     <!-- ANNOUNCEMENTS -->
     <div class="menu-group">
@@ -74,35 +69,37 @@
         </div>
 
         <div class="content">
-            <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
+            <div class="table-container" style="overflow-x: auto;">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
 
-                {% for a in announcements %}
-                <tr>
-                    <td>{{ a.title }}</td>
-                    <td>{{ a.posted_on|date:"M d, Y" }}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button type="button"
-                                    class="btn-edit"
-                                    onclick="openModal('editModal{{ a.id }}')">
-                                Edit
-                            </button>
+                    {% for a in announcements %}
+                    <tr>
+                        <td>{{ a.title }}</td>
+                        <td>{{ a.posted_on|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="action-buttons" style="display: flex; gap: 8px;">
+                                <button type="button"
+                                        class="btn-edit"
+                                        onclick="openModal('editModal{{ a.id }}')">
+                                    Edit
+                                </button>
 
-                            <button type="button"
-                                    class="btn-delete"
-                                    onclick="openModal('deleteModal{{ a.id }}')">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+                                <button type="button"
+                                        class="btn-delete"
+                                        onclick="openModal('deleteModal{{ a.id }}')">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     </div>
 </div>
