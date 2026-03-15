@@ -6,17 +6,22 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     # path('register/', views.register, name='register'),
-    path("edit-profile/", views.edit_profile, name="edit_profile"),
+
     path('login/', views.login_portal, name='login_portal'),
-    path('alumni/login/', views.alumni_login, name='alumni_login'),
-    path('admin/login/', views.admin_login, name='admin_login'),
-    path("register/alumni/", views.alumni_register, name="alumni_register"),
-    # path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('logout/', views.logout_view, name='logout'),
-    
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+
+    # Alumini
+    path("register/alumni/", views.alumni_register, name="alumni_register"),
+    path('alumni/login/', views.alumni_login, name='alumni_login'),
     path('alumni-dashboard/', views.alumni_dashboard, name='alumni_dashboard'),
+    path("edit-profile/", views.edit_profile, name="edit_profile"),
+
+    # Admin
+    path('admin/login/', views.admin_login, name='admin_login'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path("admin/alumni/", views.admin_view_alumni, name="admin_view_alumni"),
+    
+    
     # path("event/create/", views.create_event, name="create_event"),
     # path("admin-portal/", views.admin_portal, name="admin_portal"),
     # path("alumni-portal/", views.alumni_portal, name="alumni_portal"),
@@ -32,7 +37,6 @@ urlpatterns = [
     path("admin/announcements/edit/<int:id>/", views.edit_announcement, name="edit_announcement"),
     path("admin/announcements/delete/<int:id>/", views.delete_announcement, name="delete_announcement"),
     path('announcements/', views.alumni_announcements, name='alumni_announcements'),
-    path("admin/events/manage/", views.manage_admin_events, name="admin_events"),
     # path("admin/events/", views.view_events_admin, name="view_events_admin"),
     # path("admin/events/", views.view_events_admin, name="view_events_admin"),
     # path("alumni/events/", views.view_events_alumni, name="view_events_alumni"),
@@ -40,9 +44,9 @@ urlpatterns = [
     # path('events/edit/<int:id>/', views.edit_event, name='edit_event'),
     # path('events/delete/<int:id>/', views.delete_event, name='delete_event'),
     # path("events/manage/", views.manage_events, name="manage_events"),
-path("events/create/", views.create_event, name="create_event"),
-path('edit-event/<int:id>/', views.edit_event, name='edit_event'),
-path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
+    path("events/create/", views.create_event, name="create_event"),
+    path('edit-event/<int:id>/', views.edit_event, name='edit_event'),
+    path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
     # JOBS
     # ===== ALUMNI JOBS =====
     path("alumni/jobs/manage/", views.jobs_alumni, name="jobs_alumni"),

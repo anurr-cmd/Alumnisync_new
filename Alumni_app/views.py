@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Profile,Event,Job,Announcement
+from .models import *
+from .forms import *
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.db import IntegrityError
 from .models import Feedback
@@ -37,7 +38,6 @@ def alumni_login(request):
 
     if request.method == "POST":
         username = request.POST.get("username") 
-        
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
@@ -60,8 +60,71 @@ def alumni_login(request):
 
     return render(request, "alumni_login.html")
 
-def admin_login(request):
 
+def logout_view(request):
+    logout(request)
+    return redirect("login_portal")
+
+def alumni_register(request): ###############################
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = User.objects.create_user(
+            username=username,
+            password=password
+        )
+
+        Profile.objects.create(
+            user = user,
+            role = "alumni"
+        )
+
+        return redirect("alumni_dashboard")
+
+    return render(request,"alumni_register.html")
+
+@login_required
+def alumni_dashboard(request):
+
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    context = {
+        "profile": profile,
+
+        "total_events": Event.objects.count(),
+        "total_jobs": Job.objects.count(),
+        "total_announcements": Announcement.objects.count(),
+
+        "recent_events": Event.objects.order_by("-date")[:3],
+        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
+        "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
+    }
+
+    return render(request, "alumni_dashboard.html", context)
+
+@login_required
+def edit_profile(request):
+    data, created = Profile.objects.get_or_create(user = request.user)
+
+    if request.method == "POST":
+        form = EditProfile(request.POST, request.FILES, instance=data)
+        if form.is_valid():
+            form.save()
+        
+        messages.success(request, "Profile updated successfully.")
+        return redirect("alumni_dashboard")
+    
+    form = EditProfile(instance=data)
+    return render(request, "edit_profile.html", {"form":form})
+
+
+def superuser_required(user):
+    return user.is_superuser
+
+def admin_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -90,113 +153,6 @@ def admin_login(request):
             messages.error(request, "Invalid username or password")
 
     return render(request, "admin_login.html")
-# def forgot_password(request):
-#     if request.method == "POST":
-#         username = request.POST.get("username")
-#         new_password = request.POST.get("new_password")
-#         confirm_password = request.POST.get("confirm_password")
-
-#         if new_password != confirm_password:
-#             return render(request, "login.html", {"error": "Passwords do not match."})
-
-#         try:
-#             user = User.objects.get(username=username)
-#             user.set_password(new_password)  # securely update password
-#             user.save()
-#             return render(request, "login.html", {"message": "Password reset successful! You can now login."})
-#         except User.DoesNotExist:
-#             return render(request, "login.html", {"error": "Username not found."})
-
-#     return redirect("login_view")
-
-
-
-def logout_view(request):
-    logout(request)
-    return redirect("login_portal")
-
-def alumni_register(request):
-
-    if request.method == "POST":
-
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        User.objects.create_user(
-            username=username,
-            password=password
-        )
-
-        return redirect("alumni_dashboard")
-
-    return render(request,"alumni_register.html")
-
-@login_required
-def alumni_dashboard(request):
-
-    profile, created = Profile.objects.get_or_create(user=request.user)
-
-    context = {
-        "profile": profile,
-
-        "total_events": Event.objects.count(),
-        "total_jobs": Job.objects.count(),
-        "total_announcements": Announcement.objects.count(),
-
-        "recent_events": Event.objects.order_by("-date")[:3],
-        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
-        "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
-    }
-
-    return render(request, "alumni_dashboard.html", context)
-
-@login_required
-def edit_profile(request):
-    profile = request.user.profile  # assuming OneToOneField
-
-    if request.method == "POST":
-        # Text fields
-        profile.roll_no = request.POST.get("roll_no")
-        profile.email = request.POST.get("email")
-        profile.designation = request.POST.get("designation") or None
-        profile.appointment_order = request.POST.get("appointment_order")
-        profile.remarks = request.POST.get("remarks") or None
-        profile.department = request.POST.get("department")
-        profile.address = request.POST.get("address") or None
-        profile.current_job = request.POST.get("current_job")
-        profile.company = request.POST.get("company")
-        profile.location = request.POST.get("location")
-        profile.phone = request.POST.get("phone")
-        profile.alternate_phone = request.POST.get("alternate_phone")
-
-        # Integer fields
-        join_year = request.POST.get("join_year")
-        if join_year and join_year != "None":
-            profile.join_year = int(join_year)
-        else:
-            profile.join_year = None
-
-
-        passout_year = request.POST.get("passout_year")
-        if passout_year and passout_year != "None":
-            profile.passout_year = int(passout_year)
-        else:
-            profile.passout_year = None
-        # File fields
-        if request.FILES.get("profile_image"):
-            profile.profile_image = request.FILES.get("profile_image")
-
-        if request.FILES.get("proof_id"):
-            profile.proof_id = request.FILES.get("proof_id")
-
-        profile.save()
-        messages.success(request, "Profile updated successfully.")
-        return redirect("alumni_dashboard")
-
-    return redirect("alumni_dashboard")
-
-def superuser_required(user):
-    return user.is_superuser
 
 def admin_dashboard(request):
 
@@ -216,10 +172,6 @@ def admin_dashboard(request):
         "recent_events": recent_events,
         "recent_jobs": recent_jobs
     })
-
-# @login_required
-# def alumni_dashboard(request):
-#     return render(request, "alumni_dashboard.html")
 
 
 @login_required

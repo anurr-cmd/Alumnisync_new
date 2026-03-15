@@ -1,110 +1,105 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <title>Registered Alumni</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
-</head>
-<body>
+	<head>
+		<title>Registered Alumni</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="{% static 'admin_dash.css' %}" />
+	</head>
+	<body>
+		<div class="container">
+			<!-- Sidebar -->
+			<aside class="sidebar">
+				<div class="profile-section">
+					<img
+						src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+						class="profile-img"
+					/>
+					<h3>Admin</h3>
+				</div>
 
-<div class="container">
+				<a href="{% url 'admin_dashboard' %}">Dashboard</a>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="profile-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
-            <h3>Admin</h3>
-        </div>
+				<!-- EVENTS -->
+				<div class="menu-group">
+					<div class="menu-title" onclick="toggleMenu('events-menu')">Events ▾</div>
+					<div class="submenu" id="events-menu">
+						<a href="{% url 'admin_events' %}">Approval Events</a>
+						<a href="{% url 'admin_events' %}">View Events</a>
+					</div>
+				</div>
 
-        <a href="{% url 'admin_portal' %}" >Dashboard</a>
+				<!-- ALUMNI -->
+				<div class="menu-group">
+					<div class="menu-title , active" onclick="toggleMenu('alumni-menu')">
+						Alumni ▾
+					</div>
+					<div class="submenu" id="alumni-menu">
+						<a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+					</div>
+				</div>
 
-    <!-- EVENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('events-menu')">
-            Events ▾
-        </div>
-        <div class="submenu" id="events-menu">
-            <a href="{% url 'admin_events' %}">Approval Events</a>
-            <a href="{% url 'view_events_admin' %}">View Events</a>
-        </div>
-    </div>
+				<div class="menu-group">
+					<div class="menu-title" onclick="toggleMenu('job-menu')">Jobs ▾</div>
 
-    <!-- ALUMNI -->
-    <div class="menu-group">
-        <div class="menu-title , active" onclick="toggleMenu('alumni-menu')">
-            Alumni ▾
-        </div>
-        <div class="submenu" id="alumni-menu">
-            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
-        </div>
-    </div>
+					<div class="submenu" id="job-menu">
+						<a href="{% url 'jobs_admin' %}">Manage jobs</a>
+					</div>
+				</div>
+				<!-- ANNOUNCEMENTS -->
+				<div class="menu-group">
+					<div class="menu-title" onclick="toggleMenu('announcement-menu')">
+						Announcements ▾
+					</div>
+					<div class="submenu" id="announcement-menu">
+						<a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+					</div>
+				</div>
 
-    <div class="menu-group">
-    <div class="menu-title" onclick="toggleMenu('job-menu')">
-        Jobs ▾
-    </div>
+				<a href="{% url 'logout' %}">Logout</a>
+			</aside>
 
-    <div class="submenu" id="job-menu">
-        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
-    </div>
-</div>
-    <!-- ANNOUNCEMENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('announcement-menu')">
-            Announcements ▾
-        </div>
-        <div class="submenu" id="announcement-menu">
-            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
-        </div>
-    </div>
+			<!-- Content -->
+			<div class="content">
+				<h2>Registered Alumni</h2>
 
-    <a href="{% url 'logout' %}">Logout</a>
-    </aside>
+				<table>
+					<tr>
+						<th>Profile</th>
+						<th>Username</th>
+						<th>Roll No</th>
+						<th>Department</th>
+						<th>Passout Year</th>
+						<th>Company</th>
+						<th>Location</th>
+					</tr>
 
-    <!-- Content -->
-    <div class="content">
-        <h2>Registered Alumni</h2>
+					{% for alumni in alumni_list %}
+					<tr>
+						<td>
+							{% if alumni.profile_image %}
+							<img src="{{ alumni.profile_image.url }}" class="avatar" />
+							{% else %}
+							<span style="color: #999">No Image</span>
+							{% endif %}
+						</td>
 
-        <table>
-            <tr>
-                <th>Profile</th>
-                <th>Username</th>
-                <th>Roll No</th>
-                <th>Department</th>
-                <th>Passout Year</th>
-                <th>Company</th>
-                <th>Location</th>
-            </tr>
-
-            {% for alumni in alumni_list %}
-            <tr>
-                <td>
-                    {% if alumni.profile_image %}
-                        <img src="{{ alumni.profile_image.url }}" class="avatar">
-                    {% else %}
-                        <span style="color:#999;">No Image</span>
-                    {% endif %}
-                </td>
-
-                <td>{{ alumni.user.username }}</td>
-                <td>{{ alumni.roll_no }}</td>
-                <td>{{ alumni.department }}</td>
-                <td>{{ alumni.passout_year }}</td>
-                <td>{{ alumni.company }}</td>
-                <td>{{ alumni.location }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-</div>
-<script>
-    function toggleMenu(id) {
-    const menu = document.getElementById(id);
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-</script>
-</body>
+						<td>{{ alumni.user.username }}</td>
+						<td>{{ alumni.roll_no }}</td>
+						<td>{{ alumni.department }}</td>
+						<td>{{ alumni.passout_year }}</td>
+						<td>{{ alumni.company }}</td>
+						<td>{{ alumni.location }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<script>
+			function toggleMenu(id) {
+				const menu = document.getElementById(id);
+				menu.style.display = menu.style.display === "block" ? "none" : "block";
+			}
+		</script>
+	</body>
 </html>

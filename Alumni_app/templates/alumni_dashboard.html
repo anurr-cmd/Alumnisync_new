@@ -1,324 +1,179 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Alumni Dashboard | Alumni Sync</title>
 
-<title>Alumni Dashboard | Alumni Sync</title>
+		<link rel="stylesheet" href="{% static 'alumni_dashboard.css' %}" />
 
-<link rel="stylesheet" href="{% static 'alumni_dashboard.css' %}">
+		<!-- FONT AWESOME ICONS -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+	</head>
 
-<!-- FONT AWESOME ICONS -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<body>
+		<!-- HEADER -->
 
-</head>
+		<header>
+			<h2><i class="fa-solid fa-graduation-cap"></i> Alumni Dashboard</h2>
 
+			<div>
+				<a href="{% url 'index' %}">
+					<i class="fa-solid fa-arrow-left"></i> Back to Home
+				</a>
 
-<body>
+				<a href="{% url 'logout' %}">
+					<i class="fa-solid fa-right-from-bracket"></i> Logout
+				</a>
 
+				<!-- EDIT PROFILE BUTTON -->
 
-<!-- HEADER -->
+				<button class="edit-btn">
+					<i class="fa-solid fa-pen"></i> 
+                    	
+                    <a href="{% url "edit_profile" %}">
+                        <h2>Edit Profile</h2>
+                    </a>
+				</button>
+			</div>
+		</header>
 
-<header>
+		<div class="dashboard-container">
+			<!-- SIDEBAR -->
 
-<h2><i class="fa-solid fa-graduation-cap"></i> Alumni Dashboard</h2>
+			<aside class="sidebar">
+				<div class="profile">
+					<div class="avatar">{{ request.user.username|first|upper }}</div>
 
-<div>
+					<p>{{ request.user.username }}</p>
+				</div>
 
-<a href="{% url 'index' %}">
-<i class="fa-solid fa-arrow-left"></i> Back to Home
-</a>
+				<nav>
+					<a href="{% url 'alumni_dashboard' %}">
+						<i class="fa-solid fa-chart-line"></i> Dashboard
+					</a>
 
-<a href="{% url 'logout' %}">
-<i class="fa-solid fa-right-from-bracket"></i> Logout
-</a>
+					<a href="{% url 'create_event' %}">
+						<i class="fa-solid fa-calendar"></i> Events
+					</a>
 
-<!-- EDIT PROFILE BUTTON -->
+					<a href="{% url 'jobs_alumni' %}">
+						<i class="fa-solid fa-briefcase"></i> Jobs
+					</a>
 
-<button onclick="openProfile()" class="edit-btn">
-<i class="fa-solid fa-pen"></i> Edit Profile
-</button>
+					<a href="#"> <i class="fa-solid fa-bullhorn"></i> Announcements </a>
+				</nav>
+			</aside>
 
-</div>
+			<!-- MAIN CONTENT -->
 
-</header>
+			<main class="main-content">
+				<h1>Welcome Back!</h1>
 
+				<p>Here's what's happening in your alumni network</p>
 
+				<!-- STATS -->
 
-<div class="dashboard-container">
+				<div class="stats">
+					<div class="card">
+						<i class="fa-solid fa-calendar-days"></i>
 
+						<h2>{{ total_events }}</h2>
 
-<!-- SIDEBAR -->
+						<p>Total Events</p>
+					</div>
 
-<aside class="sidebar">
+					<div class="card">
+						<i class="fa-solid fa-briefcase"></i>
 
-<div class="profile">
+						<h2>{{ total_jobs }}</h2>
 
-<div class="avatar">
-{{ request.user.username|first|upper }}
-</div>
+						<p>Job Opportunities</p>
+					</div>
 
-<p>{{ request.user.username }}</p>
+					<div class="card">
+						<i class="fa-solid fa-bullhorn"></i>
 
-</div>
+						<h2>{{ total_announcements }}</h2>
 
+						<p>Announcements</p>
+					</div>
+				</div>
 
-<nav>
+				<!-- RECENT EVENTS -->
 
-<a href="{% url 'alumni_dashboard' %}">
-<i class="fa-solid fa-chart-line"></i> Dashboard
-</a>
+				<section>
+					<h2>Recent Events</h2>
 
-<a href="{% url 'create_event' %}">
-<i class="fa-solid fa-calendar"></i> Events
-</a>
+					{% for event in recent_events %}
 
-<a href="{% url 'jobs_alumni' %}">
-<i class="fa-solid fa-briefcase"></i> Jobs
-</a>
+					<div class="list-item">
+						<h3>{{ event.title }}</h3>
 
-<a href="#">
-<i class="fa-solid fa-bullhorn"></i> Announcements
-</a>
+						<p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
 
-</nav>
+						<p><i class="fa-solid fa-calendar"></i> {{ event.date }}</p>
+					</div>
 
-</aside>
+					{% empty %}
 
+					<p>No events available</p>
 
+					{% endfor %}
+				</section>
 
-<!-- MAIN CONTENT -->
+				<!-- RECENT JOBS -->
 
-<main class="main-content">
+				<section>
+					<h2>Recent Jobs</h2>
 
-<h1>Welcome Back!</h1>
+					{% for job in recent_jobs %}
 
-<p>Here's what's happening in your alumni network</p>
+					<div class="list-item">
+						<h3>{{ job.title }}</h3>
 
+						<p>{{ job.company }}</p>
 
-<!-- STATS -->
+						<p><i class="fa-solid fa-location-dot"></i> {{ job.location }}</p>
+					</div>
 
-<div class="stats">
+					{% empty %}
 
-<div class="card">
+					<p>No jobs posted</p>
 
-<i class="fa-solid fa-calendar-days"></i>
+					{% endfor %}
+				</section>
 
-<h2>{{ total_events }}</h2>
+				<!-- RECENT ANNOUNCEMENTS -->
 
-<p>Total Events</p>
+				<section>
+					<h2>Recent Announcements</h2>
 
-</div>
+					{% for announcement in recent_announcements %}
 
+					<div class="announcement">
+						<h3>{{ announcement.title }}</h3>
 
-<div class="card">
+						<p>{{ announcement.content|truncatewords:20 }}</p>
 
-<i class="fa-solid fa-briefcase"></i>
+						<p>{{ announcement.posted_on }}</p>
+					</div>
 
-<h2>{{ total_jobs }}</h2>
+					{% empty %}
 
-<p>Job Opportunities</p>
+					<p>No announcements</p>
 
-</div>
+					{% endfor %}
+				</section>
+			</main>
+		</div>
 
+		
 
-<div class="card">
-
-<i class="fa-solid fa-bullhorn"></i>
-
-<h2>{{ total_announcements }}</h2>
-
-<p>Announcements</p>
-
-</div>
-
-</div>
-
-
-
-<!-- RECENT EVENTS -->
-
-<section>
-
-<h2>Recent Events</h2>
-
-{% for event in recent_events %}
-
-<div class="list-item">
-
-<h3>{{ event.title }}</h3>
-
-<p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-
-<p><i class="fa-solid fa-calendar"></i> {{ event.date }}</p>
-
-</div>
-
-{% empty %}
-
-<p>No events available</p>
-
-{% endfor %}
-
-</section>
-
-
-
-<!-- RECENT JOBS -->
-
-<section>
-
-<h2>Recent Jobs</h2>
-
-{% for job in recent_jobs %}
-
-<div class="list-item">
-
-<h3>{{ job.title }}</h3>
-
-<p>{{ job.company }}</p>
-
-<p><i class="fa-solid fa-location-dot"></i> {{ job.location }}</p>
-
-</div>
-
-{% empty %}
-
-<p>No jobs posted</p>
-
-{% endfor %}
-
-</section>
-
-
-
-<!-- RECENT ANNOUNCEMENTS -->
-
-<section>
-
-<h2>Recent Announcements</h2>
-
-{% for announcement in recent_announcements %}
-
-<div class="announcement">
-
-<h3>{{ announcement.title }}</h3>
-
-<p>{{ announcement.content|truncatewords:20 }}</p>
-
-<p>{{ announcement.posted_on }}</p>
-
-</div>
-
-{% empty %}
-
-<p>No announcements</p>
-
-{% endfor %}
-
-</section>
-
-
-</main>
-
-</div>
-
-
-
-<!-- EDIT PROFILE MODAL -->
-
-<div id="profileModal" class="modal">
-
-<div class="modal-content">
-
-<span class="close" onclick="closeProfile()">&times;</span>
-
-<h2>Edit Profile</h2>
-
-<form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
-{% csrf_token %}
-
-<h3>Basic Information</h3>
-
-<input type="text" name="full_name" value="{{ request.user.profile }}" placeholder="Full Name">
-<input type="email" name="email" value="{{ profile.email }}" placeholder="Email">
-{% comment %} <input type="text" name="company" value="{{ profile.company }}" placeholder="Company"> {% endcomment %}
-
-<input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
-
-<input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Alternate Phone">
-
-<h3>Academic Information</h3>
-
-<input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Roll No">
-<input type="text" name="department" value="{{ profile.department }}" placeholder="Department">
-<input type="text" name="join_year" value="{{ profile.join_year }}" placeholder="Join Year">
-
-<input type="text" name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout Year">
-
-<h3>Professional Information</h3>
-
-<input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="Current Job Title">
-
-<input type="text" name="company" value="{{ profile.company }}" placeholder="Company">
-<input type="text" name="designation" value="{{ profile.designation }}" placeholder="Designation">
-
-<h3>Additional Information</h3>
-
-<textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
-
-<textarea name="remarks" placeholder="Remarks">{{ profile.remarks }}</textarea>
-
-
-<div class="file-upload-group">
-    <label>Proof ID</label>
-    <label class="custom-file-upload">
-        <input type="file" name="proof_id">
-        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Proof
-    </label>
-</div>
-
-<div class="file-upload-group">
-    <label>Profile Photo</label>
-    <label class="custom-file-upload">
-        <input type="file" name="profile_photo">
-        <i class="fa-solid fa-image"></i> Choose Photo
-    </label>
-</div>
-
-<br><br>
-
-<button type="submit">Save Changes</button>
-
-</form>
-
-</div>
-
-</div>
-
-
-
-<!-- JAVASCRIPT -->
-
-<script>
-
-function openProfile() {
-
-document.getElementById("profileModal").style.display = "block";
-
-}
-
-function closeProfile() {
-
-document.getElementById("profileModal").style.display = "none";
-
-}
-
-</script>
-
-
-</body>
+	</body>
 </html>
