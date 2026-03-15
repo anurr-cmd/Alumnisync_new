@@ -1,0 +1,81 @@
+{% load static %}
+
+<!doctype html>
+<html>
+	<head>
+		<title>User Profile</title>
+
+		<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+
+		<style>
+			.profile-card {
+				max-width: 700px;
+				margin: auto;
+				background: white;
+				padding: 30px;
+				border-radius: 15px;
+				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+			}
+
+			.row {
+				margin-bottom: 12px;
+			}
+
+			.row strong {
+				width: 150px;
+				display: inline-block;
+			}
+
+			.password-box {
+				margin-top: 30px;
+				padding-top: 20px;
+				border-top: 1px solid #eee;
+			}
+
+			input {
+				padding: 8px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+
+			button {
+				background: #2d6a4f;
+				color: white;
+				border: none;
+				padding: 8px 16px;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="profile-card">
+			<h2>{{ user.username }} Profile</h2>
+
+			<div class="row"><strong>Email:</strong> {{ profile.email }}</div>
+
+			<div class="row"><strong>Department:</strong> {{ profile.department }}</div>
+
+			<div class="row"><strong>Passout Year:</strong> {{ profile.passout_year }}</div>
+
+			<div class="row"><strong>Company:</strong> {{ profile.company }}</div>
+
+			<div class="password-box">
+				<h3>Change Password</h3>
+
+				<form method="POST">
+					{% csrf_token %}
+
+					<input type="password" name="password" placeholder="New Password" required />
+
+					<button type="submit">Update Password</button>
+				</form>
+			</div>
+
+			<br />
+
+			<a href="{% url 'admin_view_alumni' %}"> Back </a>
+		</div>
+	</body>
+</html>

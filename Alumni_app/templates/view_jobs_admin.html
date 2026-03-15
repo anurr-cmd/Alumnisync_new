@@ -16,7 +16,7 @@
             <h3>Admin</h3>
         </div>
         {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
-        <a href="{% url 'admin_portal' %}">Dashboard</a>
+        <a href="{% url 'admin_dashboard' %}">Dashboard</a>
 
     <!-- EVENTS -->
     <div class="menu-group">
@@ -24,8 +24,7 @@
             Events ▾
         </div>
         <div class="submenu" id="events-menu">
-            <a href="{% url 'admin_events' %}">Approval Events</a>
-            <a href="{% url 'view_events_admin' %}">View Events</a>
+            <a href="{% url 'admin_events' %}">View Events</a>
         </div>
     </div>
 
@@ -45,8 +44,7 @@
     </div>
 
     <div class="submenu" id="job-menu">
-        <a href="{% url 'manage_jobs_admin' %}">Manage jobs</a>
-        <a href="{% url 'view_jobs_admin' %}">View Jobs</a>
+        <a href="{% url 'jobs_admin' %}">Manage jobs</a>
     </div>
 </div>
     <!-- ANNOUNCEMENTS -->

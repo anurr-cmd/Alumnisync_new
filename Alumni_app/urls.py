@@ -5,56 +5,55 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    # path('register/', views.register, name='register'),
-    path("edit-profile/", views.edit_profile, name="edit_profile"),
+
     path('login/', views.login_portal, name='login_portal'),
-    path('alumni/login/', views.alumni_login, name='alumni_login'),
-    path('admin/login/', views.admin_login, name='admin_login'),
-    path("register/alumni/", views.alumni_register, name="alumni_register"),
-    # path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('logout/', views.logout_view, name='logout'),
-    
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+
+    # Alumini
+    path("register/alumni/", views.alumni_register, name="alumni_register"),
+    path('alumni/login/', views.alumni_login, name='alumni_login'),
     path('alumni-dashboard/', views.alumni_dashboard, name='alumni_dashboard'),
-    path("admin/alumni/", views.admin_view_alumni, name="admin_view_alumni"),
-    # path("event/create/", views.create_event, name="create_event"),
-    # path("admin-portal/", views.admin_portal, name="admin_portal"),
-    # path("alumni-portal/", views.alumni_portal, name="alumni_portal"),
+    path("edit-profile/", views.edit_profile, name="edit_profile"),
     path('alumni/feedback/', views.alumni_feedback, name='alumni_feedback'),
-    path('admin/feedback/', views.admin_feedback, name='admin_feedback'),
-    # path("admin/events/", views.admin_events, name="admin_events"),
-    # path("admin/events/approve/<int:id>/", views.approve_event, name="approve_event"),
-    # path("admin/events/reject/<int:id>/", views.reject_event, name="reject_event"),
+
+    # Admin
+    path('admin/login/', views.admin_login, name='admin_login'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    
+    
+    
+    path("admin/alumni/", views.admin_view_alumni, name="admin_view_alumni"),
+    path("admin/alumni/add/", views.admin_add_alumni, name="admin_add_alumni" ),
+    path("admin/alumni/edit/<int:pk>/", views.admin_edit_alumni, name="admin_edit_alumni"),
+    path("admin/alumni/user/<int:pk>/", views.admin_view_user, name="admin_view_user" ),
+    
+    path(
+    "admin/user/<int:pk>/",
+    views.admin_view_user,
+    name="admin_view_user"
+),
+    
+    path('admin/feedback/', views.admin_feedback, name='admin_feedback'),    
     path("admin/events/", views.manage_admin_events, name="admin_events"),
+<<<<<<< HEAD
     # path("admin/alumni/", views.view_alumni, name="view_alumni"),
     path("admin/announcements/", views.announcements_page, name="announcements_page"),
+=======
+    
+    path("admin/announcements/", views.admin_announcements, name="admin_announcements"),
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
     path("admin/announcements/add/", views.add_announcement, name="add_announcement"),
     path("admin/announcements/edit/<int:id>/", views.edit_announcement, name="edit_announcement"),
     path("admin/announcements/delete/<int:id>/", views.delete_announcement, name="delete_announcement"),
+    
     path('announcements/', views.alumni_announcements, name='alumni_announcements'),
-    path("admin/events/manage/", views.manage_admin_events, name="admin_events"),
-    # path("admin/events/", views.view_events_admin, name="view_events_admin"),
-    # path("admin/events/", views.view_events_admin, name="view_events_admin"),
-    # path("alumni/events/", views.view_events_alumni, name="view_events_alumni"),
-    # path("events/manage/", views.manage_events, name="manage_events"),
-    # path('events/edit/<int:id>/', views.edit_event, name='edit_event'),
-    # path('events/delete/<int:id>/', views.delete_event, name='delete_event'),
-    # path("events/manage/", views.manage_events, name="manage_events"),
-path("events/create/", views.create_event, name="create_event"),
-path('edit-event/<int:id>/', views.edit_event, name='edit_event'),
-path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
-    # JOBS
-    # ===== ALUMNI JOBS =====
+    path("events/create/", views.create_event, name="create_event"),
+    path('edit-event/<int:id>/', views.edit_event, name='edit_event'),
+    path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
+    
     path("alumni/jobs/manage/", views.jobs_alumni, name="jobs_alumni"),
-    # path("alumni/jobs/", views.view_jobs_alumni, name="view_jobs_alumni"),
-    # ===== ALUMNI JOB ACTIONS =====
+    path("admin/jobs/",views.jobs_admin,name="jobs_admin"),
     path("alumni/jobs/add/", views.add_job_alumni, name="add_job_alumni"),
     path("edit-job-alumni/<int:id>/", views.edit_job_alumni, name="edit_job_alumni"),
     path("alumni/jobs/delete/<int:id>/", views.delete_job_alumni, name="delete_job_alumni"),
-    # ===== ADMIN JOBS =====path
-    path("admin/jobs/",views.jobs_admin,name="jobs_admin"),
-    path("edit-job/<int:id>/",views.edit_job,name="edit_job"),
-    path("delete-job/<int:id>/",views.delete_job,name="delete_job"),
-    path("add-job/",views.add_job,name="add_job"),
-
 ]

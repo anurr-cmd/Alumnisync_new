@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Modern Admin Dashboard Style */
 * {
     margin: 0;
@@ -287,3 +288,193 @@ tr:hover td { background-color: #f9fafb; }
             margin-top: 20px; background: white; color: #111827; padding: 12px 25px;
             border-radius: 50px; text-decoration: none; font-weight: 600; font-family: 'Poppins', sans-serif;
         }
+=======
+/* ---------- TABLE CONTAINER ---------- */
+
+.table-container {
+	background: white;
+	border-radius: 18px;
+	padding: 25px;
+	margin-top: 25px;
+
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+
+	overflow-x: auto;
+}
+
+/* ---------- TABLE ---------- */
+
+.alumni-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+/* ---------- HEADER ---------- */
+
+.alumni-table th {
+	background: #eaf5f0;
+
+	color: #1b4332;
+
+	font-size: 13px;
+	font-weight: 600;
+
+	letter-spacing: 0.4px;
+	text-transform: uppercase;
+
+	padding: 16px;
+	text-align: left;
+
+	border-bottom: 2px solid #2d6a4f;
+}
+
+/* ---------- BODY ---------- */
+
+.alumni-table td {
+	padding: 18px 16px;
+
+	font-size: 14px;
+
+	border-bottom: 1px solid #e2e8f0;
+
+	vertical-align: middle;
+
+	transition: background 0.2s;
+}
+
+.alumni-table tr:hover td {
+	background: #f8fafb;
+}
+
+/* ---------- PROFILE IMAGE ---------- */
+
+.profile-avatar {
+	width: 45px;
+	height: 45px;
+
+	border-radius: 50%;
+
+	object-fit: cover;
+
+	border: 2px solid white;
+
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+	transition: transform 0.25s;
+}
+
+.alumni-table tr:hover .profile-avatar {
+	transform: scale(1.1);
+}
+
+/* ---------- FALLBACK AVATAR ---------- */
+
+.avatar-placeholder {
+	display: inline-flex;
+
+	width: 45px;
+	height: 45px;
+
+	align-items: center;
+	justify-content: center;
+
+	background: #e2e8f0;
+
+	color: #64748b;
+
+	font-size: 12px;
+	font-weight: 600;
+
+	border-radius: 50%;
+}
+
+/* ---------- COLUMN STYLES ---------- */
+
+.username {
+	font-weight: 600;
+}
+
+.department {
+	color: #2d6a4f;
+	font-weight: 500;
+}
+
+.company {
+	font-weight: 600;
+}
+
+/* ---------- LOCATION ---------- */
+
+.location {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+
+	color: #64748b;
+}
+
+.location svg {
+	width: 14px;
+	height: 14px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+
+.empty-state {
+	text-align: center;
+
+	padding: 40px;
+
+	color: #64748b;
+
+	font-size: 14px;
+}
+
+/* ---------- SIDEBAR FIX ---------- */
+
+.submenu {
+	display: none;
+	padding-left: 20px;
+}
+
+.submenu.open {
+	display: block;
+}
+
+/* ---------- LOGOUT ---------- */
+
+.logout-link {
+	margin-top: auto;
+	color: #e11d48;
+}
+
+.top-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 20px;
+}
+
+.add-btn {
+	background: #2d6a4f;
+	color: white;
+	padding: 10px 18px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.3s;
+}
+
+.add-btn:hover {
+	background: #1b4332;
+}
+
+.username-link{
+text-decoration:none;
+color:#2d6a4f;
+font-weight:600;
+}
+
+.username-link:hover{
+text-decoration:underline;
+}
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6

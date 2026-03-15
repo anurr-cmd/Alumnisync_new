@@ -22,11 +22,99 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <!-- SIDEBAR -->
 
+<<<<<<< HEAD
 <div class="sidebar">
 
 <div class="admin-profile">
 <div class="circle">AD</div>
 <p>Admin Dashboard</p>
+=======
+        <a href="{% url 'admin_dashboard' %}" >Dashboard</a>
+
+    <!-- EVENTS -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('events-menu')">
+            Events ▾
+        </div>
+        <div class="submenu" id="events-menu">
+            <a href="{% url 'admin_events' %}">Approval Events</a>
+        </div>
+    </div>
+
+    <!-- ALUMNI -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
+            Alumni ▾
+        </div>
+        <div class="submenu" id="alumni-menu">
+            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+    <div class="menu-title" onclick="toggleMenu('job-menu')">
+        Jobs ▾
+    </div>
+
+</div>
+    <!-- ANNOUNCEMENTS -->
+    <div class="menu-group">
+        <div class="menu-title , active" onclick="toggleMenu('announcement-menu')">
+            Announcements ▾
+        </div>
+        <div class="submenu" id="announcement-menu">
+            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
+        </div>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="navbar">
+            Announcements
+            <button type="button" class="btn" onclick="openModal('addModal')">
+                Add Announcement
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="table-container" style="overflow-x: auto;">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    {% for a in announcements %}
+                    <tr>
+                        <td>{{ a.title }}</td>
+                        <td>{{ a.posted_on|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="action-buttons" style="display: flex; gap: 8px;">
+                                <button type="button"
+                                        class="btn-edit"
+                                        onclick="openModal('editModal{{ a.id }}')">
+                                    Edit
+                                </button>
+
+                                <button type="button"
+                                        class="btn-delete"
+                                        onclick="openModal('deleteModal{{ a.id }}')">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 </div>
 
 <ul class="menu">

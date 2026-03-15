@@ -20,8 +20,7 @@
 </div>
 
 {% comment %} <h2 class="logo">Alumni Sync</h2> {% endcomment %}
-
-<a href="{% url 'alumni_portal' %}">Dashboard</a>
+<a href="{% url 'alumni_dashboard' %}">Dashboard</a>
 
 <!-- EVENTS MENU -->
 <div class="menu-group">
@@ -30,9 +29,7 @@ Events ▾
 </div>
 
 <div class="submenu" id="events-menu">
-<a href="{% url 'create_event' %}">Add Event</a>
-<a href="{% url 'view_events_alumni' %}">View Events</a>
-<a href="{% url 'manage_events' %}">Manage Events</a>
+<a href="{% url 'create_event' %}">Events</a>
 </div>
 </div>
 
@@ -43,8 +40,7 @@ Jobs ▾
 </div>
 
 <div class="submenu" id="jobs-menu">
-<a href="{% url 'view_jobs_alumni' %}">View Jobs</a>
-<a href="{% url 'manage_jobs_alumni' %}">Manage Jobs</a>
+<a href="{% url 'jobs_alumni' %}">Jobs</a>
 </div>
 </div>
 
@@ -69,6 +65,7 @@ Jobs ▾
 
 <div class="table-wrapper">
 
+<div class="table-container" style="overflow-x: auto;">
 <table class="event-table">
 
 <tr>
@@ -86,10 +83,11 @@ Jobs ▾
 <td>
 
 <button class="btn edit"
-onclick="openEditModal('{{ event.id }}',
-'{{ event.title }}',
-'{{ event.date|date:"Y-m-d" }}',
-'{% url "edit_event" event.id %}')">
+data-id="{{ event.id }}"
+data-title="{{ event.title }}"
+data-date="{{ event.date|date:'Y-m-d' }}"
+data-url="{% url 'edit_event' event.id %}"
+onclick="openEditModal(this.dataset.id, this.dataset.title, this.dataset.date, this.dataset.url)">
 Edit
 </button>
 
@@ -106,6 +104,7 @@ Delete
 {% endfor %}
 
 </table>
+</div>
 
 </div>
 

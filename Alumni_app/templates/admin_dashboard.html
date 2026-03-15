@@ -1,143 +1,202 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 
 <html>
-<head>
+	<head>
+		<title>Admin Dashboard | Alumni Sync</title>
 
-<title>Admin Dashboard | Alumni Sync</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+	</head>
 
-<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}">
+	<body>
+		<div class="dashboard-container">
+			<!-- SIDEBAR -->
 
-</head>
+			<aside class="sidebar">
+				<div class="profile">
+					<div class="avatar">AD</div>
 
-<body>
+					<p>Admin Dashboard</p>
+				</div>
 
-<div class="dashboard-container">
+				<nav>
+					<a href="{% url 'admin_dashboard' %}" class="active">
+						<i class="fa-solid fa-table-cells-large"></i> Dashboard
+					</a>
 
-<!-- SIDEBAR -->
+					<a href="{% url 'admin_events' %}">
+						<i class="fa-solid fa-calendar"></i> Events
+					</a>
 
-<aside class="sidebar">
+					<a href="{% url 'jobs_admin' %}">
+						<i class="fa-solid fa-briefcase"></i> Jobs
+					</a>
 
-<div class="profile">
+					<a href="{% url 'admin_announcements' %}">
+						<i class="fa-solid fa-bullhorn"></i> Announcements
+					</a>
 
-<div class="avatar">
-AD
-</div>
+					<a href="{% url 'admin_view_alumni' %}">
+						<i class="fa-solid fa-users"></i> Alumni Details
+					</a>
 
-<p>Admin Dashboard</p>
+					<a href="{% url 'admin_feedback' %}">
+						<i class="fa-regular fa-message"></i> Feedback
+					</a>
+				</nav>
+			</aside>
 
-</div>
+			<!-- MAIN CONTENT -->
 
-<nav>
+			<main class="main-content">
+				<!-- TOPBAR -->
 
-<a href="{% url 'admin_dashboard' %}" class="active">
-<i class="fa-solid fa-table-cells-large"></i> Dashboard
-</a>
+				<div class="topbar">
+					<div class="page-title">
+						<h2>Admin Dashboard</h2>
+					</div>
 
-<a href="{% url 'admin_events' %}">
-<i class="fa-solid fa-calendar"></i> Events
-</a>
+					<div class="top-actions">
+						<a href="{% url 'index' %}">Back to Home</a>
+						<a href="{% url 'logout' %}">Logout</a>
+					</div>
+				</div>
 
-<a href="{% url 'jobs_admin' %}">
-<i class="fa-solid fa-briefcase"></i> Jobs
-</a>
+				<!-- PAGE HEADER -->
 
+<<<<<<< HEAD
 <a href="{% url 'announcements_page' %}">
 <i class="fa-solid fa-bullhorn"></i> Announcements
 </a>
+=======
+				<div class="page-header">
+					<h1>Admin Dashboard</h1>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 
-<a href="{% url 'admin_view_alumni' %}">
-<i class="fa-solid fa-users"></i> Alumni Details
-</a>
+					<p>Manage your alumni network and platform content</p>
+				</div>
 
-<a href="{% url 'admin_feedback' %}">
-<i class="fa-regular fa-message"></i> Feedback
-</a>
+				<!-- STATISTICS CARDS -->
 
-</nav>
+				<div class="stats-grid">
+					<div class="stat-card">
+						<div class="stat-icon">
+							<i class="fa-solid fa-users"></i>
+						</div>
 
-</aside>
+						<h2>{{ total_alumni }}</h2>
 
-<!-- MAIN CONTENT -->
+						<p>Total Alumni</p>
+					</div>
 
-<main class="main-content">
+					<div class="stat-card">
+						<div class="stat-icon">
+							<i class="fa-solid fa-calendar"></i>
+						</div>
 
-<!-- TOPBAR -->
+						<h2>{{ total_events }}</h2>
 
-<div class="topbar">
+						<p>Total Events</p>
+					</div>
 
-<div class="page-title">
-<h2>Admin Dashboard</h2>
-</div>
+					<div class="stat-card">
+						<div class="stat-icon">
+							<i class="fa-solid fa-briefcase"></i>
+						</div>
 
-<div class="top-actions">
-<a href="{% url 'index' %}">Back to Home</a>
-<a href="{% url 'logout' %}">Logout</a>
-</div>
+						<h2>{{ total_jobs }}</h2>
 
-</div>
+						<p>Job Postings</p>
+					</div>
 
-<!-- PAGE HEADER -->
+					<div class="stat-card">
+						<div class="stat-icon">
+							<i class="fa-solid fa-bullhorn"></i>
+						</div>
 
-<div class="page-header">
+						<h2>{{ total_announcements }}</h2>
 
-<h1>Admin Dashboard</h1>
+						<p>Announcements</p>
+					</div>
+				</div>
 
-<p>Manage your alumni network and platform content</p>
+				<!-- CONTENT GRID -->
 
-</div>
+				<div class="content-grid">
+					<!-- RECENT EVENTS -->
 
-<!-- STATISTICS CARDS -->
+					<div class="card">
+						<div class="card-header">
+							<h3>Recent Events</h3>
 
-<div class="stats-grid">
+							<a href="{% url 'admin_events' %}">Manage →</a>
+						</div>
 
-<div class="stat-card">
+						<div class="card-body">
+							{% for event in recent_events %}
 
-<div class="stat-icon">
-<i class="fa-solid fa-users"></i>
-</div>
+							<div class="list-item">
+								<h4>{{ event.title }}</h4>
 
-<h2>{{ total_alumni }}</h2>
+								<p>{{ event.location }}</p>
 
-<p>Total Alumni</p>
+								<span>{{ event.date }}</span>
+							</div>
 
-</div>
+							{% endfor %}
+						</div>
+					</div>
 
-<div class="stat-card">
+					<!-- RECENT JOBS -->
 
-<div class="stat-icon">
-<i class="fa-solid fa-calendar"></i>
-</div>
+					<div class="card">
+						<div class="card-header">
+							<h3>Recent Jobs</h3>
 
-<h2>{{ total_events }}</h2>
+							<a href="{% url 'jobs_admin' %}">Manage →</a>
+						</div>
 
-<p>Total Events</p>
+						<div class="card-body">
+							{% for job in recent_jobs %}
 
-</div>
+							<div class="list-item">
+								<h4>{{ job.title }}</h4>
 
-<div class="stat-card">
+								<p>{{ job.company }}</p>
 
-<div class="stat-icon">
-<i class="fa-solid fa-briefcase"></i>
-</div>
+								<span>{{ job.posted_on|date:"M d, Y" }}</span>
+							</div>
 
-<h2>{{ total_jobs }}</h2>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
 
-<p>Job Postings</p>
+				<!-- QUICK ACTIONS -->
 
-</div>
+				<div class="quick-actions">
+					<h2>Quick Actions</h2>
 
-<div class="stat-card">
+					<div class="actions-grid">
+						<a href="{% url 'admin_events' %}" class="action-btn">
+							<i class="fa-solid fa-calendar"></i>
+							Manage Events
+						</a>
 
-<div class="stat-icon">
-<i class="fa-solid fa-bullhorn"></i>
-</div>
+						<a href="{% url 'jobs_admin' %}" class="action-btn">
+							<i class="fa-solid fa-briefcase"></i>
+							Post Job
+						</a>
 
+<<<<<<< HEAD
 <h2>{{ total_announcements }}</h2>
 
 <p>Announcements</p>
@@ -248,4 +307,15 @@ Create Announcement
 </div>
 
 </body>
+=======
+						<a href="{% url 'admin_announcements' %}" class="action-btn">
+							<i class="fa-solid fa-bullhorn"></i>
+							Create Announcement
+						</a>
+					</div>
+				</div>
+			</main>
+		</div>
+	</body>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 </html>

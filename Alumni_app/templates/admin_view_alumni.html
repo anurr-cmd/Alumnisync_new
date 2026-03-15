@@ -1,4 +1,5 @@
 {% load static %}
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,3 +209,315 @@
 
 </body>
 </html>
+=======
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Registered Alumni</title>
+
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+		<link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}" />
+	</head>
+
+	<body>
+		<div class="dashboard-container">
+			<!-- ================= SIDEBAR ================= -->
+			<aside class="sidebar">
+				<div class="profile">
+					<div class="avatar">A</div>
+					<p>Admin</p>
+				</div>
+
+				<nav class="sidebar-nav">
+					<a href="{% url 'admin_dashboard' %}"> Dashboard </a>
+
+					<!-- EVENTS -->
+					<div class="menu-group">
+						<div class="menu-title" onclick="toggleMenu('events-menu')">Events ▾</div>
+
+						<div class="submenu" id="events-menu">
+							<a href="{% url 'admin_events' %}">Approval Events</a>
+							<a href="{% url 'admin_events' %}">View Events</a>
+						</div>
+					</div>
+
+					<!-- ALUMNI -->
+					<div class="menu-group">
+						<div class="menu-title active" onclick="toggleMenu('alumni-menu')">
+							Alumni ▾
+						</div>
+
+						<div class="submenu open" id="alumni-menu">
+							<a href="{% url 'admin_view_alumni' %}" class="active"> View Alumni </a>
+						</div>
+					</div>
+
+					<!-- JOBS -->
+					<div class="menu-group">
+						<div class="menu-title" onclick="toggleMenu('job-menu')">Jobs ▾</div>
+
+						<div class="submenu" id="job-menu">
+							<a href="{% url 'jobs_admin' %}"> Manage Jobs </a>
+						</div>
+					</div>
+
+					<!-- ANNOUNCEMENTS -->
+					<div class="menu-group">
+						<div class="menu-title" onclick="toggleMenu('announcement-menu')">
+							Announcements ▾
+						</div>
+
+						<div class="submenu" id="announcement-menu">
+							<a href="{% url 'admin_announcements' %}"> Manage Announcements </a>
+						</div>
+					</div>
+
+					<a href="{% url 'logout' %}" class="logout-link"> Logout </a>
+				</nav>
+			</aside>
+
+			<!-- ================= MAIN CONTENT ================= -->
+
+			<main class="main-content">
+				<!-- PAGE HEADER -->
+				<div class="topbar">
+					<div class="page-header">
+						<h1>Registered Alumni</h1>
+						<p>Manage and view all registered alumni profiles</p>
+					</div>
+				</div>
+				<!-- ================= FILTER BAR ================= -->
+
+				<form method="get" class="filter-form">
+					<div class="filter-grid">
+						<input
+							type="text"
+							name="username"
+							placeholder="Username"
+							value="{{ request.GET.username }}"
+						/>
+
+						<input
+							type="text"
+							name="roll_no"
+							placeholder="Roll No"
+							value="{{ request.GET.roll_no }}"
+						/>
+
+						<input
+							type="text"
+							name="email"
+							placeholder="Email"
+							value="{{ request.GET.email }}"
+						/>
+
+						<input
+							type="text"
+							name="department"
+							placeholder="Department"
+							value="{{ request.GET.department }}"
+						/>
+
+						<input
+							type="text"
+							name="designation"
+							placeholder="Designation"
+							value="{{ request.GET.designation }}"
+						/>
+
+						<input
+							type="text"
+							name="company"
+							placeholder="Company"
+							value="{{ request.GET.company }}"
+						/>
+
+						<input
+							type="text"
+							name="location"
+							placeholder="Location"
+							value="{{ request.GET.location }}"
+						/>
+
+						<input
+							type="number"
+							name="join_year"
+							placeholder="Join Year"
+							value="{{ request.GET.join_year }}"
+						/>
+
+						<input
+							type="number"
+							name="passout_year"
+							placeholder="Passout Year"
+							value="{{ request.GET.passout_year }}"
+						/>
+
+						<input
+							type="text"
+							name="phone"
+							placeholder="Phone"
+							value="{{ request.GET.phone }}"
+						/>
+
+						{% comment %}
+						<input
+							type="date"
+							name="created_at_after"
+							value="{{ request.GET.created_at_after }}"
+						/>
+
+						<input
+							type="date"
+							name="created_at_before"
+							value="{{ request.GET.created_at_before }}"
+						/>
+						{% endcomment %}
+					</div>
+
+					<div class="filter-actions">
+						<button type="submit" class="filter-btn">Apply Filters</button>
+
+						<a href="{% url 'admin_view_alumni' %}" class="reset-btn"> Reset </a>
+					</div>
+				</form>
+
+				<div class="top-actions">
+					<a href="{% url 'admin_add_alumni' %}" class="add-btn"> + Add Alumni </a>
+				</div>
+				<!-- ================= TABLE ================= -->
+
+				<section class="table-container">
+					<table class="alumni-table">
+						<thead>
+							<tr>
+								<th>Profile</th>
+								<th>Username</th>
+								<th>Roll No</th>
+								<th>Department</th>
+								<th>Passout Year</th>
+								<th>Company</th>
+								<th>Location</th>
+								<th>Edit</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{% for alumni in page_obj %}
+
+							<tr>
+								<td>
+									{% if alumni.profile_image %}
+									<img
+										src="{{ alumni.profile_image.url }}"
+										class="profile-avatar"
+										alt="profile"
+									/>
+									{% else %}
+									<span class="avatar-placeholder"> N/A </span>
+									{% endif %}
+								</td>
+
+								{% comment %}
+								<td class="username">{{ alumni.user.username }}</td>
+								{% endcomment %}
+								<td class="username">
+									<a
+										href="{% url 'admin_view_user' alumni.user.id %}"
+										class="username-link"
+									>
+										{{ alumni.user.username }}
+									</a>
+								</td>
+								<td>{{ alumni.roll_no }}</td>
+
+								<td class="department">{{ alumni.department }}</td>
+
+								<td>{{ alumni.passout_year }}</td>
+
+								<td class="company">{{ alumni.company }}</td>
+
+								<td class="location">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M17.657 16.657L13.414
+                                  20.9a1.998 1.998 0
+                                  01-2.827
+                                  0l-4.244-4.243a8
+                                  8 0 1111.314 0z"
+										/>
+
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M15 11a3 3 0
+                                  11-6 0
+                                  3 3 0
+                                  016 0z"
+										/>
+									</svg>
+
+									{{ alumni.location }}
+								</td>
+
+								<td>
+									<a
+										href="{% url 'admin_edit_alumni' alumni.id %}"
+										class="edit-btn"
+									>
+										Edit
+									</a>
+								</td>
+							</tr>
+
+							{% empty %}
+
+							<tr>
+								<td colspan="7" class="empty-state">No alumni registered yet</td>
+							</tr>
+
+							{% endfor %}
+						</tbody>
+					</table>
+					<div class="pagination">
+						{% if page_obj.has_previous %}
+						<a
+							href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+						>
+							Previous
+						</a>
+						{% endif %}
+
+						<span>
+							Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+						</span>
+
+						{% if page_obj.has_next %}
+						<a
+							href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+						>
+							Next
+						</a>
+						{% endif %}
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<script>
+			function toggleMenu(id) {
+				const menu = document.getElementById(id);
+
+				menu.classList.toggle("open");
+			}
+		</script>
+	</body>
+</html>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
