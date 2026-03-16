@@ -90,6 +90,11 @@ class Profile(models.Model):
     phone = models.CharField(max_length=15, blank=True, null=True)
     alternate_phone = models.CharField(max_length=15, blank=True, null=True)
     
+    linked_in = models.URLField(max_length=200, blank=True, null=True)
+    company_id = models.URLField(max_length=200, blank=True, null=True)
+    google_scholar = models.URLField(max_length=200, blank=True, null=True)
+    instagram_id = models.URLField(max_length=200, blank=True, null=True)
+    
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
