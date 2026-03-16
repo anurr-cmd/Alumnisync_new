@@ -1,3 +1,6 @@
+/* Import Poppins Font - Matching Image Style */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 /* --- Alumni Sync Theme Colors --- */
 :root {
     --primary-teal: #1a3a3a;
@@ -6,15 +9,17 @@
     --sidebar-text: #6b7280;
     --danger-red: #dc2626;
     --white: #ffffff;
+    --font-poppins: 'Poppins', sans-serif; /* Added for Poppins */
 }
 
 /* General Reset */
 body {
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: var(--font-poppins); /* Changed to Poppins */
     margin: 0;
     padding: 0;
     background-color: var(--bg-light); 
     display: flex;
+    -webkit-font-smoothing: antialiased; /* Better font rendering */
 }
 
 /* Sidebar Styling - Matching Image */
@@ -28,7 +33,7 @@ body {
 }
 
 .sidebar-header h2 {
-    display: none; /* Based on image, it uses the profile section instead */
+    display: none; 
 }
 
 .admin-profile {
@@ -46,14 +51,16 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700; /* Bolder weight for AD */
     margin: 0 auto 15px;
 }
 
 .admin-profile p {
-    font-weight: 700;
+    font-family: var(--font-poppins);
+    font-weight: 600;
     color: #111827;
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .menu {
@@ -72,14 +79,14 @@ body {
     color: var(--sidebar-text);
     text-decoration: none;
     gap: 12px;
-    font-size: 15px;
+    font-size: 14px; /* Poppins scale adjust */
     font-weight: 500;
     border-radius: 12px;
     transition: all 0.2s;
 }
 
 .menu li.active a {
-    background-color: #333333; /* Dark pill from your dashboard */
+    background-color: #333333; 
     color: var(--white);
 }
 
@@ -102,42 +109,47 @@ body {
     margin-bottom: 40px;
 }
 
-/* Matching the "Back to Home" and "Logout" buttons */
 .topbar a {
+    font-family: var(--font-poppins);
     text-decoration: none;
     color: #111827;
     background: #f3f4f6;
     padding: 10px 20px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
 }
 
 .logout {
+    font-family: var(--font-poppins);
     background: #fff1f2;
     color: var(--danger-red);
     border: none;
     padding: 10px 24px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
 }
 
 /* Page Headers */
 .page-header h1 {
+    font-family: var(--font-poppins);
     font-size: 32px;
     color: #111827;
-    font-weight: 800;
+    font-weight: 700; /* Wix style bold */
     margin: 0;
+    letter-spacing: -0.02em;
 }
 
 .page-header p {
+    font-family: var(--font-poppins);
     color: #6b7280;
     margin-top: 8px;
+    font-weight: 400;
 }
 
-/* Events Grid - Clean White Cards */
+/* Events Grid */
 .events-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -147,7 +159,7 @@ body {
 
 .event-card {
     background: var(--white);
-    border-radius: 20px; /* More rounded like dashboard cards */
+    border-radius: 20px; 
     overflow: hidden;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
@@ -165,13 +177,16 @@ body {
 
 /* Status Pill */
 .status {
+    font-family: var(--font-poppins);
     position: absolute;
     top: 15px;
     right: 15px;
     padding: 6px 14px;
     border-radius: 30px;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .status.approved {
@@ -190,30 +205,35 @@ body {
 }
 
 .event-details h3 {
+    font-family: var(--font-poppins);
     margin: 0;
     font-size: 20px;
     color: #111827;
     font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .event-date, .event-location {
-    font-size: 14px;
+    font-family: var(--font-poppins);
+    font-size: 13px;
     color: #9ca3af;
     display: flex;
     align-items: center;
     gap: 8px;
     margin-top: 8px;
+    font-weight: 400;
 }
 
 .event-desc {
-    font-size: 15px;
+    font-family: var(--font-poppins);
+    font-size: 14px;
     color: #4b5563;
     line-height: 1.6;
     margin: 20px 0;
+    font-weight: 400;
 }
 
-/* Action Buttons - Dashboard style */
-/* Container for actions */
+/* Action Buttons Style */
 .event-actions {
     display: flex;
     align-items: center;
@@ -223,9 +243,9 @@ body {
     border-top: 1px solid #f1f5f9;
 }
 
-/* Base style for all action buttons */
 .event-actions button, 
 .event-actions .edit-btn {
+    font-family: var(--font-poppins);
     border: none;
     cursor: pointer;
     display: flex;
@@ -235,61 +255,34 @@ body {
     border-radius: 8px;
 }
 
-/* --- APPROVE & REJECT (Small Circular/Square Icons) --- */
-.approve {
-    background-color: #ecfdf5 !important; /* Soft Green */
-    color: #10b981 !important;
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-}
+.approve { background-color: #ecfdf5 !important; color: #10b981 !important; width: 36px; height: 36px; font-size: 16px; }
+.approve:hover { background-color: #10b981 !important; color: white !important; transform: translateY(-2px); }
 
-.approve:hover {
-    background-color: #10b981 !important;
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-}
+.reject { background-color: #fff1f2 !important; color: #f43f5e !important; width: 36px; height: 36px; font-size: 16px; }
+.reject:hover { background-color: #f43f5e !important; color: white !important; transform: translateY(-2px); }
 
-.reject {
-    background-color: #fff1f2 !important; /* Soft Red/Pink */
-    color: #f43f5e !important;
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-}
-
-.reject:hover {
-    background-color: #f43f5e !important;
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
-}
-
-/* --- EDIT BUTTON (The Primary Action) --- */
 .edit-btn {
-    background-color: #f8fafc !important; /* Light Slate */
+    background-color: #f8fafc !important; 
     color: #64748b !important;
-    flex: 1; /* Makes it fill the middle space */
+    flex: 1; 
     height: 36px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     border: 1px solid #e2e8f0 !important;
     gap: 8px;
 }
 
 .edit-btn::after {
-    content: 'Edit Details'; /* Adds text next to the icon */
-    font-size: 12px;
+    content: 'Edit Details';
+    font-size: 11px;
+    font-weight: 600;
 }
 
 .edit-btn:hover {
     background-color: #334155 !important;
     color: #ffffff !important;
-    border-color: #334155 !important;
 }
 
-/* --- DELETE BUTTON --- */
 .delete {
     background-color: #f8fafc !important;
     color: #94a3b8 !important;
@@ -301,16 +294,7 @@ body {
 .delete:hover {
     background-color: #fee2e2 !important;
     color: #dc2626 !important;
-    border-color: #fecaca !important;
 }
-
-/* --- ADJUSTMENT FOR PENDING STATE --- */
-/* This ensures the Approve/Reject and Edit/Delete sit nicely on one line */
-form[style="display:inline;"] {
-    display: flex !important;
-}
-
-/* Modal / Pop-up Styling */
 .modal {
     display: none; 
     position: fixed;
@@ -319,50 +303,56 @@ form[style="display:inline;"] {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(17, 24, 39, 0.7);
-    backdrop-filter: blur(8px);
+    background-color: rgba(17, 24, 39, 0.4); /* Dimmer background */
+    backdrop-filter: blur(8px); /* Modern blur effect */
 }
 
+/* The actual Pop-up Box */
 .modal-content {
-    background-color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
     margin: 5% auto;
     padding: 40px;
-    width: 480px;
+    width: 450px;
     border-radius: 24px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 }
-
+/* Modal Styling */
 .modal-content h2 {
+    font-family: var(--font-poppins);
     margin-top: 0;
     font-size: 24px;
     color: #111827;
-    font-weight: 800;
+    font-weight: 700;
     text-align: center;
 }
 
 #editForm input, #editForm textarea {
+    font-family: var(--font-poppins);
     width: 100%;
     padding: 14px;
     margin: 12px 0;
     border: 1px solid #e5e7eb;
     background: #f9fafb;
     border-radius: 12px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 #editForm button[type="submit"] {
-    background-color: #111827; /* Dark button like the dashboard menu */
+    font-family: var(--font-poppins);
+    background-color: #111827;
     color: white;
     width: 100%;
     padding: 16px;
     border: none;
     border-radius: 12px;
-    font-weight: 700;
+    font-weight: 600;
     margin-top: 10px;
     cursor: pointer;
 }
 
 #editForm button[type="button"] {
+    font-family: var(--font-poppins);
     background: none;
     color: #9ca3af;
     width: 100%;

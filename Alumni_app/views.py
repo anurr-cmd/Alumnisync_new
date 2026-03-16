@@ -1,8 +1,12 @@
+import logging
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
+from django.db.models import Q
+from .models import Profile,Event,Job,Announcement
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -13,6 +17,8 @@ from django.shortcuts import render
 from .models import Profile
 from .filters import AlumniFilter
 
+
+logger = logging.getLogger(__name__)
 
 def index(request):
 
@@ -46,26 +52,24 @@ def login_portal(request):
 def alumni_login(request):
 
     if request.method == "POST":
+
+
+        username = request.POST.get("username")
+
         username = request.POST.get("username") 
+
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            try:
-                profile = Profile.objects.get(user=user)
-
-                if profile.role == "alumni":
-                    login(request, user)
-                    return redirect("alumni_dashboard")
-                else:
-                    messages.error(request, "You are not an Alumni user.")
-
-            except Profile.DoesNotExist:
-                messages.error(request, "Profile not found.")
+            login(request, user)
+            return redirect("alumni_dashboard")
 
         else:
-            messages.error(request, "Invalid username or password")
+            return render(request, "alumni_login.html", {
+                "error": "Invalid username or password"
+            })
 
     return render(request, "alumni_login.html")
 
@@ -172,7 +176,130 @@ def admin_login(request):
     return render(request, "admin_login.html")
 
 
+#         if new_password != confirm_password:
+#             return render(request, "login.html", {"error": "Passwords do not match."})
+
+#         try:
+#             user = User.objects.get(username=username)
+#             user.set_password(new_password)  # securely update password
+#             user.save()
+#             return render(request, "login.html", {"message": "Password reset successful! You can now login."})
+#         except User.DoesNotExist:
+#             return render(request, "login.html", {"error": "Username not found."})
+
+#     return redirect("login_view")
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login_portal")
+
+def alumni_register(request):
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        # user already exist check
+        if User.objects.filter(username=username).exists():
+            return render(request, "alumni_register.html", {
+                "error": "User already exists. Please login."
+            })
+
+        # create new user
+        User.objects.create_user(
+            username=username,
+            password=password
+        )
+
+        # after register go to login page
+        return redirect("alumni_login")
+
+    return render(request, "alumni_register.html")
+
 @login_required
+def alumni_dashboard(request):
+
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    context = {
+        "profile": profile,
+
+        "total_events": Event.objects.count(),
+        "total_jobs": Job.objects.count(),
+        "total_announcements": Announcement.objects.count(),
+
+        "recent_events": Event.objects.order_by("-date")[:3],
+        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
+        "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
+    }
+
+    return render(request, "alumni_dashboard.html", context)
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+
+    if request.method == "POST":
+        profile.roll_no = request.POST.get("roll_no")
+        profile.email = request.POST.get("email")
+        profile.designation = request.POST.get("designation")
+        profile.remarks = request.POST.get("remarks")
+        profile.department = request.POST.get("department")
+        profile.address = request.POST.get("address")
+        profile.current_job = request.POST.get("current_job")
+        profile.company = request.POST.get("company")
+        profile.location = request.POST.get("location")
+        profile.phone = request.POST.get("phone")
+        profile.alternate_phone = request.POST.get("alternate_phone")
+
+        profile.role = request.POST.get("role")
+        profile.linkedin_profile = request.POST.get("linkedin_profile")
+        profile.google_scholar = request.POST.get("google_scholar")
+
+        full_name = request.POST.get("full_name")
+        if full_name:
+            request.user.username = full_name
+            request.user.save()
+
+        join_year = request.POST.get("join_year")
+        if join_year and join_year != "None":
+            profile.join_year = int(join_year)
+        # else:
+        #     profile.join_year = None
+
+        passout_year = request.POST.get("passout_year")
+        if passout_year and passout_year != "None":
+            profile.passout_year = int(passout_year)
+        # else:
+        #     profile.passout_year = None
+
+        if request.FILES.get("profile_image"):
+            profile.profile_image = request.FILES.get("profile_image")
+
+        if request.FILES.get("proof_id"):
+            profile.proof_id = request.FILES.get("proof_id")
+
+        if request.FILES.get("company_id_image"):
+            profile.company_id_image = request.FILES.get("company_id_image")
+
+        if request.FILES.get("appointment_order"):
+            profile.appointment_order = request.FILES.get("appointment_order")
+
+        profile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect("alumni_dashboard")
+
+    return redirect("alumni_dashboard")
+
+def superuser_required(user):
+    return user.is_superuser
+
+
+@login_required
+
 def admin_dashboard(request):
 
     total_alumni = Profile.objects.filter(role="alumni").count()
@@ -193,8 +320,84 @@ def admin_dashboard(request):
     })
 
 
-@login_required
 def admin_view_alumni(request):
+    q = request.GET.get('q', '').strip()
+    
+    # Start with all profiles and optimize with select_related
+    profiles = Profile.objects.select_related('user').all()
+
+    if q:
+        # 1. Handle Year Filters (Try to convert query to int for exact year matches)
+        year_q = None
+        try:
+            year_q = int(q)
+        except ValueError:
+            pass
+
+        # 2. Build the Filter Query
+        # This covers every visible field in your HTML table
+        query_filter = (
+            Q(user__username__icontains=q) |
+            Q(role__icontains=q) |
+            Q(roll_no__icontains=q) |
+            Q(email__icontains=q) |
+            Q(department__icontains=q) |
+            Q(designation__icontains=q) |
+            Q(current_job__icontains=q) |
+            Q(company__icontains=q) |
+            Q(location__icontains=q) |
+            Q(phone__icontains=q) |
+            Q(alternate_phone__icontains=q) |
+            Q(linkedin_profile__icontains=q) |
+            Q(google_scholar__icontains=q)
+        )
+
+        # 3. Add Year filters if the query is numeric
+        if year_q:
+            query_filter |= Q(join_year=year_q) | Q(passout_year=year_q)
+        else:
+            # Also check icontains for years if they are stored as strings/charfields
+            query_filter |= Q(join_year__icontains=q) | Q(passout_year__icontains=q)
+
+        profiles = profiles.filter(query_filter).distinct()
+
+    # AJAX Response Logic
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        data = []
+        for p in profiles:
+            data.append({
+                "username": p.user.username if p.user else "",
+                "role": p.role or "",
+                "roll_no": p.roll_no or "",
+                "email": p.email or "",
+                "department": p.department or "",
+                "join_year": p.join_year or "",
+                "passout_year": p.passout_year or "",
+                "designation": p.designation or "",
+                "current_job": p.current_job or "",
+                "company": p.company or "",
+                "location": p.location or "",
+                "phone": p.phone or "",
+                "alternate_phone": p.alternate_phone or "",
+            })
+        return JsonResponse({"profiles": data})
+
+    return render(request, "admin_view_alumni.html", {
+        "profiles": profiles,
+        "query": q
+    })
+
+# @login_required
+# def alumni_portal(request):
+#     job_count = Job.objects.count()
+#     event_count = Event.objects.count()
+#     announcement_count = Announcement.objects.count()
+
+#     return render(request, "alumni_portal.html", {
+#         "job_count": job_count,
+#         "event_count": event_count,
+#         "announcement_count": announcement_count,
+#     })
 
     alumni_queryset = Profile.objects.filter(role__iexact="alumni").select_related("user")
     print("All Alumni:", alumni_queryset.count())
@@ -361,36 +564,71 @@ def delete_event(request, id):
     event.delete()
     return redirect('create_event')
 
+# ===== ANNOUNCEMENTS =====
+def announcements_page(request):
 
-@login_required
+
+    announcements = Announcement.objects.all().order_by('-posted_on')
+
+    context = {
+        'announcements': announcements
+    }
+
+    return render(request, 'admin_announcements.html', context)
+
+
+
+# ADD ANNOUNCEMENT
 def add_announcement(request):
-    if request.method == "POST":
-        Announcement.objects.create(
-            title=request.POST["title"],
-            message=request.POST["message"],
-            image_url=request.POST.get('image_url', '')
-        )
-    return redirect("admin_announcements")
 
+    if request.method == "POST":
+
+        title = request.POST.get('title')
+        message = request.POST.get('message')
+        image_url = request.POST.get('image_url')
+
+        Announcement.objects.create(
+            title=title,
+            message=message,
+            image_url=image_url
+        )
+
+    return redirect('announcements_page')
+
+
+
+
+# EDIT ANNOUNCEMENT
 
 @login_required
+
 def edit_announcement(request, id):
-    announcement = Announcement.objects.get(id=id)
+
+    announcement = get_object_or_404(Announcement, id=id)
 
     if request.method == "POST":
-        announcement.title = request.POST['title']
-        announcement.message = request.POST['message']
-        announcement.image_url = request.POST.get('image_url', '')
+
+        announcement.title = request.POST.get('title')
+        announcement.message = request.POST.get('message')
+
         announcement.save()
 
-    return redirect('admin_announcements')
+    return redirect('announcements_page')
 
+
+
+
+# DELETE ANNOUNCEMENT
 
 @login_required
+
 def delete_announcement(request, id):
-    ann = get_object_or_404(Announcement, id=id)
-    ann.delete()
-    return redirect("admin_announcements")
+
+    announcement = get_object_or_404(Announcement, id=id)
+
+    announcement.delete()
+
+    return redirect('announcements_page')
 
 
 @login_required

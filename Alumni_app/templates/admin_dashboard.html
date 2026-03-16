@@ -71,9 +71,13 @@
 				</div>
 
 				<!-- PAGE HEADER -->
-
+<a href="{% url 'announcements_page' %}">
+<i class="fa-solid fa-bullhorn"></i> Announcements
+</a>
+=======
 				<div class="page-header">
 					<h1>Admin Dashboard</h1>
+
 
 					<p>Manage your alumni network and platform content</p>
 				</div>
@@ -190,6 +194,118 @@
 							Post Job
 						</a>
 
+<<<<<<< HEAD
+<h2>{{ total_announcements }}</h2>
+
+<p>Announcements</p>
+
+</div>
+
+</div>
+
+<!-- CONTENT GRID -->
+
+<div class="content-grid">
+
+<!-- RECENT EVENTS -->
+
+<div class="card">
+
+<div class="card-header">
+
+<h3>Recent Events</h3>
+
+<a href="{% url 'admin_events' %}">Manage →</a>
+
+</div>
+
+<div class="card-body">
+
+{% for event in recent_events %}
+
+<div class="list-item">
+
+<h4>{{ event.title }}</h4>
+
+<p>{{ event.location }}</p>
+
+<span>{{ event.date }}</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<!-- RECENT JOBS -->
+
+<div class="card">
+
+<div class="card-header">
+
+<h3>Recent Jobs</h3>
+
+<a href="{% url 'jobs_admin' %}">Manage →</a>
+
+</div>
+
+<div class="card-body">
+
+{% for job in recent_jobs %}
+
+<div class="list-item">
+
+<h4>{{ job.title }}</h4>
+
+<p>{{ job.company }}</p>
+
+<span>{{ job.posted_on|date:"M d, Y" }}</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+
+<div class="quick-actions">
+
+<h2>Quick Actions</h2>
+
+<div class="actions-grid">
+
+<a href="{% url 'admin_events' %}" class="action-btn">
+<i class="fa-solid fa-calendar"></i>
+Manage Events
+</a>
+
+<a href="{% url 'jobs_admin' %}" class="action-btn">
+<i class="fa-solid fa-briefcase"></i>
+Post Job
+</a>
+
+<a href="{% url 'announcements_page' %}" class="action-btn">
+<i class="fa-solid fa-bullhorn"></i>
+Create Announcement
+</a>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+=======
 						<a href="{% url 'admin_announcements' %}" class="action-btn">
 							<i class="fa-solid fa-bullhorn"></i>
 							Create Announcement
@@ -199,4 +315,5 @@
 			</main>
 		</div>
 	</body>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 </html>

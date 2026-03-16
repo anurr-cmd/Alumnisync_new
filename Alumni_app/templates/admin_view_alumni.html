@@ -1,4 +1,215 @@
 {% load static %}
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Directory | Admin</title>
+    <link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div class="admin-profile">
+            <div class="circle">AD</div>
+            <p>Admin Dashboard</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
+            <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+            <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+            <li class="active"><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
+            <li><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comments"></i> Feedback</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+            <h2><i class="fa-solid fa-user-graduate"></i> Alumni Management</h2>
+            <div class="top-links">
+                <a href="{% url 'index' %}">Back to Home</a>
+                <button class="logout-btn" onclick="location.href='{% url 'logout' %}'">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="header-section">
+            <h1>Alumni Directory</h1>
+            <p>View and manage all registered alumni members.</p>
+        </div>
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
+
+                <div>
+
+                    <h3>{{ profiles.count }}</h3>
+
+                    <p>Total Alumni</p>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue"><i class="fa-solid fa-user-check"></i></div>
+
+                <div>
+
+                    <h3>Verified</h3>
+
+                    <p>Profiles</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="search-container">
+
+            <form method="GET" class="search-form">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text" name="q" placeholder="Search by name, email, department, company..." value="{{query}}">
+
+                <button type="submit">Search</button>
+
+            </form>
+
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Profile</th><th>Name</th><th>Role</th><th>Roll No</th>
+                        <th>Email</th><th>Dept</th><th>Designation</th>
+                        <th>LinkedIn</th><th>Scholar</th><th>Proof</th><th>Comp ID</th><th>Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in profiles %}
+                    <tr>
+                        <td>
+                            <div class="table-img-container">
+                                {% if p.profile_image %}<img src="{{p.profile_image.url}}" class="profile-img">
+                                {% else %}<div class="img-placeholder"><i class="fa-solid fa-user"></i></div>{% endif %}
+                            </div>
+                        </td>
+                        <td><span class="name-text">{{p.user.username}}</span></td>
+                        <td><span class="badge gray">{{p.role|default:"-"}}</span></td>
+                        <td>{{p.roll_no|default:"-"}}</td>
+                        <td><small>{{p.email|default:"-"}}</small></td>
+                        <td>{{p.department|default:"-"}}</td>
+                        <td>{{p.designation|default:"-"}}</td>
+                        
+                        <td>
+                            {% if p.linkedin_profile and p.linkedin_profile != "None" and p.linkedin_profile != "" %}
+                            <a href="{{ p.linkedin_profile }}" class="action-icon ln" target="_blank">
+                            <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                            {% else %}
+                             -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.google_scholar and p.google_scholar != "None" and p.google_scholar != "" %}
+                            <a href="{{ p.google_scholar }}" class="action-icon gs" target="_blank">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.proof_id %}
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.proof_id.url}}"><i class="fa-solid fa-file-invoice"></i></a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>
+                            {% if p.company_id_image %}
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.company_id_image.url}}"><i class="fa-solid fa-id-card"></i></a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>
+                            {% if p.appointment_order %}
+                            <a href="javascript:void(0)" class="doc-link view-document" data-url="{{p.appointment_order.url}}"><i class="fa-solid fa-file-signature"></i></a>
+                            {% else %}-{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="documentModal" class="doc-modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content-wrapper">
+        <img class="modal-content-img" id="fullImage" src="">
+        <iframe id="fullPDF" class="modal-content-pdf" style="display:none; width:80%; height:100%; border-radius:12px;"></iframe>
+    </div>
+    <a href="#" id="modalDownload" class="modal-download-btn" download>
+        <i class="fa-solid fa-download"></i> Download Document
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById("documentModal");
+        const fullImage = document.getElementById("fullImage");
+        const fullPDF = document.getElementById("fullPDF");
+        const downloadBtn = document.getElementById("modalDownload");
+        const closeModal = document.querySelector(".close-modal");
+
+        document.querySelectorAll('.view-document').forEach(item => {
+            item.addEventListener('click', function() {
+                const fileUrl = this.getAttribute('data-url');
+                downloadBtn.href = fileUrl;
+
+                fullImage.classList.remove('show');
+                fullImage.style.display = "none";
+                fullPDF.style.display = "none";
+
+                if (fileUrl.toLowerCase().endsWith('.pdf')) {
+                    fullPDF.src = fileUrl;
+                    fullPDF.style.display = "block";
+                } else {
+                    fullImage.src = fileUrl;
+                    fullImage.style.display = "block";
+                    setTimeout(() => { fullImage.classList.add('show'); }, 10);
+                }
+                modal.style.display = "flex";
+            });
+        });
+
+        const closeAll = () => {
+            modal.style.display = "none";
+            fullPDF.src = "";
+            fullImage.classList.remove('show');
+        };
+
+        closeModal.onclick = closeAll;
+        window.onclick = (e) => { if (e.target == modal) closeAll(); };
+    });
+</script>
+
+</body>
+</html>
+======= {% endcomment %}
 <!doctype html>
 <html lang="en">
 	<head>
@@ -7,66 +218,27 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+		{% comment %} <link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" /> {% endcomment %}
 		<link rel="stylesheet" href="{% static 'admin_view_alumni.css' %}" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	</head>
 
 	<body>
 		<div class="dashboard-container">
-			<!-- ================= SIDEBAR ================= -->
-			<aside class="sidebar">
-				<div class="profile">
-					<div class="avatar">A</div>
-					<p>Admin</p>
-				</div>
-
-				<nav class="sidebar-nav">
-					<a href="{% url 'admin_dashboard' %}"> Dashboard </a>
-
-					<!-- EVENTS -->
-					<div class="menu-group">
-						<div class="menu-title" onclick="toggleMenu('events-menu')">Events ▾</div>
-
-						<div class="submenu" id="events-menu">
-							<a href="{% url 'admin_events' %}">Approval Events</a>
-							<a href="{% url 'admin_events' %}">View Events</a>
-						</div>
-					</div>
-
-					<!-- ALUMNI -->
-					<div class="menu-group">
-						<div class="menu-title active" onclick="toggleMenu('alumni-menu')">
-							Alumni ▾
-						</div>
-
-						<div class="submenu open" id="alumni-menu">
-							<a href="{% url 'admin_view_alumni' %}" class="active"> View Alumni </a>
-						</div>
-					</div>
-
-					<!-- JOBS -->
-					<div class="menu-group">
-						<div class="menu-title" onclick="toggleMenu('job-menu')">Jobs ▾</div>
-
-						<div class="submenu" id="job-menu">
-							<a href="{% url 'jobs_admin' %}"> Manage Jobs </a>
-						</div>
-					</div>
-
-					<!-- ANNOUNCEMENTS -->
-					<div class="menu-group">
-						<div class="menu-title" onclick="toggleMenu('announcement-menu')">
-							Announcements ▾
-						</div>
-
-						<div class="submenu" id="announcement-menu">
-							<a href="{% url 'admin_announcements' %}"> Manage Announcements </a>
-						</div>
-					</div>
-
-					<a href="{% url 'logout' %}" class="logout-link"> Logout </a>
-				</nav>
-			</aside>
+    <div class="sidebar">
+        <div class="admin-profile">
+            <div class="circle">AD</div>
+            <p>Admin Dashboard</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
+            <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+            <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+            <li class="active"><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
+            <li><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comments"></i> Feedback</a></li>
+        </ul>
+    </div>
 
 			<!-- ================= MAIN CONTENT ================= -->
 
@@ -309,3 +481,4 @@
 		</script>
 	</body>
 </html>
+

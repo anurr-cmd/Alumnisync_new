@@ -1,263 +1,134 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Events Management</title>
-
-<link rel="stylesheet" href="{% static 'admin_events.css' %}">
-
-<!-- Font Awesome -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta charset="UTF-8">
+    <title>Events Management</title>
+    <link rel="stylesheet" href="{% static 'admin_events.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
 
-<!-- Sidebar -->
-
 <div class="sidebar">
-
-<div class="sidebar-header">
-<h2><i class="fa-solid fa-calendar-check"></i> Events Management</h2>
+    <div class="sidebar-header">
+        <h2><i class="fa-solid fa-calendar-check"></i> Events Management</h2>
+    </div>
+    <div class="admin-profile">
+        <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+        <p>Admin Dashboard</p>
+    </div>
+    <ul class="menu">
+        <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+        <li class="active"><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
+        <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+        <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+        <li><a href="#"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
+        <li><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comments"></i> Feedback</a></li>
+    </ul>
 </div>
-
-<div class="admin-profile">
-<div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
-<p>Admin Dashboard</p>
-</div>
-
-<ul class="menu">
-
-<li>
-<a href="{% url 'admin_dashboard' %}">
-<i class="fa-solid fa-gauge"></i>
-Dashboard
-</a>
-</li>
-
-<li class="active">
-<a href="{% url 'admin_events' %}">
-<i class="fa-solid fa-calendar-days"></i>
-Events
-</a>
-</li>
-
-<li>
-<a href="{% url 'jobs_admin' %}">
-<i class="fa-solid fa-briefcase"></i>
-Jobs
-</a>
-</li>
-
-<li>
-<a href="#">
-<i class="fa-solid fa-bullhorn"></i>
-Announcements
-</a>
-</li>
-
-<li>
-<a href="#">
-<i class="fa-solid fa-user-graduate"></i>
-Alumni Details
-</a>
-</li>
-
-<li>
-<a href="{% url 'admin_feedback' %}">
-<i class="fa-solid fa-comments"></i>
-Feedback
-</a>
-</li>
-
-</ul>
-
-</div>
-
-<!-- Main Content -->
 
 <div class="main-content">
+    <div class="topbar">
+        <a href="{% url 'admin_dashboard' %}">Back to Home</a>
+        <a href="{% url 'logout' %}">
+            <button class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </a>
+    </div>
 
-<div class="topbar">
-<a href="#">Back to Home</a>
-<button class="logout">Logout</button>
+    <div class="page-header">
+        <h1>Events Management</h1>
+        <p>Approve, edit, and manage all alumni events</p>
+    </div>
+
+    <div class="events-grid">
+        {% for event in events %}
+        <div class="event-card">
+            <div class="event-image">
+                {% if event.image_url %} <img src="{{ event.image_url }}">
+                {% else %} <img src="{% static 'default_event.jpg' %}">
+                {% endif %}
+
+                {% if event.is_approved %} <span class="status approved">Approved</span>
+                {% else %} <span class="status pending">Pending</span>
+                {% endif %}
+            </div>
+
+            <div class="event-details">
+                <h3>{{ event.title }}</h3>
+                <p class="event-date"><i class="fa-solid fa-calendar-days"></i> {{ event.date }}</p>
+                <p class="event-location"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+                <p class="event-desc">{{ event.description|truncatewords:20 }}</p>
+
+                <div class="event-actions">
+                    {% if not event.is_approved %}
+                    <form method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="event_id" value="{{ event.id }}">
+                        <input type="hidden" name="action" value="approve">
+                        <button class="approve"><i class="fa-solid fa-check"></i></button>
+                    </form>
+                    <form method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="event_id" value="{{ event.id }}">
+                        <input type="hidden" name="action" value="reject">
+                        <button class="reject"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+                    {% endif %}
+
+                    <button class="edit-btn"
+                        data-id="{{ event.id }}"
+                        data-title="{{ event.title }}"
+                        data-date="{{ event.date }}"
+                        data-location="{{ event.location }}"
+                        data-description="{{ event.description }}"> <i class="fa-solid fa-pen-to-square"></i> </button>
+
+                    <form method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="event_id" value="{{ event.id }}">
+                        <input type="hidden" name="action" value="delete">
+                        <button class="delete" onclick="return confirm('Delete this event?')"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-
-<div class="page-header">
-<h1>Events Management</h1>
-<p>Approve, edit, and manage all alumni events</p>
-</div>
-
-<!-- EVENTS GRID -->
-
-<div class="events-grid">
-
-{% for event in events %}
-
-<div class="event-card">
-
-<!-- Event Image -->
-
-<div class="event-image">
-
-{% if event.image_url %} <img src="{{ event.image_url }}">
-{% else %} <img src="{% static 'default_event.jpg' %}">
-{% endif %}
-
-{% if event.is_approved %} <span class="status approved">Approved</span>
-{% else %} <span class="status pending">Pending</span>
-{% endif %}
-
-</div>
-
-<!-- Event Details -->
-
-<div class="event-details">
-
-<h3>{{ event.title }}</h3>
-
-<p class="event-date">
-<i class="fa-solid fa-calendar-days"></i>
-{{ event.date }}
-</p>
-
-<p class="event-location">
-<i class="fa-solid fa-location-dot"></i>
-{{ event.location }}
-</p>
-
-<p class="event-desc">
-{{ event.description|truncatewords:20 }}
-</p>
-
-<!-- ACTION BUTTONS -->
-
-<div class="event-actions">
-
-{% if not event.is_approved %}
-
-<!-- APPROVE -->
-
-<form method="POST" style="display:inline;">
-{% csrf_token %}
-<input type="hidden" name="event_id" value="{{ event.id }}">
-<input type="hidden" name="action" value="approve">
-<button class="approve">
-<i class="fa-solid fa-check"></i>
-</button>
-</form>
-
-<!-- REJECT -->
-
-<form method="POST" style="display:inline;">
-{% csrf_token %}
-<input type="hidden" name="event_id" value="{{ event.id }}">
-<input type="hidden" name="action" value="reject">
-<button class="reject">
-<i class="fa-solid fa-xmark"></i>
-</button>
-</form>
-
-{% endif %}
-
-<!-- EDIT -->
-
-<button class="edit-btn"
-data-id="{{ event.id }}"
-data-title="{{ event.title }}"
-data-date="{{ event.date }}"
-data-location="{{ event.location }}"
-data-description="{{ event.description }}"> <i class="fa-solid fa-pen-to-square"></i> </button>
-
-<!-- DELETE -->
-
-<form method="POST" style="display:inline;">
-{% csrf_token %}
-<input type="hidden" name="event_id" value="{{ event.id }}">
-<input type="hidden" name="action" value="delete">
-<button class="delete" onclick="return confirm('Delete this event?')">
-<i class="fa-solid fa-trash"></i>
-</button>
-</form>
-
-</div>
-
-</div>
-</div>
-
-{% endfor %}
-
-</div>
-</div>
-
-<!-- EDIT MODAL -->
 
 <div id="editModal" class="modal">
-
-<div class="modal-content">
-
-<h2>Edit Event</h2>
-
-<form id="editForm" method="POST">
-
-{% csrf_token %}
-
-<input type="hidden" name="event_id" id="editId">
-<input type="hidden" name="action" value="edit">
-
-<input type="text" name="title" id="editTitle" placeholder="Event Title" required>
-
-<input type="date" name="date" id="editDate" required>
-
-<input type="text" name="location" id="editLocation" placeholder="Location" required>
-
-<textarea name="description" id="editDescription" placeholder="Description"></textarea>
-
-<button type="submit">Update Event</button>
-
-<button type="button" onclick="closeModal()">Cancel</button>
-
-</form>
-
+    <div class="modal-content">
+        <h2>Edit Event</h2>
+        <form id="editForm" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="event_id" id="editId">
+            <input type="hidden" name="action" value="edit">
+            <input type="text" name="title" id="editTitle" placeholder="Event Title" required>
+            <input type="date" name="date" id="editDate" required>
+            <input type="text" name="location" id="editLocation" placeholder="Location" required>
+            <textarea name="description" id="editDescription" placeholder="Description"></textarea>
+            <button type="submit">Update Event</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+    </div>
 </div>
-</div>
-
-<!-- SCRIPT -->
 
 <script>
-
-const modal = document.getElementById("editModal");
-
-document.querySelectorAll(".edit-btn").forEach(button => {
-
-button.addEventListener("click", function(){
-
-document.getElementById("editId").value = this.dataset.id;
-document.getElementById("editTitle").value = this.dataset.title;
-document.getElementById("editDate").value = this.dataset.date;
-document.getElementById("editLocation").value = this.dataset.location;
-document.getElementById("editDescription").value = this.dataset.description;
-
-modal.style.display = "block";
-
-});
-
-});
-
-function closeModal(){
-modal.style.display = "none";
-}
-
-window.onclick = function(event){
-if(event.target == modal){
-modal.style.display = "none";
-}
-}
-
+    const modal = document.getElementById("editModal");
+    document.querySelectorAll(".edit-btn").forEach(button => {
+        button.addEventListener("click", function(){
+            document.getElementById("editId").value = this.dataset.id;
+            document.getElementById("editTitle").value = this.dataset.title;
+            document.getElementById("editDate").value = this.dataset.date;
+            document.getElementById("editLocation").value = this.dataset.location;
+            document.getElementById("editDescription").value = this.dataset.description;
+            modal.style.display = "block";
+        });
+    });
+    function closeModal(){ modal.style.display = "none"; }
+    window.onclick = function(event){ if(event.target == modal){ modal.style.display = "none"; } }
 </script>
 
 </body>

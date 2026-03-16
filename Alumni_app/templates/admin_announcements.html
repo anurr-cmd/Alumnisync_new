@@ -1,206 +1,138 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Announcements</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'admin_dash.css' %}">
+    <title>Announcements Management</title>
+    <link rel="stylesheet" href="{% static 'admin_announcements.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<div class="container">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="profile-box">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="admin">
-            <h3>Admin Panel</h3>
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div class="admin-profile">
+            <div class="circle">AD</div>
+            <p>Admin Dashboard</p>
         </div>
-
-        <a href="{% url 'admin_dashboard' %}" >Dashboard</a>
-
-    <!-- EVENTS -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('events-menu')">
-            Events ▾
-        </div>
-        <div class="submenu" id="events-menu">
-            <a href="{% url 'admin_events' %}">Approval Events</a>
-        </div>
+        <ul class="menu">
+            <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-table-columns"></i> Dashboard</a></li>
+            <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar"></i> Events</a></li>
+            <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+            <li class="active"><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
+            <li><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comment"></i> Feedback</a></li>
+        </ul>
     </div>
 
-    <!-- ALUMNI -->
-    <div class="menu-group">
-        <div class="menu-title" onclick="toggleMenu('alumni-menu')">
-            Alumni ▾
+    <div class="main-content">
+        <div class="topbar">
+            <h2>Announcements Management</h2>
+            <div class="top-links">
+                <a href="{% url 'index' %}" class="back-link">Back to Home</a>
+                <button class="logout-btn" onclick="location.href='{% url 'logout' %}'">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
         </div>
-        <div class="submenu" id="alumni-menu">
-            <a href="{% url 'admin_view_alumni' %}">View Alumni</a>
-        </div>
-    </div>
 
-    <div class="menu-group">
-    <div class="menu-title" onclick="toggleMenu('job-menu')">
-        Jobs ▾
-    </div>
-
-</div>
-    <!-- ANNOUNCEMENTS -->
-    <div class="menu-group">
-        <div class="menu-title , active" onclick="toggleMenu('announcement-menu')">
-            Announcements ▾
-        </div>
-        <div class="submenu" id="announcement-menu">
-            <a href="{% url 'admin_announcements' %}">Manage Announcements</a>
-        </div>
-    </div>
-
-    <a href="{% url 'logout' %}">Logout</a>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main">
-
-        <div class="navbar">
-            Announcements
-            <button type="button" class="btn" onclick="openModal('addModal')">
-                Add Announcement
+        <div class="announcement-header">
+            <div class="header-text">
+                <h1>Announcements</h1>
+                <p>Create, edit, and manage all announcements</p>
+            </div>
+            <button onclick="openAddPopup()" class="add-btn">
+                <i class="fa-solid fa-plus"></i> Add Announcement
             </button>
         </div>
 
-        <div class="content">
-            <div class="table-container" style="overflow-x: auto;">
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
+        <div class="announcement-grid">
+            {% for a in announcements %}
+            <div class="announcement-card">
+                <div class="card-top">
+                    <div class="title-section">
+                        <h3>{{ a.title }}</h3>
+                        <div class="meta-tags">
+                            <span class="badge priority">Low Priority</span>
+                            <span class="badge dept">{{ a.department|default:"Registrar's Office" }}</span>
+                        </div>
+                    </div>
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                </div>
 
-                    {% for a in announcements %}
-                    <tr>
-                        <td>{{ a.title }}</td>
-                        <td>{{ a.posted_on|date:"M d, Y" }}</td>
-                        <td>
-                            <div class="action-buttons" style="display: flex; gap: 8px;">
-                                <button type="button"
-                                        class="btn-edit"
-                                        onclick="openModal('editModal{{ a.id }}')">
-                                    Edit
-                                </button>
+                <div class="card-body">
+                    <p>{{ a.message }}</p>
+                </div>
 
-                                <button type="button"
-                                        class="btn-delete"
-                                        onclick="openModal('deleteModal{{ a.id }}')">
-                                    Delete
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <i class="fa-solid fa-calendar-days"></i> <span>{{ a.posted_on|date:"m/d/Y" }}</span>
+                    </div>
+                    <div class="footer-actions">
+                        <button class="action-btn edit" onclick="openEditPopup('{{a.id}}','{{a.title}}','{{a.message}}')">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <form method="POST" action="{% url 'delete_announcement' a.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="action-btn delete" onclick="return confirm('Delete this?')">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-<!-- ADD MODAL -->
-<div id="addModal" class="modal">
-    <div class="modal-box">
-        <h3>Add Announcement</h3>
-
-        <form method="POST" action="{% url 'add_announcement' %}" enctype="multipart/form-data">
+<div id="addPopup" class="popup">
+    <div class="popup-content">
+        <h2>Add Announcement</h2>
+        <form method="POST" action="{% url 'add_announcement' %}">
             {% csrf_token %}
-
-            <input type="text" name="title" placeholder="Title" required>
-
-            <textarea name="message" placeholder="Message" required></textarea>
-
-            <!-- File upload -->
-            <input type="file" name="image" accept="image/*">
-
-            <!-- Buttons -->
-            <div class="modal-actions">
-                <button type="submit" class="btn btn-save">Save</button>
-                <button type="button" class="btn btn-cancel" onclick="closeModal('addModal')">
-                    Cancel
-                </button>
+            <label>Title</label>
+            <input type="text" name="title" required>
+            <label>Message</label>
+            <textarea name="message" rows="5" required></textarea>
+            <div class="popup-buttons">
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeAddPopup()">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- EDIT + DELETE MODALS -->
-{% for a in announcements %}
-
-<!-- EDIT MODAL -->
-<div id="editModal{{ a.id }}" class="modal">
-    <div class="modal-box">
-        <h3>Edit Announcement</h3>
-
-        <form method="POST" action="{% url 'edit_announcement' a.id %}">
+<div id="editPopup" class="popup">
+    <div class="popup-content">
+        <h2>Edit Announcement</h2>
+        <form method="POST" id="editForm">
             {% csrf_token %}
-            <input type="text" name="title" value="{{ a.title }}" required>
-            <textarea name="message" required>{{ a.message }}</textarea>
-            <input type="text" name="image_url" value="{{ a.image_url }}" placeholder="Image URL">
-            <button type="submit" class="btn-primary">Update</button>
-        </form>
-
-        <div class="modal-actions">
-            <button type="button"
-                    class="btn-secondary"
-                    onclick="closeModal('editModal{{ a.id }}')">
-                Cancel
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- DELETE MODAL -->
-<div id="deleteModal{{ a.id }}" class="modal">
-    <div class="modal-box">
-        <h3>Delete Announcement?</h3>
-        <p>Are you sure you want to delete this announcement?</p>
-
-        <form method="POST" action="{% url 'delete_announcement' a.id %}">
-            {% csrf_token %}
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn-cancel"
-                        onclick="closeModal('deleteModal{{ a.id }}')">
-                    Cancel
-                </button>
-
-                <button type="submit"
-                        class="btn-danger">
-                    Delete
-                </button>
+            <label>Title</label>
+            <input type="text" name="title" id="editTitle">
+            <label>Message</label>
+            <textarea name="message" id="editMessage" rows="5"></textarea>
+            <div class="popup-buttons">
+                <button type="submit" class="save-btn">Update</button>
+                <button type="button" class="cancel-btn" onclick="closeEditPopup()">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
-
-{% endfor %}
-
-<!-- MODAL SCRIPT -->
 <script>
-function openModal(id) {
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = "none";
-    });
-    document.getElementById(id).style.display = "flex";
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-
-function toggleMenu(id) {
-    const menu = document.getElementById(id);
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
+    function openAddPopup(){ document.getElementById("addPopup").style.display="flex"; }
+    function closeAddPopup(){ document.getElementById("addPopup").style.display="none"; }
+    function closeEditPopup(){ document.getElementById("editPopup").style.display="none"; }
+    function openEditPopup(id, title, message){
+        document.getElementById("editPopup").style.display="flex";
+        document.getElementById("editTitle").value = title;
+        document.getElementById("editMessage").value = message;
+        document.getElementById("editForm").action = "/alumni_app/admin/announcements/edit/" + id + "/";
+    }
 </script>
-
 </body>
 </html>

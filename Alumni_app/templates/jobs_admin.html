@@ -55,14 +55,14 @@ Jobs
 </li>
 
 <li>
-<a href="#">
+<a href="{% url 'announcements_page' %}">
 <i class="fa-solid fa-bullhorn"></i>
 Announcements
 </a>
 </li>
 
 <li>
-<a href="#">
+<a href="{% url 'admin_view_alumni' %}">
 <i class="fa-solid fa-user-graduate"></i>
 Alumni Details
 </a>
@@ -90,12 +90,13 @@ Feedback
 
 <div class="topbar">
 
-<a href="#">Back to Home</a>
+<a href="{% url 'admin_dashboard' %}">Back to Home</a>
 
-<button class="logout">
-<i class="fa-solid fa-right-from-bracket"></i>
-Logout
-</button>
+<a href="{% url 'logout' %}">
+    <button class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+</a>
 
 </div>
 
@@ -228,7 +229,7 @@ Apply
 
 <h2>Add New Job</h2>
 
-<form method="POST" action="{% url 'add_job' %}">
+<form method="POST" action="{% url 'jobs_admin' %}">
 
 {% csrf_token %}
 

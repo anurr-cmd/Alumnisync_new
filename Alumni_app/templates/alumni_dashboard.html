@@ -115,7 +115,13 @@
 					<div class="list-item">
 						<h3>{{ event.title }}</h3>
 
+<<<<<<< HEAD
+<a href="{% url 'alumni_announcements' %}">
+<i class="fa-solid fa-bullhorn"></i> Announcements
+</a>
+=======
 						<p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 
 						<p><i class="fa-solid fa-calendar"></i> {{ event.date }}</p>
 					</div>
@@ -175,5 +181,213 @@
 
 		
 
+<<<<<<< HEAD
+<div class="card">
+
+<i class="fa-solid fa-bullhorn"></i>
+
+<h2>{{ total_announcements }}</h2>
+
+<p>Announcements</p>
+
+</div>
+
+</div>
+
+
+
+<!-- RECENT EVENTS -->
+
+<section>
+
+<h2>Recent Events</h2>
+
+{% for event in recent_events %}
+
+<div class="list-item">
+
+<h3>{{ event.title }}</h3>
+
+<p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+
+<p><i class="fa-solid fa-calendar"></i> {{ event.date }}</p>
+
+</div>
+
+{% empty %}
+
+<p>No events available</p>
+
+{% endfor %}
+
+</section>
+
+
+
+<!-- RECENT JOBS -->
+
+<section>
+
+<h2>Recent Jobs</h2>
+
+{% for job in recent_jobs %}
+
+<div class="list-item">
+
+<h3>{{ job.title }}</h3>
+
+<p>{{ job.company }}</p>
+
+<p><i class="fa-solid fa-location-dot"></i> {{ job.location }}</p>
+
+</div>
+
+{% empty %}
+
+<p>No jobs posted</p>
+
+{% endfor %}
+
+</section>
+
+
+
+<!-- RECENT ANNOUNCEMENTS -->
+
+<section>
+
+<h2>Recent Announcements</h2>
+
+{% for announcement in recent_announcements %}
+
+<div class="announcement">
+
+<h3>{{ announcement.title }}</h3>
+
+<p>{{ announcement.content|truncatewords:20 }}</p>
+
+<p>{{ announcement.posted_on }}</p>
+
+</div>
+
+{% empty %}
+
+<p>No announcements</p>
+
+{% endfor %}
+
+</section>
+
+
+</main>
+
+</div>
+
+
+
+<!-- EDIT PROFILE MODAL -->
+
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProfile()">&times;</span>
+
+        <h2>Edit Profile</h2>
+
+        <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h3>Basic Information</h3>
+
+            <input type="text" name="full_name" value="{{ request.user.username }}" placeholder="Full Name">
+            <input type="email" name="email" value="{{ profile.email }}" placeholder="Email">
+            <input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+            <input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Alternate Phone">
+            <input type="text" name="role" value="{{ profile.role }}" placeholder="Role">
+
+            <h3>Academic Information</h3>
+
+            <input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Roll No">
+            <input type="text" name="department" value="{{ profile.department }}" placeholder="Department">
+            <input type="text" name="join_year" value="{{ profile.join_year }}" placeholder="Join Year">
+            <input type="text" name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout Year">
+
+            <h3>Professional Information</h3>
+
+            <input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="Current Job Title">
+            <input type="text" name="company" value="{{ profile.company }}" placeholder="Company">
+            <input type="text" name="designation" value="{{ profile.designation }}" placeholder="Designation">
+            <input type="text" name="location" value="{{ profile.location }}" placeholder="Location">
+            {% comment %} <input type="text" name="appointment_order" value="{{ profile.appointment_order }}" placeholder="Appointment Order"> {% endcomment %}
+
+            <h3>Online Profiles & Links</h3>
+
+            <input type="text" name="linkedin_profile" value="{{ profile.linkedin_profile }}" placeholder="https://linkedin.com/in/yourprofile">
+            <input type="text" name="google_scholar" value="{{ profile.google_scholar }}" placeholder="https://scholar.google.com/citations?...">
+
+            <h3>Additional Information</h3>
+
+            <textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
+            <textarea name="remarks" placeholder="Remarks">{{ profile.remarks }}</textarea>
+
+            <div class="file-upload-group">
+                <label>Proof ID</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="proof_id">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Proof
+                </label>
+            </div>
+            <div class="file-upload-group">
+    <label>Appointment Order Image</label>
+    <label class="custom-file-upload">
+        <input type="file" name="appointment_order">
+        <i class="fa-solid fa-file-arrow-up"></i> Upload Appointment Order
+    </label>
+</div>
+            <div class="file-upload-group">
+                <label>Company ID Image</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="company_id_image">
+                    <i class="fa-solid fa-id-card"></i> Upload Company ID
+                </label>
+            </div>
+
+            <div class="file-upload-group">
+                <label>Profile Photo</label>
+                <label class="custom-file-upload">
+                    <input type="file" name="profile_image">
+                    <i class="fa-solid fa-image"></i> Choose Photo
+                </label>
+            </div>
+
+            <br><br>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+function openProfile() {
+
+document.getElementById("profileModal").style.display = "block";
+
+}
+
+function closeProfile() {
+
+document.getElementById("profileModal").style.display = "none";
+
+}
+
+</script>
+
+
+</body>
+</html>
+=======
 	</body>
 </html>
+>>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
