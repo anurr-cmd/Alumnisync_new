@@ -89,13 +89,12 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     alternate_phone = models.CharField(max_length=15, blank=True, null=True)
-<<<<<<< HEAD
+
     linkedin_profile = models.URLField(blank=True, null=True)
     google_scholar = models.URLField(blank=True, null=True)
-=======
     
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
 
     def __str__(self):
         return f"{self.user.username} - {self.passout_year}"

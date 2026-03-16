@@ -4,14 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-<<<<<<< HEAD
 from django.http import JsonResponse
 from django.db.models import Q
 from .models import Profile,Event,Job,Announcement
-=======
 from .models import *
 from .forms import *
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Feedback
 from django.contrib.auth.decorators import login_required
@@ -55,12 +52,12 @@ def login_portal(request):
 def alumni_login(request):
 
     if request.method == "POST":
-<<<<<<< HEAD
+
 
         username = request.POST.get("username")
-=======
+
         username = request.POST.get("username") 
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
@@ -178,7 +175,7 @@ def admin_login(request):
 
     return render(request, "admin_login.html")
 
-<<<<<<< HEAD
+
 #         if new_password != confirm_password:
 #             return render(request, "login.html", {"error": "Passwords do not match."})
 
@@ -300,10 +297,9 @@ def edit_profile(request):
 def superuser_required(user):
     return user.is_superuser
 
-=======
 
 @login_required
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
 def admin_dashboard(request):
 
     total_alumni = Profile.objects.filter(role="alumni").count()
@@ -330,7 +326,6 @@ def admin_view_alumni(request):
     # Start with all profiles and optimize with select_related
     profiles = Profile.objects.select_related('user').all()
 
-<<<<<<< HEAD
     if q:
         # 1. Handle Year Filters (Try to convert query to int for exact year matches)
         year_q = None
@@ -403,7 +398,7 @@ def admin_view_alumni(request):
 #         "event_count": event_count,
 #         "announcement_count": announcement_count,
 #     })
-=======
+
     alumni_queryset = Profile.objects.filter(role__iexact="alumni").select_related("user")
     print("All Alumni:", alumni_queryset.count())
 
@@ -431,7 +426,6 @@ def admin_view_alumni(request):
 
     
     
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
 
 @login_required
 def admin_edit_alumni(request, pk):
@@ -570,11 +564,9 @@ def delete_event(request, id):
     event.delete()
     return redirect('create_event')
 
-<<<<<<< HEAD
 # ===== ANNOUNCEMENTS =====
 def announcements_page(request):
-=======
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
 
     announcements = Announcement.objects.all().order_by('-posted_on')
 
@@ -604,12 +596,12 @@ def add_announcement(request):
     return redirect('announcements_page')
 
 
-<<<<<<< HEAD
+
 
 # EDIT ANNOUNCEMENT
-=======
+
 @login_required
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
 def edit_announcement(request, id):
 
     announcement = get_object_or_404(Announcement, id=id)
@@ -624,12 +616,12 @@ def edit_announcement(request, id):
     return redirect('announcements_page')
 
 
-<<<<<<< HEAD
+
 
 # DELETE ANNOUNCEMENT
-=======
+
 @login_required
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
 def delete_announcement(request, id):
 
     announcement = get_object_or_404(Announcement, id=id)

@@ -35,13 +35,12 @@ urlpatterns = [
     
     path('admin/feedback/', views.admin_feedback, name='admin_feedback'),    
     path("admin/events/", views.manage_admin_events, name="admin_events"),
-<<<<<<< HEAD
+
     # path("admin/alumni/", views.view_alumni, name="view_alumni"),
     path("admin/announcements/", views.announcements_page, name="announcements_page"),
-=======
     
     path("admin/announcements/", views.admin_announcements, name="admin_announcements"),
->>>>>>> 8ca1209de8d45afa65a19ea204cea203de8479f6
+
     path("admin/announcements/add/", views.add_announcement, name="add_announcement"),
     path("admin/announcements/edit/<int:id>/", views.edit_announcement, name="edit_announcement"),
     path("admin/announcements/delete/<int:id>/", views.delete_announcement, name="delete_announcement"),
