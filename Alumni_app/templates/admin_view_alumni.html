@@ -233,7 +233,7 @@
         <ul class="menu">
             <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
             <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
-            <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+            {% comment %} <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li> {% endcomment %}
             <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
             <li class="active"><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
             <li><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comments"></i> Feedback</a></li>
@@ -241,15 +241,36 @@
     </div>
 
 			<!-- ================= MAIN CONTENT ================= -->
-
+{% comment %} <div class="main-content">
+    <div class="topbar">
+        <a href="{% url 'admin_dashboard' %}">Back to Home</a>
+        <a href="{% url 'logout' %}">
+            <button class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </a>
+    </div> {% endcomment %}
 			<main class="main-content">
 				<!-- PAGE HEADER -->
 				<div class="topbar">
-					<div class="page-header">
-						<h1>Registered Alumni</h1>
-						<p>Manage and view all registered alumni profiles</p>
-					</div>
-				</div>
+    <div class="page-header">
+        <h1>Registered Alumni</h1>
+        <p>Manage and view all registered alumni profiles</p>
+    </div>
+    
+    <div class="nav-actions">
+        <a href="{% url 'admin_dashboard' %}" class="nav-link">Back to Home</a>
+        <a href="{% url 'logout' %}">
+            <button class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </a>
+    </div>
+</div>
+
+<div class="action-row">
+    <a href="{% url 'admin_add_alumni' %}" class="add-btn"> + Add Alumni </a>
+</div>
 				<!-- ================= FILTER BAR ================= -->
 
 				<form method="get" class="filter-form">
@@ -346,24 +367,19 @@
 					</div>
 				</form>
 
-				<div class="top-actions">
+				{% comment %} <div class="top-actions">
 					<a href="{% url 'admin_add_alumni' %}" class="add-btn"> + Add Alumni </a>
-				</div>
+				</div> {% endcomment %}
 				<!-- ================= TABLE ================= -->
 
 				<section class="table-container">
 					<table class="alumni-table">
 						<thead>
 							<tr>
-								<th>Profile</th>
-								<th>Username</th>
-								<th>Roll No</th>
-								<th>Department</th>
-								<th>Passout Year</th>
-								<th>Company</th>
-								<th>Location</th>
-								<th>Edit</th>
-							</tr>
+                        <th>Profile</th><th>Name</th><th>Role</th><th>Roll No</th><th>Phone Number</th><th>Alternate Phone</th>
+                        <th>Email</th><th>Dept</th><th>Join year</th><th>Pass out</th><th>Address</th><th>Designation</th><th>Remarks</th>
+                        <th>LinkedIn</th><th>Scholar</th><th>Proof ID</th><th>Comp ID</th><th>Appointment Order</th>
+                    </tr>
 						</thead>
 
 						<tbody>
@@ -393,12 +409,16 @@
 										{{ alumni.user.username }}
 									</a>
 								</td>
+								<td>{{ alumni.role }}</td>
 								<td>{{ alumni.roll_no }}</td>
-
+								<td>{{ alumni.phone }}</td>
+								<td>{{ alumni.alternate_phone }}</td>
+								<td>{{ alumni.email }}</td>
 								<td class="department">{{ alumni.department }}</td>
-
+								<td>{{ alumni.join_year }}</td>
 								<td>{{ alumni.passout_year }}</td>
-
+								<td>{{ alumni.designation }}</td>
+								<td>{{ alumni.remarks }}</td>
 								<td class="company">{{ alumni.company }}</td>
 
 								<td class="location">
@@ -427,8 +447,45 @@
 
 									{{ alumni.location }}
 								</td>
+								{% if alumni.linkedin_profile %}
+								{% else %}
+								<a href="{{ alumni.linkedin_profile }}" target="_blank">View</a>
+								{% endif %}
+								N/A
+								
+							</td>
+						</td>
+						<td>
+						{% if alumni.google_scholar %}
+						<a href="{{ alumni.google_scholar }}" target="_blank">View</a>
+						{% else %}
+						N/A
+						{% endif %}
 
-								<td>
+						<td>
+									<td>
+									{% if alumni.proof_id %}
+									<a href="{{ alumni.proof_id.url }}" target="_blank">Open</a>
+									{% else %}
+									N/A
+									{% endif %}
+									</td>
+									
+									<td>
+									{% if alumni.company_id_image %}
+									<a href="{{ alumni.company_id_image.url }}" target="_blank">Open</a>
+									{% else %}
+									N/A
+									{% endif %}
+									</td>
+									
+									<td>
+									{% if alumni.appointment_order %}
+									<a href="{{ alumni.appointment_order.url }}" target="_blank">Open</a>
+									{% else %}
+									N/A
+									{% endif %}
+									</td>
 									<a
 										href="{% url 'admin_edit_alumni' alumni.id %}"
 										class="edit-btn"

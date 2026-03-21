@@ -36,9 +36,9 @@
 						<i class="fa-solid fa-calendar"></i> Events
 					</a>
 
-					<a href="{% url 'jobs_admin' %}">
+					{% comment %} <a href="{% url 'jobs_admin' %}">
 						<i class="fa-solid fa-briefcase"></i> Jobs
-					</a>
+					</a> {% endcomment %}
 
 					<a href="{% url 'admin_announcements' %}">
 						<i class="fa-solid fa-bullhorn"></i> Announcements
@@ -101,7 +101,7 @@
 						<p>Total Events</p>
 					</div>
 
-					<div class="stat-card">
+					{% comment %} <div class="stat-card">
 						<div class="stat-icon">
 							<i class="fa-solid fa-briefcase"></i>
 						</div>
@@ -109,7 +109,7 @@
 						<h2>{{ total_jobs }}</h2>
 
 						<p>Job Postings</p>
-					</div>
+					</div> {% endcomment %}
 
 					<div class="stat-card">
 						<div class="stat-icon">
@@ -153,25 +153,21 @@
 
 					<div class="card">
 						<div class="card-header">
-							<h3>Recent Jobs</h3>
+							<h3>Recent Announcement</h3>
 
-							<a href="{% url 'jobs_admin' %}">Manage →</a>
+							<a href="{% url 'admin_announcements' %}">Manage →</a>
 						</div>
 
 						<div class="card-body">
-							{% for job in recent_jobs %}
-
+							{% for announce in recent_announcements %}
 							<div class="list-item">
-								<h4>{{ job.title }}</h4>
-
-								<p>{{ job.company }}</p>
-
-								<span>{{ job.posted_on|date:"M d, Y" }}</span>
+								<h4>{{ announce.title }}</h4>
+                                <span>{{ announce.created_at|date:"M d, Y" }}</span>
 							</div>
 
 							{% endfor %}
 						</div>
-					</div>
+					</div> 
 				</div>
 
 				<!-- QUICK ACTIONS -->
@@ -185,10 +181,10 @@
 							Manage Events
 						</a>
 
-						<a href="{% url 'jobs_admin' %}" class="action-btn">
+						<a href="{% url 'admin_view_alumni' %}" class="action-btn">
 							<i class="fa-solid fa-briefcase"></i>
-							Post Job
-						</a>
+							View Alumni
+						</a> 
 
 
 				 <a href="{% url 'admin_announcements' %}" class="action-btn">

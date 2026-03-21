@@ -50,9 +50,9 @@ urlpatterns = [
     path('edit-event/<int:id>/', views.edit_event, name='edit_event'),
     path("events/delete/<int:id>/", views.delete_event, name="delete_event"),
     
-    path("alumni/jobs/manage/", views.jobs_alumni, name="jobs_alumni"),
-    path("admin/jobs/",views.jobs_admin,name="jobs_admin"),
-    path("alumni/jobs/add/", views.add_job_alumni, name="add_job_alumni"),
-    path("edit-job-alumni/<int:id>/", views.edit_job_alumni, name="edit_job_alumni"),
-    path("alumni/jobs/delete/<int:id>/", views.delete_job_alumni, name="delete_job_alumni"),
+    # path("alumni/jobs/manage/", views.jobs_alumni, name="jobs_alumni"),
+    # path("admin/jobs/",views.jobs_admin,name="jobs_admin"),
+    # path("alumni/jobs/add/", views.add_job_alumni, name="add_job_alumni"),
+    # path("edit-job-alumni/<int:id>/", views.edit_job_alumni, name="edit_job_alumni"),
+    # path("alumni/jobs/delete/<int:id>/", views.delete_job_alumni, name="delete_job_alumni"),
 ]

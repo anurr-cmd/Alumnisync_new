@@ -22,7 +22,7 @@
             <ul class="menu">
                 <li><a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-table-columns"></i> Dashboard</a></li>
                 <li><a href="{% url 'admin_events' %}"><i class="fa-solid fa-calendar"></i> Events</a></li>
-                <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li>
+                {% comment %} <li><a href="{% url 'jobs_admin' %}"><i class="fa-solid fa-briefcase"></i> Jobs</a></li> {% endcomment %}
                 <li><a href="{% url 'announcements_page' %}"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="{% url 'admin_view_alumni' %}"><i class="fa-solid fa-user-graduate"></i> Alumni Details</a></li>
                 <li class="active"><a href="{% url 'admin_feedback' %}"><i class="fa-solid fa-comment"></i> Feedback</a></li>

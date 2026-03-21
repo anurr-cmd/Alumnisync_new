@@ -19,10 +19,7 @@
             <a href="{% url 'index' %}" class="nav-link-home">
                 <i class="fa-solid fa-house"></i> Home
             </a>
-            <a href="{% url 'logout' %}" class="nav-link-logout">
-                <i class="fa-solid fa-power-off"></i> Logout
-            </a>
-            <button class="edit-btn" onclick="openProfile()">
+            <button class="edit-btn highlight" onclick="openProfile()">
                 <i class="fa-solid fa-user-pen"></i> Edit Profile
             </button>
         </div>
@@ -32,7 +29,7 @@
         <aside class="sidebar">
             <div class="profile-card">
                 <div class="avatar">{{ request.user.username|first|upper }}</div>
-                <p class="username">@{{ request.user.username }}</p>
+                <p class="username">{{ request.user.username }}</p>
                 <span class="status-badge">Active Member</span>
             </div>
             <nav>
@@ -42,11 +39,12 @@
                 <a href="{% url 'create_event' %}" class="nav-item">
                     <i class="fa-solid fa-calendar-check"></i> Events
                 </a>
-                <a href="{% url 'jobs_alumni' %}" class="nav-item">
-                    <i class="fa-solid fa-briefcase"></i> Job Portal
-                </a>
                 <a href="#" class="nav-item">
-                    <i class="fa-solid fa-bullhorn"></i> News
+                    <i class="fa-solid fa-bullhorn"></i> Announcements
+                </a>
+                {% comment %} <hr class="nav-divider"> {% endcomment %}
+                <a href="{% url 'logout' %}" class="nav-item logout-sidebar">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </a>
             </nav>
         </aside>
@@ -66,159 +64,225 @@
                     </div>
                 </div>
                 <div class="card stat-card">
-                    <div class="card-icon"><i class="fa-solid fa-briefcase"></i></div>
-                    <div class="stat-info">
-                        <h2>{{ total_jobs|default:"0" }}</h2>
-                        <p>Job Openings</p>
-                    </div>
-                </div>
-                <div class="card stat-card">
                     <div class="card-icon"><i class="fa-solid fa-message"></i></div>
                     <div class="stat-info">
                         <h2>{{ total_announcements|default:"0" }}</h2>
-                        <p>Alerts</p>
+                        <p>Announcements</p>
                     </div>
                 </div>
             </div>
 
-            <section class="events-section card">
-                <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Events</h3>
-                <div class="list-container">
-                    {% for event in recent_events %}
-                    <div class="list-item">
-                        <div class="item-text">
-                            <h4>{{ event.title }}</h4>
-                            <span>{{ event.date }}</span>
+            <div class="content-grid">
+                <section class="events-section card">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Events</h3>
+                    <div class="list-container">
+                        {% for event in recent_events %}
+                        <div class="list-item">
+                            <div class="item-text">
+                                <h4>{{ event.title }}</h4>
+                                <span>{{ event.date }}</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
                         </div>
-                        <i class="fa-solid fa-chevron-right"></i>
+                        {% empty %}
+                        <p class="empty-msg">No upcoming events scheduled.</p>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <p class="empty-msg">No upcoming events scheduled.</p>
-                    {% endfor %}
-                </div>
-            </section>
+                </section>
 
-            <section class="jobs-section card">
-                <h3><i class="fa-solid fa-bolt"></i> Latest Jobs</h3>
-                <div class="list-container">
-                    {% for job in recent_jobs %}
-                    <div class="list-item">
-                        <div class="item-text">
-                            <h4>{{ job.title }}</h4>
-                            <span>{{ job.company }} &bull; {{ job.location }}</span>
+                <section class="announcements-section card">
+                    <h3><i class="fa-solid fa-bullhorn"></i> Recent Announcements</h3>
+                    <div class="list-container">
+                        {% for announce in recent_announcements %}
+                        <div class="list-item">
+                            <div class="item-text">
+                                <h4>{{ announce.title }}</h4>
+                                <span>{{ announce.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
                         </div>
-                        <button class="apply-btn-sm">View</button>
+                        {% empty %}
+                        <p class="empty-msg">No announcements at this time.</p>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <p class="empty-msg">No new jobs available today.</p>
-                    {% endfor %}
-                </div>
-            </section>
+                </section>
+            </div>
         </main>
     </div>
 
     <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Update Your Profile</h2>
-                <span class="close-btn" onclick="closeProfile()">&times;</span>
-            </div>
-            
-            <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <div class="modal-body">
-                    <div class="form-grid">
-                        <div class="form-col">
-                            <div class="section-title">Personal Details</div>
-                            <div class="input-group">
-                                <label>Full Name</label>
-                                <input type="text" name="full_name" value="{{ request.user.username }}">
-                            </div>
-                            <div class="input-group">
-                                <label>Professional Email</label>
-                                <input type="email" name="email" value="{{ profile.email }}">
-                            </div>
-                            <div class="input-group">
-                                <label>LinkedIn URL</label>
-                                <input type="text" name="linkedin_profile" value="{{ profile.linkedin_profile }}" placeholder="https://linkedin.com/in/...">
-                            </div>
-                        </div>
-
-                        <div class="form-col">
-                            <div class="section-title">Academic Info</div>
-                            <div class="input-group">
-                                <label>Department</label>
-                                <input type="text" name="department" value="{{ profile.department }}">
-                            </div>
-                            <div class="input-group">
-                                <label>Passout Year</label>
-                                <input type="text" name="passout_year" value="{{ profile.passout_year }}">
-                            </div>
-                            <div class="input-group">
-                                <label>Current Company</label>
-                                <input type="text" name="company" value="{{ profile.company }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-title">Documents & Photos</div>
-                    <div class="file-upload-grid">
-                        <div class="upload-card">
-                            <i class="fa-solid fa-id-card"></i>
-                            <p>Identity Proof</p>
-                            <label class="custom-file-input">
-                                <input type="file" name="proof_id">
-                                <span>Choose File</span>
-                            </label>
-                        </div>
-                        <div class="upload-card">
-                            <i class="fa-solid fa-file-signature"></i>
-                            <p>Offer Letter</p>
-                            <label class="custom-file-input">
-                                <input type="file" name="appointment_order">
-                                <span>Choose File</span>
-                            </label>
-                        </div>
-                        <div class="upload-card">
-                            <i class="fa-solid fa-building"></i>
-                            <p>Company ID</p>
-                            <label class="custom-file-input">
-                                <input type="file" name="company_id_image">
-                                <span>Choose File</span>
-                            </label>
-                        </div>
-                        <div class="upload-card">
-                            <i class="fa-solid fa-image"></i>
-                            <p>Profile Picture</p>
-                            <label class="custom-file-input">
-                                <input type="file" name="profile_image">
-                                <span>Choose File</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="cancel-btn" onclick="closeProfile()">Cancel</button>
-                    <button type="submit" class="save-btn">Save Changes</button>
-                </div>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Your Profile</h2>
+            <span class="close-btn" onclick="closeProfile()">&times;</span>
         </div>
-    </div>
-
-    <script>
-        function openProfile() { document.getElementById("profileModal").classList.add("active"); }
-        function closeProfile() { document.getElementById("profileModal").classList.remove("active"); }
         
-        // Update file name display on select
+        <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">
+                
+                <div class="form-section">
+                    <div class="section-header">Basic Information</div>
+                    <div class="form-grid-4">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" name="full_name" value="{{ profile.full_name }}" placeholder="e.g. John Doe">
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" value="{{ profile.email }}" placeholder="example@mail.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Phone</label>
+                            <input type="text" name="phone" value="{{ profile.phone }}" placeholder="+91 00000 00000">
+                        </div>
+                        <div class="input-group">
+                            <label>Alternate Phone</label>
+                            <input type="text" name="alternate_phone" value="{{ profile.alternate_phone }}" placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">Academic Information</div>
+                    <div class="form-grid-4">
+                        <div class="input-group">
+                            <label>Roll No</label>
+                            <input type="text" name="roll_no" value="{{ profile.roll_no }}" placeholder="Enter Roll Number">
+                        </div>
+                        <div class="input-group">
+                            <label>Department</label>
+                            <input type="text" name="department" value="{{ profile.department }}" placeholder="e.g. Computer Science">
+                        </div>
+                        <div class="input-group">
+                            <label>Join Year</label>
+                            <input type="number" name="join_year" value="{{ profile.join_year }}" placeholder="2020">
+                        </div>
+                        <div class="input-group">
+                            <label>Passout Year</label>
+                            <input type="number" name="passout_year" value="{{ profile.passout_year }}" placeholder="2024">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">Professional Information</div>
+                    <div class="form-grid-4">
+                        <div class="input-group">
+                            <label>Current Job Title</label>
+                            <input type="text" name="current_job" value="{{ profile.current_job }}" placeholder="e.g. Software Engineer">
+                        </div>
+                        <div class="input-group">
+                            <label>Company</label>
+                            <input type="text" name="company" value="{{ profile.company }}" placeholder="e.g. Google">
+                        </div>
+                        <div class="input-group">
+                            <label>Designation</label>
+                            <input type="text" name="designation" value="{{ profile.designation }}" placeholder="e.g. Senior Lead">
+                        </div>
+                        <div class="input-group">
+                            <label>Role</label>
+                            <input type="text" name="role" value="{{ profile.role }}" placeholder="Alumni">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">Online Profiles & Links</div>
+                    <div class="form-grid-2">
+                        <div class="input-group">
+                            <label>LinkedIn Profile Link</label>
+                            <input type="url" name="linkedin_profile" value="{{ profile.linkedin_profile }}" placeholder="https://linkedin.com/in/username">
+                        </div>
+                        <div class="input-group">
+                            <label>Google Scholar</label>
+                            <input type="url" name="google_scholar" value="{{ profile.google_scholar }}" placeholder="https://scholar.google.com/citations...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">Additional Information</div>
+                    <div class="input-group full-width">
+                        <label>Address</label>
+                        <textarea name="address" rows="2" placeholder="Full residential address...">{{ profile.address }}</textarea>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Remarks</label>
+                        <textarea name="remarks" rows="2" placeholder="Any additional notes...">{{ profile.remarks }}</textarea>
+                    </div>
+                </div>
+
+                <div class="section-header">VERIFICATION DOCUMENTS</div>
+<div class="verification-grid">
+    <label class="upload-box">
+        <i class="fa-solid fa-address-card"></i>
+        <span>Proof ID</span>
+        <div class="upload-status">Click to upload</div>
+        <input type="file" name="proof_id" hidden onchange="updateFileName(this)">
+    </label>
+
+    <label class="upload-box">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>Appointment Order</span>
+        <div class="upload-status">Click to upload</div>
+        <input type="file" name="appointment_order" hidden onchange="updateFileName(this)">
+    </label>
+
+    <label class="upload-box">
+        <i class="fa-solid fa-building"></i>
+        <span>Company ID</span>
+        <div class="upload-status">Click to upload</div>
+        <input type="file" name="company_id_image" hidden onchange="updateFileName(this)">
+    </label>
+
+    <label class="upload-box">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile Picture</span>
+        <div class="upload-status">Click to upload</div>
+        <input type="file" name="profile_image" hidden onchange="updateFileName(this)">
+    </label>
+</div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeProfile()">Cancel</button>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+    <script>
+        function openProfile() {
+    document.getElementById("profileModal").classList.add("active");
+    document.body.classList.add("no-scroll");
+}
+
+function closeProfile() {
+    document.getElementById("profileModal").classList.remove("active");
+    document.body.classList.remove("no-scroll");
+}
+        
         document.querySelectorAll('input[type="file"]').forEach(input => {
             input.addEventListener('change', e => {
-                let fileName = e.target.files[0].name;
-                e.target.nextElementSibling.innerText = fileName;
-                e.target.parentElement.parentElement.classList.add('selected');
+                if(e.target.files.length > 0) {
+                    let fileName = e.target.files[0].name;
+                    e.target.nextElementSibling.innerText = "Selected";
+                    e.target.parentElement.parentElement.classList.add('selected');
+                }
             });
         });
+		function updateFileName(input) {
+    const box = input.closest('.upload-box');
+    const statusText = box.querySelector('.upload-status');
+    
+    if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        statusText.textContent = fileName; // Shows the filename
+        box.classList.add('file-selected'); // Changes border to solid green
+    } else {
+        statusText.textContent = "Click to upload";
+        box.classList.remove('file-selected');
+    }
+}
     </script>
 </body>
 </html>
