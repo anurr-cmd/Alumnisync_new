@@ -23,10 +23,14 @@ urlpatterns = [
     
     
     path("admin/alumni/", views.admin_view_alumni, name="admin_view_alumni"),
-    path("admin/alumni/add/", views.admin_add_alumni, name="admin_add_alumni" ),
+    # path("admin/alumni/add/", views.admin_add_alumni, name="admin_add_alumni" ),
+    path("admin/alumni/add/user/", views.admin_add_user, name="admin_add_user"),
+    path("admin/alumni/add/<int:user_id>/", views.admin_add_alumni, name="admin_add_alumni"),
+    
     path("admin/alumni/edit/<int:pk>/", views.admin_edit_alumni, name="admin_edit_alumni"),
     path("admin/alumni/user/<int:pk>/", views.admin_view_user, name="admin_view_user" ),
     
+
     path(
     "admin/user/<int:pk>/",
     views.admin_view_user,

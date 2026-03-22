@@ -56,8 +56,8 @@ from .models import Profile
 
 class AlumniCreateForm(forms.ModelForm):
 
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
+    # username = forms.CharField(max_length=150)
+    # password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = Profile
@@ -83,3 +83,11 @@ class AlumniCreateForm(forms.ModelForm):
             "address": forms.Textarea(attrs={"rows": 3}),
             "remarks": forms.Textarea(attrs={"rows": 3}),
         }
+        
+        
+        
+        
+
+class UserForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
