@@ -252,24 +252,46 @@ def admin_edit_alumni(request, pk):
 
 
 
-    
 @login_required
-def admin_add_alumni(request):
+def admin_add_user(request):
 
     if request.method == "POST":
-
-        form = AlumniCreateForm(request.POST, request.FILES)
+        form = UserForm(request.POST)
 
         if form.is_valid():
-
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
 
-            user = User.objects.create_user(
-                username=username,
-                password=password
-            )
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already exists")
+            else:
+                user = User.objects.create_user(
+                    username=username,
+                    password=password
+                )
+                messages.success(request, "User created successfully")
+                # return redirect("admin_add_user")  # reload page
+                return redirect("admin_add_alumni", user_id=user.id)
 
+        else:
+            messages.error(request, "Form is invalid")
+
+    else:
+        form = UserForm()
+
+    return render(request, "admin/add_user.html", {"form": form})
+
+
+
+@login_required
+def admin_add_alumni(request, user_id):
+
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == "POST":
+        form = AlumniCreateForm(request.POST, request.FILES)
+
+        if form.is_valid():
             profile = form.save(commit=False)
             profile.user = user
             profile.role = "alumni"
@@ -278,17 +300,16 @@ def admin_add_alumni(request):
             return redirect("admin_view_alumni")
 
     else:
-
         form = AlumniCreateForm()
 
     return render(
         request,
         "admin_add_alumni.html",
         {
-            "form": form
+            "form": form,
+            "user": user
         },
     )
-    
 
 
 
