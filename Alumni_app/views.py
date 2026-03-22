@@ -393,102 +393,102 @@ def delete_announcement(request, id):
     return redirect("admin_announcements")
 
 
-@login_required
-def jobs_alumni(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
+# @login_required
+# def jobs_alumni(request):
+#     profile, created = Profile.objects.get_or_create(user=request.user)
 
-    if (profile.role or "").lower() != "alumni":
-        return redirect("index")
+#     if (profile.role or "").lower() != "alumni":
+#         return redirect("index")
 
-    if request.method == "POST":
-        Job.objects.create(
-            title=request.POST["title"],
-            company=request.POST["company"],
-            description=request.POST["description"],
-            posted_by=request.user
-        )
-        return redirect("jobs_alumni")
+#     if request.method == "POST":
+#         Job.objects.create(
+#             title=request.POST["title"],
+#             company=request.POST["company"],
+#             description=request.POST["description"],
+#             posted_by=request.user
+#         )
+#         return redirect("jobs_alumni")
 
-    jobs = Job.objects.all().order_by("-posted_on")
+#     jobs = Job.objects.all().order_by("-posted_on")
 
-    return render(request, "jobs_alumni.html", {"jobs": jobs})
-
-
-@login_required
-def jobs_admin(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
-
-    # Only admin allowed here
-    if (profile.role or "").lower() != "admin":
-        return redirect("jobs_admin")
-
-    if request.method == "POST":
-        job = get_object_or_404(Job, id=request.POST["job_id"])
-        action = request.POST["action"]
-
-        if action == "approve":
-            job.is_approved = True
-        elif action == "reject":
-            job.is_approved = False
-
-        job.save()
-        return redirect("jobs_admin")
-
-    jobs = Job.objects.all()
-
-    return render(request, "jobs_admin.html", {
-        "jobs": jobs,
-        "portal": "admin"
-    })
+#     return render(request, "jobs_alumni.html", {"jobs": jobs})
 
 
-@login_required
-def add_job_alumni(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
+# @login_required
+# def jobs_admin(request):
+#     profile, created = Profile.objects.get_or_create(user=request.user)
 
-    if (profile.role or "").lower() != "alumni":
-        return redirect("manage_jobs_alumni")
+#     # Only admin allowed here
+#     if (profile.role or "").lower() != "admin":
+#         return redirect("jobs_admin")
 
-    if request.method == "POST":
-        Job.objects.create(
-        title=request.POST.get("title"),
-        company=request.POST.get("company"),
-        description=request.POST.get("description"),
-        # location=request.POST.get("location"),
-        posted_by=request.user
-)
+#     if request.method == "POST":
+#         job = get_object_or_404(Job, id=request.POST["job_id"])
+#         action = request.POST["action"]
 
-    return redirect("jobs_alumni")
+#         if action == "approve":
+#             job.is_approved = True
+#         elif action == "reject":
+#             job.is_approved = False
 
+#         job.save()
+#         return redirect("jobs_admin")
 
-@login_required
-def edit_job_alumni(request, id):
-    job = get_object_or_404(Job, id=id)
-    profile, created = Profile.objects.get_or_create(user=request.user)
+#     jobs = Job.objects.all()
 
-    # Alumni can edit ONLY their jobs
-    if (profile.role or "").lower() == "alumni" and job.posted_by != request.user:
-        return redirect("jobs_alumni")
-
-    if request.method == "POST":
-        job.title = request.POST.get("title")
-        job.company = request.POST.get("company")
-        job.description = request.POST.get("description")
-        # job.location = request.POST.get("location")
-        job.save()
-
-    return redirect("jobs_alumni")
+#     return render(request, "jobs_admin.html", {
+#         "jobs": jobs,
+#         "portal": "admin"
+#     })
 
 
-@login_required
-def delete_job_alumni(request, id):
-    job = get_object_or_404(Job, id=id)
+# @login_required
+# def add_job_alumni(request):
+#     profile, created = Profile.objects.get_or_create(user=request.user)
 
-    if job.posted_by != request.user:
-        return redirect("jobs_alumni")
+#     if (profile.role or "").lower() != "alumni":
+#         return redirect("manage_jobs_alumni")
 
-    job.delete()
-    return redirect("jobs_alumni")
+#     if request.method == "POST":
+#         Job.objects.create(
+#         title=request.POST.get("title"),
+#         company=request.POST.get("company"),
+#         description=request.POST.get("description"),
+#         # location=request.POST.get("location"),
+#         posted_by=request.user
+# )
+
+#     return redirect("jobs_alumni")
+
+
+# @login_required
+# def edit_job_alumni(request, id):
+#     job = get_object_or_404(Job, id=id)
+#     profile, created = Profile.objects.get_or_create(user=request.user)
+
+#     # Alumni can edit ONLY their jobs
+#     if (profile.role or "").lower() == "alumni" and job.posted_by != request.user:
+#         return redirect("jobs_alumni")
+
+#     if request.method == "POST":
+#         job.title = request.POST.get("title")
+#         job.company = request.POST.get("company")
+#         job.description = request.POST.get("description")
+#         # job.location = request.POST.get("location")
+#         job.save()
+
+#     return redirect("jobs_alumni")
+
+
+# @login_required
+# def delete_job_alumni(request, id):
+#     job = get_object_or_404(Job, id=id)
+
+#     if job.posted_by != request.user:
+#         return redirect("jobs_alumni")
+
+#     job.delete()
+#     return redirect("jobs_alumni")
 
 
 @login_required
