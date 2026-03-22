@@ -1,0 +1,164 @@
+:root {
+    --primary-green: #2d5a3f;
+    --hover-green: #1e3d2a;
+    --light-green: #f0f7f3;
+    --bg-main: #f8faf9;
+    --white: #ffffff;
+    --text-dark: #1a1a1a;
+    --text-muted: #666;
+    --error-red: #d9534f;
+    --success-green: #2d5a3f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+/* Page Wrapper for Centering */
+.form-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Back Button Alignment */
+.back-nav {
+    width: 100%;
+    max-width: 450px;
+    margin-bottom: 15px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-btn:hover {
+    color: var(--primary-green);
+}
+
+/* Form Card Style */
+.form-card {
+    background: var(--white);
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-header h2 {
+    color: var(--primary-green);
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.card-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* Form Groups */
+.styled-form .form-group {
+    margin-bottom: 20px;
+}
+
+.styled-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+}
+
+/* Styling Django Form Inputs */
+.styled-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #eef2f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: #fcfdfd;
+    transition: 0.3s;
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+}
+
+.styled-form input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 4px rgba(45, 90, 63, 0.1);
+    background: #fff;
+}
+
+.styled-form small {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+    font-size: 0.75rem;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background: var(--hover-green);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(45, 90, 63, 0.2);
+}
+
+/* Messages */
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.message.error {
+    background: #fff1f1;
+    color: var(--error-red);
+    border: 1px solid #ffdfdf;
+}
+
+.message.success {
+    background: var(--light-green);
+    color: var(--success-green);
+    border: 1px solid #e0e6e3;
+}

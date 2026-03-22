@@ -9,7 +9,6 @@
     --white: #ffffff;
     --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
     --border-radius: 16px;
-    --glass-bg: rgba(255, 255, 255, 0.85);
 }
 
 body {
@@ -25,19 +24,14 @@ body {
     min-height: 100vh;
 }
 
-.main-content {
-    flex: 1;
-    padding: 20px 40px;
-    background-color: var(--bg-main);
-    overflow-x: hidden;
-}
-
-/* --- Sidebar Styling --- */
 .sidebar {
     width: 260px;
     background: var(--white);
     border-right: 1px solid #eef2f0;
     padding: 25px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
 
 .admin-profile {
@@ -80,43 +74,33 @@ body {
     border-right: 4px solid var(--primary-green);
 }
 
-/* --- Topbar & Header (Right Aligned Links) --- */
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+    background-color: var(--bg-main);
+    max-width: calc(100vw - 260px);
+}
+
+/* --- Header & Actions --- */
 .topbar {
     display: flex;
-    justify-content: space-between; /* This pushes header left and nav right */
+    justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 30px;
-    width: 100%;
+    margin-bottom: 20px;
 }
 
-.topbar a {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: 0.2s;
-}
-
-.topbar a:hover {
+.page-header h1 {
+    font-size: 1.8rem;
     color: var(--primary-green);
+    margin: 0;
 }
+
 .nav-actions {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.nav-link {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.nav-link:hover {
-    color: var(--primary-green);
-}
 .logout {
     background: #fff1f1;
     color: #d9534f;
@@ -125,137 +109,81 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.logout:hover {
-    background: #d9534f;
+.action-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    background: var(--primary-green);
     color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
-.page-header {
-    text-align: left; /* Ensures text alignment is to the left */
-}
-
-.page-header h1 {
-    font-size: 1.8rem;
-    color: var(--primary-green);
-    margin: 0;
-    font-weight: 700;
-}
-
-.page-header p {
-    color: var(--text-muted);
-    margin: 5px 0 0;
-    font-size: 0.95rem;
-}
-
-/* --- Filter Bar (Single Row Scroll) --- */
+/* --- Filters --- */
 .filter-form {
     background: var(--white);
-    padding: 24px;
+    padding: 20px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
     margin-bottom: 25px;
 }
 
 .filter-grid {
-    display: flex; 
-    overflow-x: auto; /* Enables the single row horizontal scroll */
-    gap: 15px;
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
     padding-bottom: 12px;
-    scrollbar-width: thin;
-}
-
-/* Styled scrollbar for the filter row */
-.filter-grid::-webkit-scrollbar {
-    height: 5px;
-}
-
-.filter-grid::-webkit-scrollbar-thumb {
-    background: #e0e6e3;
-    border-radius: 10px;
 }
 
 .filter-grid input {
-    min-width: 200px; /* Increased width for better readability */
-    padding: 12px 16px;
+    min-width: 160px;
+    padding: 10px 14px;
     border: 1px solid #eef2f0;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    background: #fcfdfd;
-}
-.filter-grid input:focus {
-    border-color: var(--primary-green);
-    background: #fff;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(45, 90, 63, 0.08);
+    border-radius: 10px;
+    font-size: 0.85rem;
 }
 
 .filter-actions {
     display: flex;
-    justify-content: flex-start;
-    gap: 12px;
-    margin-top: 5px;
+    gap: 10px;
 }
 
 .filter-btn {
     background: var(--primary-green);
     color: white;
     border: none;
-    padding: 9px 20px;
+    padding: 8px 18px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    font-size: 0.85rem;
 }
 
 .reset-btn {
     text-decoration: none;
     color: var(--text-muted);
     padding: 8px 18px;
-    font-weight: 500;
     border: 1px solid #eef2f0;
     border-radius: 8px;
     font-size: 0.85rem;
 }
 
-/* --- Add Alumni Button (Pushed to Right) --- */
-.top-actions {
-    display: flex;
-    justify-content: flex-end; /* Move + Add Alumni to the right */
-    margin-bottom: 15px;
-}
-
-.add-btn {
-    background: var(--primary-green);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(45, 90, 63, 0.2);
-    transition: transform 0.2s;
-}
-
-.add-btn:hover {
-    transform: translateY(-2px);
-}
-.action-row {
-    display: flex;
-    justify-content: flex-end; /* Moves button to opposite side */
-    margin-bottom: 20px;
-}
 /* --- Table Styling --- */
 .table-container {
     background: var(--white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
     overflow-x: auto;
-    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .alumni-table {
@@ -266,33 +194,60 @@ body {
 .alumni-table th {
     background: #fcfdfd;
     color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 16px 20px;
+    padding: 12px 15px;
     border-bottom: 1px solid #f0f3f2;
     text-align: left;
     white-space: nowrap;
 }
 
 .alumni-table td {
-    padding: 14px 20px;
-    font-size: 0.85rem;
+    padding: 8px 15px;
+    font-size: 0.8rem;
     border-bottom: 1px solid #f9faf9;
-    color: var(--text-dark);
-    white-space: nowrap; /* Keeps table compact */
+    white-space: nowrap;
+    vertical-align: middle;
+    /* This keeps rows from growing too large */
+    height: 45px; 
 }
 
-.alumni-table tr:hover {
-    background-color: #f9fdfb;
+/* --- FIX FOR LARGE LOCATION ICON --- */
+.alumni-table td svg {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 4px;
+    display: inline-block;
+    color: var(--primary-green);
 }
 
 .profile-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     object-fit: cover;
+    display: block;
+}
+
+.avatar-placeholder {
+    font-size: 0.7rem;
+    color: #999;
+}
+
+.edit-btn {
+    background: var(--light-green);
+    color: var(--primary-green);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.edit-btn:hover {
+    background: var(--primary-green);
+    color: white;
 }
 
 .username-link {
@@ -301,32 +256,11 @@ body {
     text-decoration: none;
 }
 
-.username-link:hover { text-decoration: underline; }
-
-.edit-btn {
-    color: var(--primary-green);
-    background: var(--light-green);
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: none;
-}
-
 /* --- Pagination --- */
 .pagination {
-    padding: 25px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
-    color: var(--text-muted);
-}
-
-.pagination a {
-    padding: 7px 14px;
-    border: 1px solid #eef2f0;
-    border-radius: 6px;
-    text-decoration: none;
-    color: var(--text-dark);
+    gap: 10px;
 }

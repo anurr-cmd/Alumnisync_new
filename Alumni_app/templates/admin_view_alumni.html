@@ -421,8 +421,8 @@
 								<td>{{ alumni.remarks }}</td>
 								<td class="company">{{ alumni.company }}</td>
 
-								<td class="location">
-									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+								<td class="location-cell">
+									{% comment %} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -445,27 +445,32 @@
 										/>
 									</svg>
 
-									{{ alumni.location }}
+									{{ alumni.location }} {% endcomment %}
+									 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                {{ alumni.location }}
 								</td>
-								{% if alumni.linkedin_profile %}
-								{% else %}
-								<a href="{{ alumni.linkedin_profile }}" target="_blank">View</a>
-								{% endif %}
-								N/A
-								
-							</td>
-						</td>
+								<td>
+{% if alumni.linkedin_profile %}
+<a href="{{ alumni.linkedin_profile }}" target="_blank" class="action-link">View</a>
+{% else %}
+N/A
+{% endif %}
+</td>
+						
 						<td>
 						{% if alumni.google_scholar %}
-						<a href="{{ alumni.google_scholar }}" target="_blank">View</a>
+						<a href="{{ alumni.google_scholar }}" target="_blank" class="action-link">View</a>
 						{% else %}
 						N/A
 						{% endif %}
-
+							</td>
 						<td>
 									<td>
 									{% if alumni.proof_id %}
-									<a href="{{ alumni.proof_id.url }}" target="_blank">Open</a>
+									<a href="{{ alumni.proof_id.url }}" target="_blank" class="action-link">Open</a>
 									{% else %}
 									N/A
 									{% endif %}
@@ -473,7 +478,7 @@
 									
 									<td>
 									{% if alumni.company_id_image %}
-									<a href="{{ alumni.company_id_image.url }}" target="_blank">Open</a>
+									<a href="{{ alumni.company_id_image.url }}" target="_blank" class="action-link">Open</a>
 									{% else %}
 									N/A
 									{% endif %}
@@ -481,17 +486,16 @@
 									
 									<td>
 									{% if alumni.appointment_order %}
-									<a href="{{ alumni.appointment_order.url }}" target="_blank">Open</a>
+									<a href="{{ alumni.appointment_order.url }}" target="_blank" class="action-link">Open</a>
 									{% else %}
 									N/A
 									{% endif %}
 									</td>
-									<a
-										href="{% url 'admin_edit_alumni' alumni.id %}"
-										class="edit-btn"
-									>
-										Edit
-									</a>
+									<td class="actions-cell">
+                                    <a href="{% url 'admin_edit_alumni' alumni.id %}" class="edit-btn">
+                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                    </a>
+                                </td>
 								</td>
 							</tr>
 

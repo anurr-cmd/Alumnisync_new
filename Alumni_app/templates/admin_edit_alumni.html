@@ -1,81 +1,197 @@
 {% load static %}
-
 <!doctype html>
-<html>
-	<head>
-		<title>Edit Alumni</title>
+<html lang="en">
+<head>
+    <title>Edit Alumni | {{ alumni.user.username }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" /> {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-		<link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+    <style>
+        :root {
+            --primary-green: #2d5a3f;
+            --hover-green: #1e3d2a;
+            --bg-main: #f8faf9;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #666;
+            --border-color: #eef2f0;
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
 
-		<style>
-			.edit-container {
-				max-width: 700px;
-				margin: auto;
-				background: white;
-				padding: 30px;
-				border-radius: 15px;
-				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-			}
+        body {
+            background-color: var(--bg-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
 
-			.edit-container h2 {
-				margin-bottom: 20px;
-			}
+        .page-container {
+            width: 100%;
+            max-width: 680px;
+        }
 
-			.form-group {
-				margin-bottom: 15px;
-			}
+        /* Back Button Navigation */
+        .nav-header {
+            margin-bottom: 20px;
+        }
 
-			.form-group label {
-				display: block;
-				font-weight: 600;
-				margin-bottom: 5px;
-			}
+        .back-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
 
-			.form-group input,
-			.form-group textarea {
-				width: 100%;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 6px;
-			}
+        .back-link:hover {
+            color: var(--primary-green);
+        }
 
-			.save-btn {
-				background: #2d6a4f;
-				color: white;
-				border: none;
-				padding: 10px 18px;
-				border-radius: 6px;
-				cursor: pointer;
-			}
+        /* Edit Card */
+        .edit-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
 
-			.cancel-btn {
-				margin-left: 10px;
-				text-decoration: none;
-			}
-		</style>
-	</head>
+        .edit-container h2 {
+            color: var(--primary-green);
+            margin: 0 0 8px 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
 
-	<body>
-		<div class="edit-container">
-			<h2>Edit Alumni - {{ alumni.user.username }}</h2>
+        .edit-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
 
-			<form method="POST" enctype="multipart/form-data">
-				{% csrf_token %} {% for field in form %}
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-				<div class="form-group">
-					<label>{{ field.label }}</label>
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
 
-					{{ field }} {% if field.errors %}
-					<p style="color: red">{{ field.errors }}</p>
-					{% endif %}
-				</div>
+        /* Support for various input types */
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: #fcfdfd;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
 
-				{% endfor %}
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(45, 90, 63, 0.08);
+        }
 
-				<button type="submit" class="save-btn">Save Changes</button>
+        .error-text {
+            color: #d9534f;
+            font-size: 0.75rem;
+            margin-top: 6px;
+            display: block;
+        }
 
-				<a href="{% url 'admin_view_alumni' %}" class="cancel-btn"> Cancel </a>
-			</form>
-		</div>
-	</body>
+        /* Action Buttons */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .save-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .save-btn:hover {
+            background: var(--hover-green);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(45, 90, 63, 0.15);
+        }
+
+        /* File Upload styling */
+        input[type="file"] {
+            padding: 10px;
+            border: 1px dashed var(--border-color);
+            background: #fbfcfb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="nav-header">
+            <a href="{% url 'admin_view_alumni' %}" class="back-link">
+                <i class="fa-solid fa-chevron-left"></i> Return to Alumni Directory
+            </a>
+        </div>
+
+        <div class="edit-container">
+            <h2>Edit Alumni Profile</h2>
+            <p class="edit-subtitle">Updating information for <strong>{{ alumni.user.username }}</strong></p>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }} 
+                    
+                    {% if field.errors %}
+                    <span class="error-text">{{ field.errors|striptags }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">
+                        <i class="fa-solid fa-check"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
 </html>
