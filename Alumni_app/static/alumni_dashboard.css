@@ -556,3 +556,52 @@ header .logo {
     .full-width { grid-column: span 1; }
     .header-actions .nav-link-home { display: none; }
 }
+/* HAMBURGER BUTTON */
+
+.menu-toggle{
+    display:none;
+    font-size:22px;
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+
+/* MOBILE VIEW */
+
+@media (max-width:768px){
+
+.sidebar{
+    position:fixed;
+    left:-260px;
+    top:0;
+    width:260px;
+    height:100%;
+    background:#fff;
+    transition:0.3s;
+    z-index:1000;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.dashboard-container{
+    flex-direction:column;
+}
+
+.main-content{
+    width:100%;
+}
+
+.menu-toggle{
+    display:block;
+}
+
+header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+}
