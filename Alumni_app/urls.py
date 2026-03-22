@@ -37,7 +37,7 @@ urlpatterns = [
     path("admin/events/", views.manage_admin_events, name="admin_events"),
 
     # path("admin/alumni/", views.view_alumni, name="view_alumni"),
-    # path("admin/announcements/", views.announcements_page, name="announcements_page"),
+    path("admin/announcements/", views.admin_announcements, name="announcements_page"),
     
     path("admin/announcements/", views.admin_announcements, name="admin_announcements"),
 
