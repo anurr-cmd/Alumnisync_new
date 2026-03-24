@@ -492,10 +492,16 @@ N/A
 									{% endif %}
 									</td>
 									<td class="actions-cell">
-                                    <a href="{% url 'admin_edit_alumni' alumni.id %}" class="edit-btn">
-                                        <i class="fa-solid fa-pen-to-square"></i> Edit
-                                    </a>
-                                </td>
+
+    <a href="{% url 'admin_view_user' alumni.user.id %}" class="view-btn">
+        <i class="fa-solid fa-eye"></i> View
+    </a>
+
+    <a href="{% url 'admin_edit_alumni' alumni.id %}" class="edit-btn">
+        <i class="fa-solid fa-pen-to-square"></i> Edit
+    </a>
+
+</td>
 								</td>
 							</tr>
 

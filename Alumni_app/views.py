@@ -336,7 +336,13 @@ def admin_view_user(request, pk):
             "profile": user.profile
         }
     )
-    
+# @login_required
+# def admin_view_user(request, user_id):
+
+#     user = get_object_or_404(User, id=user_id)
+#     alumni = get_object_or_404(Profile, user=user)
+
+#     return render(request, "admin_view_user.html", {"alumni": alumni})   
     
     
 @login_required
