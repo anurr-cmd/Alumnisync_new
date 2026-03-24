@@ -530,7 +530,7 @@ def manage_admin_events(request):
 
     profile, created = Profile.objects.get_or_create(user=request.user)
 
-    if (profile.role or "").lower() != "admin":
+    if not request.user.is_staff:
         return redirect("login_portal")
 
     events = Event.objects.all().order_by("-id")
