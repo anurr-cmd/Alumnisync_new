@@ -2,60 +2,60 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
-class Job(models.Model):
-    title = models.CharField(max_length=200)
-    company = models.CharField(max_length=200)
-    description = models.TextField()
+# class Job(models.Model):
+#     title = models.CharField(max_length=200)
+#     company = models.CharField(max_length=200)
+#     description = models.TextField()
 
-    posted_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+#     posted_by = models.ForeignKey(
+#         settings.AUTH_USER_MODEL,
+#         on_delete=models.SET_NULL,
+#         null=True,
+#         blank=True
+#     )
 
-    posted_on = models.DateTimeField(auto_now_add=True)
+#     posted_on = models.DateTimeField(auto_now_add=True)
 
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
 
-    def get_image_url(self):
-        title = self.title.lower()
+#     def get_image_url(self):
+#         title = self.title.lower()
 
-        if "developer" in title or "software" in title or "programmer" in title:
-            return "https://cdn-icons-png.flaticon.com/512/2721/2721296.png"
+#         if "developer" in title or "software" in title or "programmer" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/2721/2721296.png"
 
-        elif "designer" in title or "ui" in title or "ux" in title:
-            return "https://cdn-icons-png.flaticon.com/512/2920/2920277.png"
+#         elif "designer" in title or "ui" in title or "ux" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/2920/2920277.png"
 
-        elif "manager" in title or "lead" in title:
-            return "https://cdn-icons-png.flaticon.com/512/1995/1995574.png"
+#         elif "manager" in title or "lead" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/1995/1995574.png"
 
-        elif "tester" in title or "qa" in title:
-            return "https://cdn-icons-png.flaticon.com/512/1055/1055687.png"
+#         elif "tester" in title or "qa" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/1055/1055687.png"
 
-        elif "intern" in title or "trainee" in title:
-            return "https://cdn-icons-png.flaticon.com/512/201/201818.png"
+#         elif "intern" in title or "trainee" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/201/201818.png"
 
-    # 🔹 NEW JOB TYPES 🔹
-        elif "data" in title or "analyst" in title:
-            return "https://cdn-icons-png.flaticon.com/512/2782/2782058.png"
+#     # 🔹 NEW JOB TYPES 🔹
+#         elif "data" in title or "analyst" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/2782/2782058.png"
 
-        elif "marketing" in title or "seo" in title or "digital" in title:
-            return "https://cdn-icons-png.flaticon.com/512/1998/1998610.png"
+#         elif "marketing" in title or "seo" in title or "digital" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/1998/1998610.png"
 
-        elif "hr" in title or "recruiter" in title:
-            return "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+#         elif "hr" in title or "recruiter" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
 
-        elif "network" in title or "system" in title or "admin" in title:
-            return "https://cdn-icons-png.flaticon.com/512/4248/4248443.png"
+#         elif "network" in title or "system" in title or "admin" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/4248/4248443.png"
 
-        elif "security" in title or "cyber" in title:
-            return "https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
+#         elif "security" in title or "cyber" in title:
+#             return "https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
 
-        else:
-            return "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+#         else:
+#             return "https://cdn-icons-png.flaticon.com/512/847/847969.png"
 
 
 class Profile(models.Model):

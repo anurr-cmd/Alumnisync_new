@@ -106,11 +106,11 @@ def alumni_dashboard(request):
         "profile": profile,
 
         "total_events": Event.objects.count(),
-        "total_jobs": Job.objects.count(),
+        # "total_jobs": Job.objects.count(),
         "total_announcements": Announcement.objects.count(),
 
         "recent_events": Event.objects.order_by("-date")[:3],
-        "recent_jobs": Job.objects.order_by("-posted_on")[:3],
+        # "recent_jobs": Job.objects.order_by("-posted_on")[:3],
         "recent_announcements": Announcement.objects.order_by("-posted_on")[:3],
     }
 
@@ -177,19 +177,21 @@ def admin_dashboard(request):
 
     total_alumni = Profile.objects.filter(role="alumni").count()
     total_events = Event.objects.count()
-    total_jobs = Job.objects.count()
+    # total_jobs = Job.objects.count()
     total_announcements = Announcement.objects.count()
 
     recent_events = Event.objects.order_by('-date')[:5]
-    recent_jobs = Job.objects.order_by('-posted_on')[:5]
+    recent_announcements = Announcement.objects.order_by('-posted_on')[:5] 
+    # recent_jobs = Job.objects.order_by('-posted_on')[:5]
 
     return render(request,"admin_dashboard.html",{
         "total_alumni": total_alumni,
         "total_events": total_events,
-        "total_jobs": total_jobs,
+        
         "total_announcements": total_announcements,
         "recent_events": recent_events,
-        "recent_jobs": recent_jobs
+        "recent_announcements": recent_announcements
+        # "recent_jobs": recent_jobs
     })
 
 

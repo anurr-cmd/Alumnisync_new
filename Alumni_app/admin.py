@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Profile, Event, Job, Announcement
+from .models import Profile, Event, Announcement
 from .models import Feedback
 from django.contrib.auth.models import Group
 
@@ -112,16 +112,16 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ("title", "description")
 
 
-@admin.register(Job)
-class JobAdmin(admin.ModelAdmin):
-    list_display = (
-        "title",
-        "company",
-        "posted_by",
-        "posted_on",
-    )
-    list_filter = ("company", "posted_on")
-    search_fields = ("title", "company")
+# @admin.register(Job)
+# class JobAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "title",
+#         "company",
+#         "posted_by",
+#         "posted_on",
+#     )
+#     list_filter = ("company", "posted_on")
+#     search_fields = ("title", "company")
 
 
 @admin.register(Announcement)

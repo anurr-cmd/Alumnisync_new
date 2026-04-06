@@ -377,8 +377,7 @@
 						<thead>
 							<tr>
                         <th>Profile</th><th>Name</th><th>Role</th><th>Roll No</th><th>Phone Number</th><th>Alternate Phone</th>
-                        <th>Email</th><th>Dept</th><th>Join year</th><th>Pass out</th><th>Address</th><th>Designation</th><th>Remarks</th>
-                        <th>LinkedIn</th><th>Scholar</th><th>Proof ID</th><th>Comp ID</th><th>Appointment Order</th>
+                        <th>Email</th><th>Dept</th><th>Join year</th><th>Pass out<th>Address</th><th>Designation</th><th>Remarks</th><th>Company</th><th>Location</th>  <th>LinkedIn</th><th>Scholar</th><th>Proof ID</th><th>Comp ID</th><th>Appointment Order</th>
                     </tr>
 						</thead>
 
@@ -417,13 +416,13 @@
 								<td class="department">{{ alumni.department }}</td>
 								<td>{{ alumni.join_year }}</td>
 								<td>{{ alumni.passout_year }}</td>
-								<td>{{ alumni.designation }}</td>
-								<td>{{ alumni.remarks }}</td>
+								<td>{{ alumni.address }}</td>        <!-- ✅ Address -->
+								<td>{{ alumni.designation }}</td>    <!-- ✅ Designation -->
+								<td>{{ alumni.remarks }}</td>        <!-- ✅ Remarks -->
 								<td class="company">{{ alumni.company }}</td>
-
 								<td class="location-cell">
-									{% comment %} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-										<path
+									 {% comment %} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"> {% endcomment %}
+										{% comment %} <path
 											stroke-linecap="round"
 											stroke-linejoin="round"
 											stroke-width="2"
@@ -443,22 +442,22 @@
                                   3 3 0
                                   016 0z"
 										/>
-									</svg>
+									</svg>  {% endcomment %}
 
-									{{ alumni.location }} {% endcomment %}
+									{% comment %} {{ alumni.location }}  {% endcomment %}
 									 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    {% comment %} <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/> {% endcomment %}
                                 </svg>
                                 {{ alumni.location }}
 								</td>
 								<td>
-{% if alumni.linkedin_profile %}
-<a href="{{ alumni.linkedin_profile }}" target="_blank" class="action-link">View</a>
-{% else %}
-N/A
-{% endif %}
-</td>
+								{% if alumni.linkedin_profile %}
+								<a href="{{ alumni.linkedin_profile }}" target="_blank" class="action-link">View</a>
+								{% else %}
+								N/A
+							{% endif %}
+							</td>
 						
 						<td>
 						{% if alumni.google_scholar %}
@@ -467,7 +466,7 @@ N/A
 						N/A
 						{% endif %}
 							</td>
-						<td>
+						
 									<td>
 									{% if alumni.proof_id %}
 									<a href="{{ alumni.proof_id.url }}" target="_blank" class="action-link">Open</a>
